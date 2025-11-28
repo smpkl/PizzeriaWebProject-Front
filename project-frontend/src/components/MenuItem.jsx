@@ -1,10 +1,17 @@
 // Pizzerian info sivu (esittely, kartta, lomake, yhteystiedot)
 const MenuItem = ({item}) => {
+  console.log(item);
   return (
     <>
       <div
         className="menu-item-card"
-        style={{display: 'flex', width: '90%', margin: 'auto'}}
+        style={{
+          display: 'flex',
+          width: '90%',
+          margin: '5px auto',
+          padding: '2%',
+          backgroundColor: 'lightgray',
+        }}
       >
         <div
           className="menu-item-img-container"
