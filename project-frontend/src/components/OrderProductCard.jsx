@@ -1,7 +1,6 @@
 import React from 'react';
 
 const OrderProductCard = ({product, orderType, deliveryAddress}) => {
-  console.log(product, deliveryAddress);
 
   const containerStyle = {'display': 'flex'}
   const productStyle = {'border-bottom': '1px solid #ccc'};
