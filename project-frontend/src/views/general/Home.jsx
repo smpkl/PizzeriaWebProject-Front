@@ -1,5 +1,6 @@
 // Päänäkymä/Home/Main
 
+import {useEffect, useState} from 'react';
 import Announcement from '../../components/Announcement';
 import MealItem from '../../components/MealItem';
 import MenuFilter from '../../components/MenuFilter';
@@ -10,14 +11,52 @@ import {
   useAnnouncements,
   useDailyMeal,
   useMeals,
+  useTags,
+  useCategories,
 } from '../../hooks/apiHooks';
 
 const Home = () => {
-  const {menuItems} = useProducts();
-  const {meals} = useMeals();
+  const [originalProducts, setOriginalProducts] = useState([]);
+  const [originalMeals, setOriginalMeals] = useState([]);
+
+  // filtteröidyt listat
+  const [menuProducts, setMenuProducts] = useState([]);
+  const [menuMeals, setMenuMeals] = useState([]);
+
+  const {getProducts} = useProducts();
+  const {getMeals} = useMeals();
+
+  const updateMenu = (products, meals) => {
+    setMenuProducts(products);
+    setMenuMeals(meals);
+  };
+
+  const clearMenuFilters = async () => {
+    const products = await getProducts();
+    const meals = await getMeals();
+    setMenuProducts(products);
+    setMenuMeals(meals);
+  };
+
+  useEffect(() => {
+    const loadData = async () => {
+      const products = await getProducts();
+      console.log(products);
+      const meals = await getMeals();
+      setOriginalProducts(products);
+      setOriginalMeals(meals);
+      setMenuProducts(products);
+      setMenuMeals(meals);
+    };
+
+    loadData();
+  }, []);
+
   const {announcements} = useAnnouncements();
+  const {tags} = useTags();
+  const {categories} = useCategories();
   const {dailyMeal} = useDailyMeal();
-  //console.log('Dailymeal: ', dailyMeal);
+
   return (
     <>
       <h1>PIZZERIA TBA</h1>
@@ -46,16 +85,23 @@ const Home = () => {
       </div>
       <div id="menu-container">
         <h2>MENU</h2>
-        <MenuFilter />
+        <MenuFilter
+          products={originalProducts}
+          meals={originalMeals}
+          tags={tags}
+          categories={categories}
+          updateMenu={updateMenu}
+          clearMenuFilters={clearMenuFilters}
+        />
         <div id="menu">
-          {menuItems.map((item) => (
+          {menuProducts.map((item) => (
             <MenuItem
               key={item.id}
               item={item}
               //setSelectedItem={setSelectedItem}
             />
           ))}
-          {meals.map((item) => (
+          {menuMeals.map((item) => (
             <MealItem
               key={item.id}
               item={item}
