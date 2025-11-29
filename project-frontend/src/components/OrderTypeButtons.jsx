@@ -1,4 +1,5 @@
-// Pizzerian info sivu (esittely, kartta, lomake, yhteystiedot)
+// Nää vois myöhemmin muutta iconeiks.
+
 const OrderTypeButtons = () => {
   return (
     <>
