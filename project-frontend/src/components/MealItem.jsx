@@ -1,11 +1,12 @@
-// Pizzerian info sivu (esittely, kartta, lomake, yhteystiedot)
-const MenuItem = ({item}) => {
+const MealItem = ({item}) => {
   //console.log(item);
+  const products = item.products;
+  console.log(products);
   return (
     <>
       <div
-        className="menu-item-card"
-        id={`product-${item.id}`}
+        className="meal-item-card"
+        id={`meal-${item.id}`}
         style={{
           display: 'flex',
           width: '90%',
@@ -15,7 +16,7 @@ const MenuItem = ({item}) => {
         }}
       >
         <div
-          className="menu-item-img-container"
+          className="meal-item-img-container"
           style={{display: 'flex', justifyItems: 'center'}}
         >
           <img
@@ -30,7 +31,16 @@ const MenuItem = ({item}) => {
         </div>
         <div className="menu-item-info">
           <h3>{item.name}</h3>
-          <p>{item.description}</p>
+          <h4>Products included in the meal:</h4>
+          <ul className="meal-products-ul">
+            {products.map((product) => (
+              <li>
+                <a href={`#product-${product.id}`} style={{width: '100%'}}>
+                  {product.name}
+                </a>
+              </li>
+            ))}
+          </ul>
           <p>{item.tags ?? 'No tags yet'}</p>
           <p>{item.price} €</p>
           <button>Add to order</button>
@@ -40,4 +50,4 @@ const MenuItem = ({item}) => {
   );
 };
 
-export default MenuItem;
+export default MealItem;

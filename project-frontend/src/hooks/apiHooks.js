@@ -29,7 +29,7 @@ const useAnnouncements = () => {
         const response = await fetchData(
           'http://127.0.0.1:3000/api/v1/announcements',
         );
-        console.log(response.results);
+        //console.log(response.results);
         setAnnouncements(response.results);
       };
       getAnnouncements();
@@ -38,6 +38,34 @@ const useAnnouncements = () => {
     }
   }, []);
   return {announcements};
+};
+
+const useMeals = () => {
+  const [meals, setMeals] = useState([]);
+
+  useEffect(() => {
+    try {
+      const getMeals = async () => {
+        const response = await fetchData('http://127.0.0.1:3000/api/v1/meals');
+        const meals = response.meals;
+        //console.log(response);
+        const mealsWithProducts = await Promise.all(
+          meals.map(async (item) => {
+            const productsResponse = await fetchData(
+              `http://127.0.0.1:3000/api/v1/meals/${item.id}/products`,
+            );
+            return {...item, products: productsResponse.products};
+          }),
+        );
+        console.log('Meals with products: ', mealsWithProducts);
+        setMeals(mealsWithProducts);
+      };
+      getMeals();
+    } catch (error) {
+      console.log('ERROR', error);
+    }
+  }, []);
+  return {meals};
 };
 
 const useDailyMeal = () => {
@@ -109,6 +137,7 @@ export {
   useProducts,
   useAnnouncements,
   useDailyMeal,
+  useMeals,
   useAuthentication,
   useUser,
 };

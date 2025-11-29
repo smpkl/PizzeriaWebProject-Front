@@ -1,6 +1,7 @@
 // Päänäkymä/Home/Main
 
 import Announcement from '../../components/Announcement';
+import MealItem from '../../components/MealItem';
 import MenuFilter from '../../components/MenuFilter';
 import MenuItem from '../../components/MenuItem';
 import OrderTypeButtons from '../../components/OrderTypeButtons';
@@ -8,16 +9,18 @@ import {
   useProducts,
   useAnnouncements,
   useDailyMeal,
+  useMeals,
 } from '../../hooks/apiHooks';
 
 const Home = () => {
   const {menuItems} = useProducts();
+  const {meals} = useMeals();
   const {announcements} = useAnnouncements();
   const {dailyMeal} = useDailyMeal();
-  console.log('Dailymeal: ', dailyMeal);
+  //console.log('Dailymeal: ', dailyMeal);
   return (
     <>
-      <h1>MAIN</h1>
+      <h1>PIZZERIA TBA</h1>
       <div id="main-page-img-container">
         <img
           src="https://placehold.co/400x200/red/white?text=THIS+IS+A+PIZZA"
@@ -47,6 +50,13 @@ const Home = () => {
         <div id="menu">
           {menuItems.map((item) => (
             <MenuItem
+              key={item.id}
+              item={item}
+              //setSelectedItem={setSelectedItem}
+            />
+          ))}
+          {meals.map((item) => (
+            <MealItem
               key={item.id}
               item={item}
               //setSelectedItem={setSelectedItem}
