@@ -8,7 +8,6 @@ import Profile from './views/general/Profile';
 import AdminOrders from './views/admin/AdminOrders';
 import AdminLayout from './components/AdminLayout';
 import AdminProducts from './views/admin/AdminProducts';
-import AdminProducts2 from './components/AdminProducts2'
 
 const App = () => {
   return (
