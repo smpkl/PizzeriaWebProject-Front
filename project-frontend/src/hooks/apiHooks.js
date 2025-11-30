@@ -2,22 +2,18 @@ import {useState, useEffect} from 'react';
 import fetchData from '../utils/fetchData';
 
 const useProducts = () => {
-  const [menuItems, setMenuItems] = useState([]);
-
-  useEffect(() => {
+  const getProducts = async () => {
     try {
-      const getProducts = async () => {
-        const productData = await fetchData(
-          'http://127.0.0.1:3000/api/v1/products',
-        );
-        setMenuItems(productData.products);
-      };
-      getProducts();
+      const productData = await fetchData(
+        'http://127.0.0.1:3000/api/v1/products',
+      );
+      console.log('API products: ', productData);
+      return productData.products;
     } catch (error) {
       console.log('ERROR', error);
     }
-  }, []);
-  return {menuItems};
+  };
+  return {getProducts};
 };
 
 const useAnnouncements = () => {
@@ -40,32 +36,66 @@ const useAnnouncements = () => {
   return {announcements};
 };
 
-const useMeals = () => {
-  const [meals, setMeals] = useState([]);
+const useTags = () => {
+  const [tags, setTags] = useState([]);
 
   useEffect(() => {
     try {
-      const getMeals = async () => {
-        const response = await fetchData('http://127.0.0.1:3000/api/v1/meals');
-        const meals = response.meals;
-        //console.log(response);
-        const mealsWithProducts = await Promise.all(
-          meals.map(async (item) => {
-            const productsResponse = await fetchData(
-              `http://127.0.0.1:3000/api/v1/meals/${item.id}/products`,
-            );
-            return {...item, products: productsResponse.products};
-          }),
-        );
-        console.log('Meals with products: ', mealsWithProducts);
-        setMeals(mealsWithProducts);
+      console.log('Haetaan tagit..');
+      const getTags = async () => {
+        const response = await fetchData('http://127.0.0.1:3000/api/v1/tags');
+        console.log('Response: ', response);
+        setTags(response.tags);
       };
-      getMeals();
+      getTags();
     } catch (error) {
       console.log('ERROR', error);
     }
   }, []);
-  return {meals};
+  return {tags};
+};
+
+const useCategories = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    try {
+      const getCategories = async () => {
+        const response = await fetchData(
+          'http://127.0.0.1:3000/api/v1/categories',
+        );
+        console.log('Response: ', response);
+        setCategories(response.categories);
+      };
+      getCategories();
+    } catch (error) {
+      console.log('ERROR', error);
+    }
+  }, []);
+  return {categories};
+};
+
+const useMeals = () => {
+  const getMeals = async () => {
+    try {
+      const response = await fetchData('http://127.0.0.1:3000/api/v1/meals');
+      const meals = response.meals;
+      //console.log(response);
+      const mealsWithProducts = await Promise.all(
+        meals.map(async (item) => {
+          const productsResponse = await fetchData(
+            `http://127.0.0.1:3000/api/v1/meals/${item.id}/products`,
+          );
+          return {...item, products: productsResponse.products};
+        }),
+      );
+      console.log('Meals with products: ', mealsWithProducts);
+      return mealsWithProducts;
+    } catch (error) {
+      console.log('ERROR', error);
+    }
+  };
+  return {getMeals};
 };
 
 const useDailyMeal = () => {
@@ -136,6 +166,8 @@ const useUser = () => {
 export {
   useProducts,
   useAnnouncements,
+  useTags,
+  useCategories,
   useDailyMeal,
   useMeals,
   useAuthentication,

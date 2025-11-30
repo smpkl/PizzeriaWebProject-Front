@@ -41,7 +41,6 @@ const MealItem = ({item}) => {
               </li>
             ))}
           </ul>
-          <p>{item.tags ?? 'No tags yet'}</p>
           <p>{item.price} €</p>
           <button>Add to order</button>
         </div>
