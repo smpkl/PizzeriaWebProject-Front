@@ -1,7 +1,5 @@
 const MealItem = ({item}) => {
-  //console.log(item);
   const products = item.products;
-  console.log(products);
   return (
     <>
       <div

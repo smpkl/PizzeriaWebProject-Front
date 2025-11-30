@@ -34,7 +34,6 @@ const Home = () => {
   useEffect(() => {
     const loadData = async () => {
       const products = await getProducts();
-      console.log(products);
       const meals = await getMeals();
       setOriginalProducts(products);
       setOriginalMeals(meals);

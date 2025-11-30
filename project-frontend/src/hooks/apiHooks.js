@@ -7,7 +7,7 @@ const useProducts = () => {
       const productData = await fetchData(
         'http://127.0.0.1:3000/api/v1/products',
       );
-      console.log('API products: ', productData);
+      //console.log('API products: ', productData);
       return productData.products;
     } catch (error) {
       console.log('ERROR', error);
@@ -41,10 +41,9 @@ const useTags = () => {
 
   useEffect(() => {
     try {
-      console.log('Haetaan tagit..');
       const getTags = async () => {
         const response = await fetchData('http://127.0.0.1:3000/api/v1/tags');
-        console.log('Response: ', response);
+        //console.log('Response: ', response);
         setTags(response.tags);
       };
       getTags();
@@ -64,7 +63,7 @@ const useCategories = () => {
         const response = await fetchData(
           'http://127.0.0.1:3000/api/v1/categories',
         );
-        console.log('Response: ', response);
+        //console.log('Response: ', response);
         setCategories(response.categories);
       };
       getCategories();
@@ -89,7 +88,7 @@ const useMeals = () => {
           return {...item, products: productsResponse.products};
         }),
       );
-      console.log('Meals with products: ', mealsWithProducts);
+      //console.log('Meals with products: ', mealsWithProducts);
       return mealsWithProducts;
     } catch (error) {
       console.log('ERROR', error);
@@ -107,7 +106,7 @@ const useDailyMeal = () => {
         const response = await fetchData(
           'http://127.0.0.1:3000/api/v1/dailymeals/monday',
         );
-        console.log(response);
+        //console.log(response);
         setDailyMeal(response.dailymeal);
       };
       getDailyMeal();

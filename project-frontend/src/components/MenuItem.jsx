@@ -1,6 +1,4 @@
-// Pizzerian info sivu (esittely, kartta, lomake, yhteystiedot)
 const MenuItem = ({item}) => {
-  console.log(item.tags);
   return (
     <>
       <div
