@@ -1,90 +1,75 @@
 import {useState, useEffect} from 'react';
 
-// Pizzerian info sivu (esittely, kartta, lomake, yhteystiedot)
-const MenuFilter = ({
-  products,
-  meals,
-  tags,
-  categories,
-  updateMenu,
-  clearMenuFilters,
-}) => {
+const MenuFilter = ({products, meals, tags, categories, updateMenu}) => {
+  const [input, setInput] = useState('');
   const [activeTags, setActiveTags] = useState([]);
   const [activeCategory, setActiveCategory] = useState(null);
-
-  console.log(products);
 
   const toggleCategory = (categoryId) => {
     setActiveCategory((prev) => (prev === categoryId ? null : categoryId));
   };
 
-  const toggleTag = (tagId) => {
+  const toggleTag = (tagTitle) => {
     setActiveTags((prev) =>
-      prev.includes(tagId)
-        ? prev.filter((id) => id !== tagId)
-        : [...prev, tagId],
+      prev.includes(tagTitle)
+        ? prev.filter((title) => title !== tagTitle)
+        : [...prev, tagTitle],
     );
   };
 
+  const handleInputChange = (text) => {
+    setInput(text);
+  };
+
+  // Filteröi menun sisältö:
   useEffect(() => {
     let filteredProducts = [...products];
     let filteredMeals = [...meals];
 
-    // Suodata kategoria
+    // Jos jokin kategoria on valittuna:
     if (activeCategory) {
-      filteredProducts = filteredProducts.filter(
-        (p) => p.category === activeCategory,
-      );
-      filteredMeals = filteredMeals.filter(
-        (m) => m.category === activeCategory,
-      );
+      if (activeCategory === 'meals') {
+        filteredMeals = meals;
+        filteredProducts = [];
+      } else {
+        filteredProducts = filteredProducts.filter(
+          (p) => p.category === activeCategory,
+        );
+        filteredMeals = filteredMeals.filter(
+          // Mealseillä ei kyllä taida olla kategoria kenttää?
+          (m) => m.category === activeCategory,
+        );
+      }
     }
 
-    // Suodata tagit (turvallisesti)
+    // Jos tageja on valittuna:
     if (activeTags.length > 0) {
       filteredProducts = filteredProducts.filter((p) =>
         activeTags.every((t) => (p.tags || []).includes(t)),
       );
 
-      filteredMeals = filteredMeals.filter((m) =>
-        activeTags.every((t) => (m.tags || []).includes(t)),
+      filteredMeals = filteredMeals.filter(
+        (
+          m, // Mealseillä ei kyllä ole tageja?
+        ) => activeTags.every((t) => (m.tags || []).includes(t)),
       );
     }
 
-    updateMenu(filteredProducts, filteredMeals);
-  }, [activeCategory, activeTags]);
+    // Jos jotain on syötetty hakukenttään:
+    if (input.trim() !== '') {
+      const key = input.toLowerCase();
 
-  /*const toggleCategory = (categoryId) => {
-    setActiveCategory((prev) => (prev === categoryId ? null : categoryId));
-  };
-
-  const toggleTag = (tagId) => {
-    setActiveTags((tags) =>
-      tags.includes(tagId)
-        ? tags.filter((id) => id !== tagId)
-        : [...tags, tagId],
-    );
-  };
-
-  useEffect(() => {
-    clearMenuFilters();
-    let filteredProducts;
-    let filteredMeals;
-    if (activeCategory) {
-      filteredProducts = products.filter((p) => p.category === activeCategory);
-    }
-    if (activeTags.length > 0) {
       filteredProducts = filteredProducts.filter((p) =>
-        activeTags.forEach((t) => p.tags.includes(t)),
+        p.name.toLowerCase().includes(key),
+      );
+
+      filteredMeals = filteredMeals.filter((m) =>
+        m.name.toLowerCase().includes(key),
       );
     }
-    if (activeTags.length > 0) {
-      filteredMeals = meals.filter((p) =>
-        activeTags.forEach((t) => p.tags.includes(t)),
-      );
-    }
+
     updateMenu(filteredProducts, filteredMeals);
-  }, [activeCategory, activeTags]); */
+  }, [activeCategory, activeTags, input]);
 
   return (
     <>
@@ -95,24 +80,42 @@ const MenuFilter = ({
               key={category.id}
               id={`categ-${category.id}`}
               onClick={() => toggleCategory(category.id)}
+              className={activeCategory === category.id ? 'active' : ''}
             >
               {category.name}
             </button>
           ))}
+          <button
+            key="ateriat-category"
+            id="ateriat-category"
+            onClick={() => toggleCategory('meals')}
+            className={activeCategory === 'meals' ? 'active' : ''}
+          >
+            Ateriat
+          </button>
         </div>
         <div id="menu-tags">
           {tags.map((tag) => (
             <button
               key={tag.title}
               id={`tag-${tag.id}`}
-              onClick={() => toggleTag(tag.id)}
+              onClick={() => toggleTag(tag.title)}
+              className={activeTags.includes(tag.title) ? 'active' : ''}
             >
               {tag.title}
             </button>
           ))}
         </div>
         <div id="menu-search-bar">
-          <input type="text"></input>
+          <input
+            type="text"
+            name="item-name"
+            id="search-by-name"
+            onChange={(e) => handleInputChange(e.target.value)}
+            autoComplete="item-name"
+            placeholder="Search by name"
+            value={input}
+          ></input>
         </div>
       </div>
     </>

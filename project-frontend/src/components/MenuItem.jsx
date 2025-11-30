@@ -1,6 +1,6 @@
 // Pizzerian info sivu (esittely, kartta, lomake, yhteystiedot)
 const MenuItem = ({item}) => {
-  //console.log(item);
+  console.log(item.tags);
   return (
     <>
       <div
@@ -31,7 +31,11 @@ const MenuItem = ({item}) => {
         <div className="menu-item-info">
           <h3>{item.name}</h3>
           <p>{item.description}</p>
-          <p>{item.tags ?? 'No tags yet'}</p>
+          <p>
+            {item.tags && item.tags.length > 0
+              ? item.tags.map((t) => t).join(', ')
+              : 'No tags yet'}
+          </p>
           <p>{item.price} €</p>
           <button>Add to order</button>
         </div>

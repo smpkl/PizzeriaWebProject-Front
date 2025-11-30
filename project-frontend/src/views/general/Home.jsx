@@ -31,13 +31,6 @@ const Home = () => {
     setMenuMeals(meals);
   };
 
-  const clearMenuFilters = async () => {
-    const products = await getProducts();
-    const meals = await getMeals();
-    setMenuProducts(products);
-    setMenuMeals(meals);
-  };
-
   useEffect(() => {
     const loadData = async () => {
       const products = await getProducts();
@@ -91,7 +84,6 @@ const Home = () => {
           tags={tags}
           categories={categories}
           updateMenu={updateMenu}
-          clearMenuFilters={clearMenuFilters}
         />
         <div id="menu">
           {menuProducts.map((item) => (
