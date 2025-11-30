@@ -7,6 +7,7 @@ import Order from './views/general/Order';
 import Profile from './views/general/Profile';
 import AdminOrders from './views/admin/AdminOrders';
 import AdminLayout from './components/AdminLayout';
+import AdminProducts from './views/admin/AdminProducts';
 
 const App = () => {
   return (
@@ -20,8 +21,9 @@ const App = () => {
             <Route path="/about" element={<AboutUs />} />
           </Route>
           {/* Admin sivut, placeholder kunnes keksitää yhessä miten lopulta toteutetaa */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route path="/admin" element={<AdminOrders />} />
+          <Route path="/admin/" element={<AdminLayout />}>
+            <Route path="/admin/orders" element={<AdminOrders />} />
+            <Route path="/admin/products" element={<AdminProducts />} />
           </Route>
         </Routes>
       </BrowserRouter>

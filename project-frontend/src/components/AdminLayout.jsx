@@ -15,7 +15,10 @@ const Layout = () => (
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/admin">admin</Link>
+            <Link to="/admin/orders">admin</Link>
+          </li>
+          <li>
+            <Link to="/admin/products">Add products</Link>
           </li>
         </ul>
       </nav>
