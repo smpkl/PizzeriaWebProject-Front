@@ -9,6 +9,7 @@ const OrderProvider = ({children}) => {
   const [orderUserId, setOrderUserId] = useState(null);
   const [orderProducts, setOrderProducts] = useState([]);
   const [orderMeals, setOrderMeals] = useState([]);
+  const [orderPrice, setOrderPrice] = useState(0);
 
   const {postOrder, postProductToOrder} = useOrder();
 
@@ -22,6 +23,7 @@ const OrderProvider = ({children}) => {
       setOrderMeals(data.orderMeals || []);
       setOrderId(data.orderId || null);
       setOrderUserId(data.orderUserId || null);
+      setOrderPrice(data.orderPrice || 0);
       setIsActiveOrder(data.isActiveOrder || false);
     }
     setHasLoaded(true);
@@ -35,14 +37,25 @@ const OrderProvider = ({children}) => {
       orderMeals,
       orderId,
       orderUserId,
+      orderPrice,
       isActiveOrder,
     };
 
     localStorage.setItem('order', JSON.stringify(data));
-  }, [orderProducts, orderMeals, orderId, isActiveOrder, hasLoaded]);
+  }, [
+    orderProducts,
+    orderMeals,
+    orderId,
+    orderPrice,
+    isActiveOrder,
+    hasLoaded,
+  ]);
 
   const handleProductAdd = async (product) => {
     try {
+      setOrderPrice((prev) =>
+        Number((prev + Number(product.price)).toFixed(2)),
+      );
       setOrderProducts((prev) => {
         const existing = prev.find((p) => p.product.id === product.id);
 
@@ -68,6 +81,8 @@ const OrderProvider = ({children}) => {
 
   const handleProductRemove = async (product) => {
     try {
+      const newPrice = orderPrice - Number(product.price);
+      setOrderPrice(newPrice);
       setOrderProducts((prev) => {
         const existing = prev.find((p) => p.product.id === product.id);
 
@@ -80,11 +95,13 @@ const OrderProvider = ({children}) => {
           updated = prev.filter((p) => p.product.id !== product.id);
         }
 
-        console.log('Products in order:', updated);
+        if (updated.length === 0 && orderMeals.length === 0) {
+          console.log('No items. Clear cart...');
+          setIsActiveOrder(true);
+          setOrderPrice(0);
+        }
         return updated;
       });
-
-      setIsActiveOrder(true);
     } catch (e) {
       console.log(e.message);
       throw e;
@@ -93,9 +110,24 @@ const OrderProvider = ({children}) => {
 
   const handleProductDelete = async (product) => {
     try {
+      const theseProducts = orderProducts.find(
+        (p) => p.product.id === product.id,
+      );
+
+      const newPrice =
+        orderPrice - Number(product.price) * theseProducts.quantity;
+      setOrderPrice(newPrice);
+
       let updated;
       setOrderProducts((prev) => {
         updated = prev.filter((p) => p.product.id !== product.id);
+
+        if (updated.length === 0 && orderMeals.length === 0) {
+          console.log('No items. Clear cart...');
+          setIsActiveOrder(true);
+          setOrderPrice(0);
+        }
+
         return updated;
       });
     } catch (e) {
@@ -106,6 +138,8 @@ const OrderProvider = ({children}) => {
 
   const handleMealAdd = async (meal) => {
     try {
+      const newPrice = orderPrice + Number(meal.price);
+      setOrderPrice(newPrice);
       setOrderMeals((prev) => {
         const existing = prev.find((m) => m.meal.id === meal.id);
 
@@ -130,6 +164,8 @@ const OrderProvider = ({children}) => {
 
   const handleMealRemove = async (meal) => {
     try {
+      const newPrice = orderPrice - Number(meal.price);
+      setOrderPrice(newPrice);
       setOrderMeals((prev) => {
         const existing = prev.find((m) => m.meal.id === meal.id);
 
@@ -141,9 +177,14 @@ const OrderProvider = ({children}) => {
         } else {
           updated = prev.filter((m) => m.meal.id !== meal.id);
         }
+
+        if (updated.length === 0 && orderProducts.length === 0) {
+          console.log('No items. Clear cart...');
+          setIsActiveOrder(true);
+          setOrderPrice(0);
+        }
         return updated;
       });
-      setIsActiveOrder(true);
     } catch (e) {
       console.log(e.message);
       throw e;
@@ -152,9 +193,21 @@ const OrderProvider = ({children}) => {
 
   const handleMealDelete = async (meal) => {
     try {
+      const theseMeals = orderMeals.find((m) => m.meal.id === meal.id);
+
+      const newPrice = orderPrice - Number(meal.price) * theseMeals.quantity;
+      setOrderPrice(newPrice);
+
       let updated;
       setOrderMeals((prev) => {
         updated = prev.filter((m) => m.meal.id !== meal.id);
+
+        if (updated.length === 0 && orderProducts.length === 0) {
+          console.log('No items. Clear cart...');
+          setIsActiveOrder(true);
+          setOrderPrice(0);
+        }
+
         return updated;
       });
     } catch (e) {
@@ -167,6 +220,7 @@ const OrderProvider = ({children}) => {
     try {
       setOrderProducts([]);
       setOrderMeals([]);
+      setOrderPrice(0);
     } catch (e) {
       console.log(e.message);
       throw e;
@@ -185,6 +239,7 @@ const OrderProvider = ({children}) => {
         handleClear,
         orderProducts,
         orderMeals,
+        orderPrice,
       }}
     >
       {children}

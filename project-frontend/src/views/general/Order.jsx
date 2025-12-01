@@ -6,6 +6,7 @@ const Order = () => {
   const {
     orderProducts,
     orderMeals,
+    orderPrice,
     handleProductAdd,
     handleProductRemove,
     handleProductDelete,
@@ -77,6 +78,7 @@ const Order = () => {
                   </div>
                 </div>
               ))}
+              <p>TOTAL: {orderPrice}€</p>
             </div>
           </div>
         )}
