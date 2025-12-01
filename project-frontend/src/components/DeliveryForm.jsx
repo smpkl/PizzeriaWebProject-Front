@@ -148,7 +148,7 @@ const DeliveryForm = () => {
           }}
         >
           <h4>Delivery details: </h4>
-          <label htmlFor="delivery-details-form">DETAILS: </label>
+          <label htmlFor="delivery-details">DETAILS: </label>
           <textarea
             rows="10"
             cols="45"

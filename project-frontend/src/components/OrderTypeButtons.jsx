@@ -1,14 +1,21 @@
+import {useNavigate} from 'react-router';
 import {useOrderContext} from '../hooks/contextHooks';
 
 const OrderTypeButtons = () => {
   const {handleTypeChange, orderType} = useOrderContext();
+  const navigate = useNavigate();
+
+  const handleButtonClick = (type) => {
+    handleTypeChange(type);
+    navigate('/order');
+  };
 
   return (
     <>
       <div className="order-type-buttons">
         <button
           id="delivery"
-          onClick={() => handleTypeChange('delivery')}
+          onClick={() => handleButtonClick('delivery')}
           style={{
             width: '100px',
             height: '100px',
@@ -21,7 +28,7 @@ const OrderTypeButtons = () => {
         </button>
         <button
           id="pick-up"
-          onClick={() => handleTypeChange('pick-up')}
+          onClick={() => handleButtonClick('pick-up')}
           style={{
             width: '100px',
             height: '100px',
@@ -34,7 +41,7 @@ const OrderTypeButtons = () => {
         </button>
         <button
           id="at-pizzeria"
-          onClick={() => handleTypeChange('at-pizzeria')}
+          onClick={() => handleButtonClick('at-pizzeria')}
           style={{
             width: '100px',
             height: '100px',
