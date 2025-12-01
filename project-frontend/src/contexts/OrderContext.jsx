@@ -66,6 +66,31 @@ const OrderProvider = ({children}) => {
     }
   };
 
+  const handleProductRemove = async (product) => {
+    try {
+      setOrderProducts((prev) => {
+        const existing = prev.find((p) => p.product.id === product.id);
+
+        let updated;
+        if (existing.quantity > 1) {
+          updated = prev.map((p) =>
+            p.product.id === product.id ? {...p, quantity: p.quantity - 1} : p,
+          );
+        } else {
+          updated = prev.filter((p) => p.product.id !== product.id);
+        }
+
+        console.log('Products in order:', updated);
+        return updated;
+      });
+
+      setIsActiveOrder(true);
+    } catch (e) {
+      console.log(e.message);
+      throw e;
+    }
+  };
+
   const handleMealAdd = async (meal) => {
     try {
       setOrderMeals((prev) => {
@@ -83,7 +108,28 @@ const OrderProvider = ({children}) => {
         console.log('Meals in order:', updated);
         return updated;
       });
+      setIsActiveOrder(true);
+    } catch (e) {
+      console.log(e.message);
+      throw e;
+    }
+  };
 
+  const handleMealRemove = async (meal) => {
+    try {
+      setOrderMeals((prev) => {
+        const existing = prev.find((m) => m.meal.id === meal.id);
+
+        let updated;
+        if (existing.quantity > 1) {
+          updated = prev.map((m) =>
+            m.meal.id === meal.id ? {...m, quantity: m.quantity - 1} : m,
+          );
+        } else {
+          updated = prev.filter((m) => m.meal.id !== meal.id);
+        }
+        return updated;
+      });
       setIsActiveOrder(true);
     } catch (e) {
       console.log(e.message);
@@ -93,7 +139,14 @@ const OrderProvider = ({children}) => {
 
   return (
     <OrderContext.Provider
-      value={{handleProductAdd, handleMealAdd, orderProducts, orderMeals}}
+      value={{
+        handleProductAdd,
+        handleProductRemove,
+        handleMealAdd,
+        handleMealRemove,
+        orderProducts,
+        orderMeals,
+      }}
     >
       {children}
     </OrderContext.Provider>
