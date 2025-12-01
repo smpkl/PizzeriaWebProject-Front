@@ -1,0 +1,7 @@
+
+.coupon-form .row { margin-bottom: 12px; display: flex; flex-direction: column; }
+.coupon-form .error { color: #b00020; font-size: 0.9rem; }
+.coupon-table { width: 100%; border-collapse: collapse; }
+.coupon-table th, .coupon-table td { border: 1px solid #ddd; padding: 8px; }
+.list-header { display: flex; gap: 8px; margin-bottom: 12px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
