@@ -13,7 +13,23 @@ const useProducts = () => {
       console.log('ERROR', error);
     }
   };
-  return {getProducts};
+
+  const postProduct = async (name, price, tags, category, ingredients, description, image) => {
+    body = {
+      name: name,
+      price: price,
+      tags: tags,
+      category: category,
+      ingredients: ingredients,
+      description: description
+    }
+  }
+
+  const postImage = async (image) => {
+
+  }
+
+  return {getProducts, postProduct, postImage};
 };
 
 const useAnnouncements = () => {

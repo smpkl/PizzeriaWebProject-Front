@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import useForm from '../hooks/formHooks';
+import {useProducts} from '../hooks/apiHooks';
 
 const ProductCard = () => {
   const styles = {
@@ -44,6 +46,42 @@ const ProductCard = () => {
       marginTop: '24px',
     },
   };
+
+  //joko näin tai yhtenäinen formhook
+  /*
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState(0);
+  const [tags, setTags] = useState([]);
+  const [category, setCategory] = useState('');
+  const [ingredients, setIngredients] = useState('');
+  const [description, setDescription] = useState('');
+  */
+  const [image, setImage] = useState(null);
+  const {postProduct, postImage} = useProducts();
+
+  const initValues = {
+    name: '',
+    price: 0,
+    category: '',
+    ingredients: '',
+    description: '',
+  };
+
+  const doPost = async (inputs, checkbox, image) => {
+    try {
+      await postProduct(inputs, checkbox, image);
+      await postImage(image);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const {handleSubmit, handleInputChange, handleCheckBox, inputs, checkbox} =
+    useForm(doPost(image), initValues);
+
+  useEffect(() => {
+    console.log(checkbox);
+  }, [checkbox]);
   return (
     <div style={styles.card}>
       <form action="" style={styles.form}>
@@ -57,6 +95,9 @@ const ProductCard = () => {
                 name="products-name"
                 id="products-name"
                 placeholder="enter name"
+                onChange={(evt) => {
+                  handleInputChange(evt);
+                }}
               />
             </div>
             <div style={styles.field}>
@@ -66,6 +107,9 @@ const ProductCard = () => {
                 name="products-price"
                 id="products-price"
                 placeholder="0.00"
+                onChange={(evt) => {
+                  handleInputChange(evt);
+                }}
               />
             </div>
             {/*tähän koitan keksitä paremmat kuvat */}
@@ -75,29 +119,42 @@ const ProductCard = () => {
                   type="checkbox"
                   name="placeholder-tag1"
                   id="placeholder-tag1"
+                  value={'placeholder 1'}
+                  onChange={handleCheckBox}
                 />
                 <label htmlFor="placeholder-tag1">Placeholder tag</label>
                 <input
                   type="checkbox"
                   name="placeholder-tag2"
                   id="placeholder-tag2"
+                  value={'placeholder 2'}
+                  onChange={handleCheckBox}
                 />
                 <label htmlFor="placeholder-tag2">Placeholder tag</label>
                 <input
                   type="checkbox"
                   name="placeholder-tag3"
                   id="placeholder-tag3"
+                  value={'placeholder 3'}
+                  onChange={handleCheckBox}
                 />
                 <label htmlFor="placeholder-tag3">Placeholder tag</label>
               </div>
             </div>
-            <label htmlFor="products-category">Categories: </label>
-            <input
-              type="text"
+            <label htmlFor="products-category">Category: </label>
+            <select
               name="products-category"
               id="products-category"
               placeholder="set category"
-            />
+              onChange={(evt) => {
+                handleInputChange(evt);
+              }}
+            >
+              <option value={'pizza'}>Pizza</option>
+              <option value={'kebab'}>Kebab</option>
+              <option value={'drink'}>Drink</option>
+              <option value={'dip'}>Dip</option>
+            </select>
           </div>
 
           {/*keskikohta */}
@@ -110,6 +167,9 @@ const ProductCard = () => {
                 cols={20}
                 rows={5}
                 style={styles.textarea}
+                onChange={(evt) => {
+                  handleInputChange(evt);
+                }}
               ></textarea>
             </div>
             <div style={styles.field}>
@@ -120,6 +180,9 @@ const ProductCard = () => {
                 cols={20}
                 rows={5}
                 style={styles.textarea}
+                onChange={(evt) => {
+                  handleInputChange(evt);
+                }}
               ></textarea>
             </div>
           </div>
@@ -132,14 +195,19 @@ const ProductCard = () => {
                 alt="meals unique picture"
               />
             </div>
-            <input id="product-image" type="file" placeholder="change image" />
+            <input
+              id="product-image"
+              type="file"
+              placeholder="change image"
+              onChange={(e) => setImage(e.target.files[0])}
+            />
           </div>
         </div>
 
         {/* alas ainakin kuvan perusteella mutta ehk parempi siirtää oikeen sarakkeen loppuun?*/}
         <div>
           <div style={styles.footer}>
-            <button>Save</button>
+            <button onClick={handleSubmit}>Save</button>
             <button>Delete</button>
           </div>
         </div>
