@@ -8,8 +8,10 @@ const Order = () => {
     orderMeals,
     handleProductAdd,
     handleProductRemove,
+    handleProductDelete,
     handleMealAdd,
     handleMealRemove,
+    handleMealDelete,
   } = useOrderContext();
   console.log(orderMeals, orderProducts);
   const navigate = useNavigate();
@@ -33,7 +35,9 @@ const Order = () => {
                   <p>
                     {item.product.name} --- {item.product.price}€
                   </p>
-                  <div style={{display: 'flex', gap: '5px'}}>
+                  <div
+                    style={{display: 'flex', gap: '5px', marginLeft: '10px'}}
+                  >
                     <button onClick={() => handleProductRemove(item.product)}>
                       -
                     </button>
@@ -41,7 +45,12 @@ const Order = () => {
                     <button onClick={() => handleProductAdd(item.product)}>
                       +
                     </button>
-                    <button>X</button>
+                    <button
+                      onClick={() => handleProductDelete(item.product)}
+                      style={{backgroundColor: 'darkred'}}
+                    >
+                      X
+                    </button>
                   </div>
                 </div>
               ))}
@@ -50,13 +59,20 @@ const Order = () => {
                   <p>
                     {item.meal.name} --- {item.meal.price}€
                   </p>
-                  <div style={{display: 'flex', gap: '5px'}}>
+                  <div
+                    style={{display: 'flex', gap: '5px', marginLeft: '10px'}}
+                  >
                     <button onClick={() => handleMealRemove(item.meal)}>
                       -
                     </button>
                     <p>{item.quantity}</p>
                     <button onClick={() => handleMealAdd(item.meal)}>+</button>
-                    <button>X</button>
+                    <button
+                      onClick={() => handleMealDelete(item.meal)}
+                      style={{backgroundColor: 'darkred'}}
+                    >
+                      X
+                    </button>
                   </div>
                 </div>
               ))}

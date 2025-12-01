@@ -91,6 +91,19 @@ const OrderProvider = ({children}) => {
     }
   };
 
+  const handleProductDelete = async (product) => {
+    try {
+      let updated;
+      setOrderProducts((prev) => {
+        updated = prev.filter((p) => p.product.id !== product.id);
+        return updated;
+      });
+    } catch (e) {
+      console.log(e.message);
+      throw e;
+    }
+  };
+
   const handleMealAdd = async (meal) => {
     try {
       setOrderMeals((prev) => {
@@ -137,13 +150,28 @@ const OrderProvider = ({children}) => {
     }
   };
 
+  const handleMealDelete = async (meal) => {
+    try {
+      let updated;
+      setOrderMeals((prev) => {
+        updated = prev.filter((m) => m.meal.id !== meal.id);
+        return updated;
+      });
+    } catch (e) {
+      console.log(e.message);
+      throw e;
+    }
+  };
+
   return (
     <OrderContext.Provider
       value={{
         handleProductAdd,
         handleProductRemove,
+        handleProductDelete,
         handleMealAdd,
         handleMealRemove,
+        handleMealDelete,
         orderProducts,
         orderMeals,
       }}
