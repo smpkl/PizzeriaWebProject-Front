@@ -10,8 +10,8 @@ const Layout = () => {
 
   useEffect(() => {
     let count = 0;
-    if (orderProducts) count += orderProducts.length;
-    if (orderMeals) count += orderMeals.length;
+    if (orderProducts) orderProducts.forEach((p) => (count += p.quantity));
+    if (orderMeals) orderMeals.forEach((m) => (count += m.quantity));
     setItemCount(count);
     console.log(itemCount);
   }, [orderProducts, orderMeals]);

@@ -43,20 +43,22 @@ const OrderProvider = ({children}) => {
 
   const handleProductAdd = async (product) => {
     try {
-      if (isActiveOrder) {
-        console.log('Order productId: ', product);
-        setOrderProducts((prev) => {
-          const updated = [...prev, product];
-          console.log('Products in order:', updated);
-          return updated;
-        });
-      }
-      console.log('New order');
       setOrderProducts((prev) => {
-        const updated = [...prev, product];
+        const existing = prev.find((p) => p.product.id === product.id);
+
+        let updated;
+        if (existing) {
+          updated = prev.map((p) =>
+            p.product.id === product.id ? {...p, quantity: p.quantity + 1} : p,
+          );
+        } else {
+          updated = [...prev, {product, quantity: 1}];
+        }
+
         console.log('Products in order:', updated);
         return updated;
       });
+
       setIsActiveOrder(true);
     } catch (e) {
       console.log(e.message);
@@ -66,21 +68,22 @@ const OrderProvider = ({children}) => {
 
   const handleMealAdd = async (meal) => {
     try {
-      if (isActiveOrder) {
-        console.log('Order mealId: ', meal);
-        setOrderMeals((prev) => {
-          const updated = [...prev, meal];
-          console.log('Meals in order:', updated);
-          return updated;
-        });
-      }
-      //const orderInfo = await postOrder();
-      console.log('New order');
       setOrderMeals((prev) => {
-        const updated = [...prev, meal];
+        const existing = prev.find((m) => m.meal.id === meal.id);
+
+        let updated;
+        if (existing) {
+          updated = prev.map((m) =>
+            m.meal.id === meal.id ? {...m, quantity: m.quantity + 1} : m,
+          );
+        } else {
+          updated = [...prev, {meal, quantity: 1}];
+        }
+
         console.log('Meals in order:', updated);
         return updated;
       });
+
       setIsActiveOrder(true);
     } catch (e) {
       console.log(e.message);
