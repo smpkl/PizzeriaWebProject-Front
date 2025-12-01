@@ -1,6 +1,8 @@
 // Päänäkymä/Home/Main
 
 import {useEffect, useState} from 'react';
+import {useLocation, useNavigate} from 'react-router';
+
 import Announcement from '../../components/Announcement';
 import MealItem from '../../components/MealItem';
 import MenuFilter from '../../components/MenuFilter';
@@ -16,6 +18,8 @@ import {
 } from '../../hooks/apiHooks';
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const [originalProducts, setOriginalProducts] = useState([]);
   const [originalMeals, setOriginalMeals] = useState([]);
 
@@ -43,6 +47,21 @@ const Home = () => {
 
     loadData();
   }, []);
+
+  const location = useLocation();
+
+  // Scroll the view to menu when user has clicked "Back to shopping" -button in Order-view:
+  useEffect(() => {
+    if (location.state?.scrollToMenu) {
+      if (menuProducts.length > 0 || menuMeals.length > 0) {
+        const menuElement = document.getElementById('menu-container');
+        if (menuElement) {
+          menuElement.scrollIntoView({behavior: 'smooth'});
+          navigate(location.pathname, {replace: true, state: {}}); // Reset the state so that the view does not scroll when the view is reloaded.
+        }
+      }
+    }
+  }, [location, menuProducts, menuMeals]);
 
   const {announcements} = useAnnouncements();
   const {tags} = useTags();

@@ -1,4 +1,8 @@
+import {useOrderContext} from '../hooks/contextHooks';
+
 const MenuItem = ({item}) => {
+  const {handleProductAdd} = useOrderContext();
+
   return (
     <>
       <div
@@ -35,7 +39,7 @@ const MenuItem = ({item}) => {
               : 'No tags yet'}
           </p>
           <p>{item.price} €</p>
-          <button>Add to order</button>
+          <button onClick={() => handleProductAdd(item)}>Add to order</button>
         </div>
       </div>
     </>
