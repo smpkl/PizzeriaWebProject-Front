@@ -5,6 +5,7 @@ const OrderContext = createContext(null);
 
 const OrderProvider = ({children}) => {
   const [isActiveOrder, setIsActiveOrder] = useState(false);
+  const [orderType, setOrderType] = useState(null);
   const [orderId, setOrderId] = useState(null);
   const [orderUserId, setOrderUserId] = useState(null);
   const [orderProducts, setOrderProducts] = useState([]);
@@ -227,6 +228,15 @@ const OrderProvider = ({children}) => {
     }
   };
 
+  const handleTypeChange = (type) => {
+    try {
+      setOrderType(type);
+    } catch (e) {
+      console.log(e.message);
+      throw e;
+    }
+  };
+
   return (
     <OrderContext.Provider
       value={{
@@ -237,9 +247,11 @@ const OrderProvider = ({children}) => {
         handleMealRemove,
         handleMealDelete,
         handleClear,
+        handleTypeChange,
         orderProducts,
         orderMeals,
         orderPrice,
+        orderType,
       }}
     >
       {children}
