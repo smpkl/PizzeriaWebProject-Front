@@ -117,6 +117,29 @@ const useDailyMeal = () => {
   return {dailyMeal};
 };
 
+const useOrder = () => {
+  const postOrder = async () => {
+    try {
+      /*const response = await fetchData('http://127.0.0.1:3000/api/v1/meals');
+      const meals = response.meals;
+      //console.log(response);
+      const mealsWithProducts = await Promise.all(
+        meals.map(async (item) => {
+          const productsResponse = await fetchData(
+            `http://127.0.0.1:3000/api/v1/meals/${item.id}/products`,
+          );
+          return {...item, products: productsResponse.products};
+        }),
+      ); */
+      console.log('postOrder');
+      return;
+    } catch (error) {
+      console.log('ERROR', error);
+    }
+  };
+  return {postOrder};
+};
+
 const useAuthentication = () => {
   const postLogin = async (inputs) => {
     const fetchOptions = {
@@ -171,4 +194,5 @@ export {
   useMeals,
   useAuthentication,
   useUser,
+  useOrder,
 };
