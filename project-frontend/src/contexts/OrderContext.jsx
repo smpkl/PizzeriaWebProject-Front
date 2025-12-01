@@ -163,6 +163,16 @@ const OrderProvider = ({children}) => {
     }
   };
 
+  const handleClear = () => {
+    try {
+      setOrderProducts([]);
+      setOrderMeals([]);
+    } catch (e) {
+      console.log(e.message);
+      throw e;
+    }
+  };
+
   return (
     <OrderContext.Provider
       value={{
@@ -172,6 +182,7 @@ const OrderProvider = ({children}) => {
         handleMealAdd,
         handleMealRemove,
         handleMealDelete,
+        handleClear,
         orderProducts,
         orderMeals,
       }}

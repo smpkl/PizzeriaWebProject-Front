@@ -12,6 +12,7 @@ const Order = () => {
     handleMealAdd,
     handleMealRemove,
     handleMealDelete,
+    handleClear,
   } = useOrderContext();
   console.log(orderMeals, orderProducts);
   const navigate = useNavigate();
@@ -79,9 +80,17 @@ const Order = () => {
             </div>
           </div>
         )}
-        <button onClick={() => navigate('/', {state: {scrollToMenu: true}})}>
-          Back to shopping
-        </button>
+        <div style={{display: 'flex', flexDirection: 'column'}}>
+          <button onClick={() => handleClear()} style={{margin: 'auto'}}>
+            Clear cart
+          </button>
+          <button
+            onClick={() => navigate('/', {state: {scrollToMenu: true}})}
+            style={{margin: 'auto'}}
+          >
+            Back to shopping
+          </button>
+        </div>
       </div>
     </>
   );
