@@ -5,9 +5,25 @@ const OrderContext = createContext(null);
 
 const OrderProvider = ({children}) => {
   const [isActiveOrder, setIsActiveOrder] = useState(false);
-  const [orderType, setOrderType] = useState(null);
   const [orderId, setOrderId] = useState(null);
   const [orderUserId, setOrderUserId] = useState(null);
+
+  const [orderType, setOrderType] = useState(null);
+
+  const [orderInfo, setOrderInfo] = useState({
+    userAddress: '',
+    userAddress2: '',
+    pizzeriaAddress: '',
+    timeOption: '',
+    day: '',
+    time: '',
+    name: '',
+    email: '',
+    phonenumber: '',
+    details: '',
+  });
+
+  //Shopping cart related:
   const [orderProducts, setOrderProducts] = useState([]);
   const [orderMeals, setOrderMeals] = useState([]);
   const [orderPrice, setOrderPrice] = useState(0);
@@ -237,6 +253,10 @@ const OrderProvider = ({children}) => {
     }
   };
 
+  const handleOrderInfoChange = (newValues) => {
+    setOrderInfo((prev) => ({...prev, ...newValues}));
+  };
+
   return (
     <OrderContext.Provider
       value={{
@@ -248,10 +268,12 @@ const OrderProvider = ({children}) => {
         handleMealDelete,
         handleClear,
         handleTypeChange,
+        handleOrderInfoChange,
         orderProducts,
         orderMeals,
         orderPrice,
         orderType,
+        orderInfo,
       }}
     >
       {children}

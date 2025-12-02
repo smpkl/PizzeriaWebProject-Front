@@ -1,5 +1,5 @@
 // Tilauksen viimeistely (se toinen vaihe) Tarvitaanko erikseen?
-const Home = () => {
+const CheckOut = () => {
   return (
     <>
       <h1>CHECKOUT</h1>
@@ -7,4 +7,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default CheckOut;
