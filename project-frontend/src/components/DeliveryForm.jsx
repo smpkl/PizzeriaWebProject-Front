@@ -1,16 +1,16 @@
 import {useOrderForm} from '../hooks/orderFormHooks';
-//import {useOrderContext} from '../hooks/contextHooks';
+import {useOrderContext} from '../hooks/contextHooks';
 import {useNavigate} from 'react-router';
 
 const DeliveryForm = () => {
   const navigate = useNavigate();
+  const {orderInfo} = useOrderContext();
 
   const proceedToCheckout = () => {
     navigate('/checkout');
   };
 
-  const {handleInputChange, handleSubmit, orderInputs} =
-    useOrderForm(proceedToCheckout);
+  const {handleInputChange, handleSubmit} = useOrderForm(proceedToCheckout);
 
   return (
     <>
@@ -42,7 +42,7 @@ const DeliveryForm = () => {
               style={{margin: 'auto'}}
               placeholder="Street name and number, postal code, city"
               onChange={handleInputChange}
-              value={orderInputs.userAddress}
+              value={orderInfo.userAddress}
             ></input>
             <label htmlFor="userAddress2">Building/apartment: </label>
             <input
@@ -52,7 +52,7 @@ const DeliveryForm = () => {
               style={{margin: 'auto'}}
               placeholder="e.g. Apartment B 2"
               onChange={handleInputChange}
-              value={orderInputs.userAddress2}
+              value={orderInfo.userAddress2}
             ></input>
           </div>
           {/*En tiedä mistä/miten nää pizzeria vaihtoehdot täytyy hakea. Onko vielä osa suunnitelmaa vai onko meillä vaan yksi lokaatio?*/}
@@ -62,36 +62,36 @@ const DeliveryForm = () => {
           >
             <h4>Choose a pizzeria: </h4>
             <div>
-              <label htmlFor="pizzeriaChoice1" id="pizzeriaChoice1">
-                Pizzeria 1, Osoite 1
-              </label>
+              <label htmlFor="pizzeriaChoice1">Pizzeria 1, Osoite 1</label>
               <input
+                id="pizzeriaChoice1"
                 type="radio"
                 name="pizzeriaAddress"
                 value="pizzeria-1"
                 onChange={handleInputChange}
+                checked={orderInfo.pizzeriaAddress === 'pizzeria-1'}
               ></input>
             </div>
             <div>
-              <label htmlFor="pizzeriaChoice2" id="pizzeriaChoice2">
-                Pizzeria 2, Osoite 2
-              </label>
+              <label htmlFor="pizzeriaChoice2">Pizzeria 2, Osoite 2</label>
               <input
+                id="pizzeriaChoice2"
                 type="radio"
                 name="pizzeriaAddress"
                 value="pizzeria-2"
                 onChange={handleInputChange}
+                checked={orderInfo.pizzeriaAddress === 'pizzeria-2'}
               ></input>
             </div>
             <div>
-              <label htmlFor="pizzeriaChoice2" id="pizzeriaChoice2">
-                Pizzeria 3, Osoite 3
-              </label>
+              <label htmlFor="pizzeriaChoice3">Pizzeria 3, Osoite 3</label>
               <input
+                id="pizzeriaChoice3"
                 type="radio"
                 name="pizzeriaAddress"
                 value="pizzeria-3"
                 onChange={handleInputChange}
+                checked={orderInfo.pizzeriaAddress === 'pizzeria-3'}
               ></input>
             </div>
           </div>
@@ -112,6 +112,7 @@ const DeliveryForm = () => {
               id="time-option1"
               value="preorder"
               onChange={handleInputChange}
+              checked={orderInfo.timeOption === 'preorder'}
             ></input>
             <label htmlFor="time-option2">NOW</label>
             <input
@@ -120,8 +121,9 @@ const DeliveryForm = () => {
               id="time-option2"
               value="now"
               onChange={handleInputChange}
+              checked={orderInfo.timeOption === 'now'}
             ></input>
-            {orderInputs.timeOption === 'preorder' && (
+            {orderInfo.timeOption === 'preorder' && (
               <div>
                 <label htmlFor="day-input">DATE: </label>
                 <input
@@ -129,7 +131,7 @@ const DeliveryForm = () => {
                   name="day"
                   id="day-input"
                   onChange={handleInputChange}
-                  value={orderInputs.day}
+                  value={orderInfo.day}
                 ></input>
                 <label htmlFor="time-input">TIME: </label>
                 <input
@@ -137,7 +139,7 @@ const DeliveryForm = () => {
                   name="time"
                   id="time-input"
                   onChange={handleInputChange}
-                  value={orderInputs.time}
+                  value={orderInfo.time}
                 ></input>
               </div>
             )}
@@ -159,7 +161,7 @@ const DeliveryForm = () => {
               style={{margin: 'auto'}}
               placeholder="Firstname Lastname"
               onChange={handleInputChange}
-              value={orderInputs.name}
+              value={orderInfo.name}
             ></input>
             <label htmlFor="phonenumber">PHONENUMBER: </label>
             <input
@@ -169,7 +171,7 @@ const DeliveryForm = () => {
               style={{margin: 'auto'}}
               placeholder="e.g. 050 000 000 00"
               onChange={handleInputChange}
-              value={orderInputs.phonenumber}
+              value={orderInfo.phonenumber}
             ></input>
             <label htmlFor="email">EMAIL: </label>
             <input
@@ -179,7 +181,7 @@ const DeliveryForm = () => {
               style={{margin: 'auto'}}
               placeholder="Email address"
               onChange={handleInputChange}
-              value={orderInputs.email}
+              value={orderInfo.email}
             ></input>
           </div>
           <div
@@ -196,7 +198,7 @@ const DeliveryForm = () => {
               placeholder="Type details for the pizzeria here"
               style={{margin: 'auto'}}
               onChange={handleInputChange}
-              value={orderInputs.details}
+              value={orderInfo.details}
             ></textarea>
           </div>
         </form>

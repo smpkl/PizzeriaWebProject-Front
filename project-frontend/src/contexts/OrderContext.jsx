@@ -33,15 +33,20 @@ const OrderProvider = ({children}) => {
   const [hasLoaded, setHasLoaded] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem('order');
-    if (saved) {
-      const data = JSON.parse(saved);
+    const savedCart = localStorage.getItem('order');
+    const savedDetails = sessionStorage.getItem('order-info');
+    if (savedCart) {
+      const data = JSON.parse(savedCart);
       setOrderProducts(data.orderProducts || []);
       setOrderMeals(data.orderMeals || []);
-      setOrderId(data.orderId || null);
-      setOrderUserId(data.orderUserId || null);
       setOrderPrice(data.orderPrice || 0);
       setIsActiveOrder(data.isActiveOrder || false);
+      setOrderUserId(data.orderUserId || null);
+    }
+    if (savedDetails) {
+      const data2 = JSON.parse(savedDetails);
+      setOrderInfo(data2);
+      setOrderType(data2.type);
     }
     setHasLoaded(true);
   }, []);
@@ -52,7 +57,6 @@ const OrderProvider = ({children}) => {
     const data = {
       orderProducts,
       orderMeals,
-      orderId,
       orderUserId,
       orderPrice,
       isActiveOrder,
@@ -62,11 +66,20 @@ const OrderProvider = ({children}) => {
   }, [
     orderProducts,
     orderMeals,
-    orderId,
     orderPrice,
     isActiveOrder,
     hasLoaded,
+    orderUserId,
   ]);
+
+  useEffect(() => {
+    if (!hasLoaded) return;
+
+    sessionStorage.setItem(
+      'order-info',
+      JSON.stringify({...orderInfo, type: orderType}),
+    );
+  }, [orderType, orderInfo, hasLoaded]);
 
   const handleProductAdd = async (product) => {
     try {
@@ -85,7 +98,7 @@ const OrderProvider = ({children}) => {
           updated = [...prev, {product, quantity: 1}];
         }
 
-        console.log('Products in order:', updated);
+        //console.log('Products in order:', updated);
         return updated;
       });
 
@@ -114,7 +127,7 @@ const OrderProvider = ({children}) => {
         }
 
         if (updated.length === 0 && orderMeals.length === 0) {
-          console.log('No items. Clear cart...');
+          //console.log('No items. Clear cart...');
           setIsActiveOrder(true);
           setOrderPrice(0);
         }
@@ -143,7 +156,7 @@ const OrderProvider = ({children}) => {
         updated = prev.filter((p) => p.product.id !== product.id);
 
         if (updated.length === 0 && orderMeals.length === 0) {
-          console.log('No items. Clear cart...');
+          //console.log('No items. Clear cart...');
           setIsActiveOrder(true);
           setOrderPrice(0);
         }
@@ -171,7 +184,7 @@ const OrderProvider = ({children}) => {
           updated = [...prev, {meal, quantity: 1}];
         }
 
-        console.log('Meals in order:', updated);
+        //console.log('Meals in order:', updated);
         return updated;
       });
       setIsActiveOrder(true);
@@ -197,7 +210,7 @@ const OrderProvider = ({children}) => {
         }
 
         if (updated.length === 0 && orderProducts.length === 0) {
-          console.log('No items. Clear cart...');
+          //console.log('No items. Clear cart...');
           setIsActiveOrder(true);
           setOrderPrice(0);
         }
@@ -222,7 +235,7 @@ const OrderProvider = ({children}) => {
         updated = prev.filter((m) => m.meal.id !== meal.id);
 
         if (updated.length === 0 && orderProducts.length === 0) {
-          console.log('No items. Clear cart...');
+          //console.log('No items. Clear cart...');
           setIsActiveOrder(true);
           setOrderPrice(0);
         }

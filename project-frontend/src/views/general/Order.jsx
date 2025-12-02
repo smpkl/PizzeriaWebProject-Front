@@ -20,7 +20,7 @@ const Order = () => {
     handleMealDelete,
     handleClear,
   } = useOrderContext();
-  console.log(orderMeals, orderProducts);
+  //console.log(orderMeals, orderProducts);
   const navigate = useNavigate();
 
   return (
@@ -40,7 +40,10 @@ const Order = () => {
               <h2>SHOPPING CART</h2>
               <div style={{border: '1px solid black'}}>
                 {orderProducts.map((item) => (
-                  <div style={{display: 'flex'}} key={item.product.id}>
+                  <div
+                    style={{display: 'flex'}}
+                    key={`order-product-` + item.product.id}
+                  >
                     <p>
                       {item.product.name} --- {item.product.price}€
                     </p>
@@ -64,7 +67,10 @@ const Order = () => {
                   </div>
                 ))}
                 {orderMeals.map((item) => (
-                  <div style={{display: 'flex'}} key={item.meal.id}>
+                  <div
+                    style={{display: 'flex'}}
+                    key={'order-meal-' + item.meal.id}
+                  >
                     <p>
                       {item.meal.name} --- {item.meal.price}€
                     </p>

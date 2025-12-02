@@ -20,7 +20,7 @@ const useOrderForm = (callback) => {
   return {
     handleSubmit,
     handleInputChange,
-    orderInputs: orderInfo,
+    orderInfo,
   };
 };
 

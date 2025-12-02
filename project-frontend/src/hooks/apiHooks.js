@@ -106,7 +106,12 @@ const useDailyMeal = () => {
         const response = await fetchData(
           'http://127.0.0.1:3000/api/v1/dailymeals/monday',
         );
-        //console.log(response);
+        const dailymeal = response.dailymeal;
+        const productsResponse = await fetchData(
+          `http://127.0.0.1:3000/api/v1/meals/${dailymeal.id}/products`,
+        );
+        //console.log(productsResponse);
+        dailymeal.products = productsResponse.products;
         setDailyMeal(response.dailymeal);
       };
       getDailyMeal();
