@@ -57,31 +57,30 @@ const ProductCard = () => {
   const [description, setDescription] = useState('');
   */
   const [image, setImage] = useState(null);
-  const {postProduct, postImage} = useProducts();
+  const {postProduct} = useProducts();
 
   const initValues = {
     name: '',
     price: 0,
-    category: '',
+    category: 0,
     ingredients: '',
     description: '',
   };
 
+  const initValuesCheckbox = [];
+
   const doPost = async (inputs, checkbox, image) => {
     try {
+      console.log('inputs', inputs, 'checkbox', checkbox);
       await postProduct(inputs, checkbox, image);
-      await postImage(image);
     } catch (error) {
       console.log(error);
     }
   };
 
   const {handleSubmit, handleInputChange, handleCheckBox, inputs, checkbox} =
-    useForm(doPost(image), initValues);
+    useForm(doPost, initValues, initValuesCheckbox);
 
-  useEffect(() => {
-    console.log(checkbox);
-  }, [checkbox]);
   return (
     <div style={styles.card}>
       <form action="" style={styles.form}>
@@ -89,11 +88,11 @@ const ProductCard = () => {
           {/* vasemmalla olevat elementit */}
           <div>
             <div style={styles.field}>
-              <label htmlFor="products-name">Product name: </label>
+              <label htmlFor="productsName">Product name: </label>
               <input
                 type="text"
-                name="products-name"
-                id="products-name"
+                name="name"
+                id="name"
                 placeholder="enter name"
                 onChange={(evt) => {
                   handleInputChange(evt);
@@ -101,11 +100,12 @@ const ProductCard = () => {
               />
             </div>
             <div style={styles.field}>
-              <label htmlFor="products-price">Price: </label>
+              <label htmlFor="productsPrice">Price: </label>
               <input
                 type="number"
-                name="products-price"
-                id="products-price"
+                name="price"
+                id="price"
+                step={0.01}
                 placeholder="0.00"
                 onChange={(evt) => {
                   handleInputChange(evt);
@@ -113,6 +113,7 @@ const ProductCard = () => {
               />
             </div>
             {/*tähän koitan keksitä paremmat kuvat */}
+            {/*korjaa kun saadaan suoraa DB */}
             <div style={styles.field}>
               <div style={styles.tagsRow}>
                 <input
@@ -120,7 +121,7 @@ const ProductCard = () => {
                   name="placeholder-tag1"
                   id="placeholder-tag1"
                   value={'placeholder 1'}
-                  onChange={handleCheckBox}
+                  onChange={(evt) => handleCheckBox(evt)}
                 />
                 <label htmlFor="placeholder-tag1">Placeholder tag</label>
                 <input
@@ -128,7 +129,7 @@ const ProductCard = () => {
                   name="placeholder-tag2"
                   id="placeholder-tag2"
                   value={'placeholder 2'}
-                  onChange={handleCheckBox}
+                  onChange={(evt) => handleCheckBox(evt)}
                 />
                 <label htmlFor="placeholder-tag2">Placeholder tag</label>
                 <input
@@ -136,24 +137,23 @@ const ProductCard = () => {
                   name="placeholder-tag3"
                   id="placeholder-tag3"
                   value={'placeholder 3'}
-                  onChange={handleCheckBox}
+                  onChange={(evt) => handleCheckBox(evt)}
                 />
                 <label htmlFor="placeholder-tag3">Placeholder tag</label>
               </div>
             </div>
-            <label htmlFor="products-category">Category: </label>
+            <label htmlFor="productsCategory">Category: </label>
+            {/* Muokka tulemaan db kun sekin ok. */}
             <select
-              name="products-category"
-              id="products-category"
-              placeholder="set category"
-              onChange={(evt) => {
-                handleInputChange(evt);
-              }}
+              name="category"
+              id="category"
+              onChange={handleInputChange}
+              defaultValue={1}
             >
-              <option value={'pizza'}>Pizza</option>
-              <option value={'kebab'}>Kebab</option>
-              <option value={'drink'}>Drink</option>
-              <option value={'dip'}>Dip</option>
+              <option value={1}>Pizza</option>
+              <option value={2}>Kebab</option>
+              <option value={3}>Drink</option>
+              <option value={4}>Dip</option>
             </select>
           </div>
 
@@ -196,18 +196,12 @@ const ProductCard = () => {
               />
             </div>
             <input
-              id="product-image"
+              id="productImage"
               type="file"
               placeholder="change image"
               onChange={(e) => setImage(e.target.files[0])}
             />
-          </div>
-        </div>
-
-        {/* alas ainakin kuvan perusteella mutta ehk parempi siirtää oikeen sarakkeen loppuun?*/}
-        <div>
-          <div style={styles.footer}>
-            <button onClick={handleSubmit}>Save</button>
+            <button onClick={(evt) => handleSubmit(evt)}>Save</button>
             <button>Delete</button>
           </div>
         </div>
