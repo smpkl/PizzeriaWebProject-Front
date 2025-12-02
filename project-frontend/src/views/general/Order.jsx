@@ -87,7 +87,7 @@ const Order = () => {
                     </div>
                   </div>
                 ))}
-                <p>TOTAL: {orderPrice}€</p>
+                <p>TOTAL: {orderPrice.toFixed(2)}€</p>
                 <div>
                   <button
                     onClick={() => handleClear()}

@@ -98,8 +98,9 @@ const OrderProvider = ({children}) => {
 
   const handleProductRemove = async (product) => {
     try {
-      const newPrice = orderPrice - Number(product.price);
-      setOrderPrice(newPrice);
+      setOrderPrice((prev) =>
+        Number((prev - Number(product.price)).toFixed(2)),
+      );
       setOrderProducts((prev) => {
         const existing = prev.find((p) => p.product.id === product.id);
 
@@ -131,9 +132,11 @@ const OrderProvider = ({children}) => {
         (p) => p.product.id === product.id,
       );
 
-      const newPrice =
-        orderPrice - Number(product.price) * theseProducts.quantity;
-      setOrderPrice(newPrice);
+      setOrderPrice((prev) =>
+        Number(
+          (prev - Number(product.price) * theseProducts.quantity).toFixed(2),
+        ),
+      );
 
       let updated;
       setOrderProducts((prev) => {
@@ -155,8 +158,7 @@ const OrderProvider = ({children}) => {
 
   const handleMealAdd = async (meal) => {
     try {
-      const newPrice = orderPrice + Number(meal.price);
-      setOrderPrice(newPrice);
+      setOrderPrice((prev) => Number((prev + Number(meal.price)).toFixed(2)));
       setOrderMeals((prev) => {
         const existing = prev.find((m) => m.meal.id === meal.id);
 
@@ -181,8 +183,7 @@ const OrderProvider = ({children}) => {
 
   const handleMealRemove = async (meal) => {
     try {
-      const newPrice = orderPrice - Number(meal.price);
-      setOrderPrice(newPrice);
+      setOrderPrice((prev) => Number((prev - Number(meal.price)).toFixed(2)));
       setOrderMeals((prev) => {
         const existing = prev.find((m) => m.meal.id === meal.id);
 
@@ -212,8 +213,9 @@ const OrderProvider = ({children}) => {
     try {
       const theseMeals = orderMeals.find((m) => m.meal.id === meal.id);
 
-      const newPrice = orderPrice - Number(meal.price) * theseMeals.quantity;
-      setOrderPrice(newPrice);
+      setOrderPrice((prev) =>
+        Number((prev - Number(meal.price) * theseMeals).toFixed(2)),
+      );
 
       let updated;
       setOrderMeals((prev) => {
