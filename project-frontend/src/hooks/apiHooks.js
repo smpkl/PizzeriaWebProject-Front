@@ -69,7 +69,7 @@ const useProducts = () => {
         body: JSON.stringify(postBody),
       };
 
-      console.log(options)
+      console.log(options);
 
       try {
         await fetchData(productUrl + `/${productId}/tags`, options);
@@ -79,7 +79,118 @@ const useProducts = () => {
     });
   };
 
-  return {getProducts, postProduct, postProductTag};
+
+  const syncProductTags = async (
+    productId,
+    newTagIds = [],
+    originalTagIds = [],
+  ) => {
+    const toAdd = newTagIds.filter((id) => !originalTagIds.includes(id));
+    const toRemove = originalTagIds.filter((id) => !newTagIds.includes(id));
+
+    for (const tagId of toAdd) {
+      const body = {tag_id: tagId};
+      const options = {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      };
+      try {
+        await fetchData(`${productUrl}/${productId}/tags`, options);
+      } catch (error) {
+        console.log('ERROR adding tag', error);
+      }
+    }
+
+    for (const tagId of toRemove) {
+      const options = {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      try {
+        await fetchData(`${productUrl}/${productId}/tags/${tagId}`, options);
+      } catch (error) {
+        console.log('ERROR removing tag', error);
+      }
+    }
+
+    return {added: toAdd, removed: toRemove};
+  };
+
+  const putProduct = async (
+    productId,
+    inputs,
+    newTagIds = [],
+    originalTagIds = [],
+    image = null,
+  ) => {
+    const {price, name, category, ingredients, description} = inputs;
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('price', parseFloat(price));
+    formData.append('category', parseInt(category));
+    formData.append('ingredients', ingredients);
+    formData.append('description', description);
+
+    if (image) {
+      formData.append('file', image);
+    }
+
+    const options = {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    };
+
+    console.log(options)
+
+    try {
+      const url = `${productUrl}/${productId}`;
+      const putResult = await fetchData(url, options);
+      if (!putResult) {
+        return false;
+      }
+
+      await syncProductTags(productId, newTagIds, originalTagIds);
+
+      return putResult;
+    } catch (error) {
+      console.log('ERROR updating product', error);
+      return false;
+    }
+  };
+
+  const deleteProduct = async (productId) => {
+    const options = {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      const url = `${productUrl}/${productId}`;
+      const deleteResult = await fetchData(url, options);
+      if (deleteResult) {
+        return deleteResult;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log('ERROR deleting product', error);
+      return false;
+    }
+  };
+
+  return {getProducts, postProduct, postProductTag, putProduct, deleteProduct};
 };
 
 const useAnnouncements = () => {
