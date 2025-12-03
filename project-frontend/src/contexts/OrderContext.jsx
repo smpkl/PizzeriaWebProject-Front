@@ -5,7 +5,6 @@ const OrderContext = createContext(null);
 
 const OrderProvider = ({children}) => {
   const [isActiveOrder, setIsActiveOrder] = useState(false);
-  const [orderId, setOrderId] = useState(null);
   const [orderUserId, setOrderUserId] = useState(null);
 
   const [orderType, setOrderType] = useState(null);
@@ -80,6 +79,15 @@ const OrderProvider = ({children}) => {
       JSON.stringify({...orderInfo, type: orderType}),
     );
   }, [orderType, orderInfo, hasLoaded]);
+
+  const resetOrderContext = () => {
+    setIsActiveOrder(false);
+    setOrderMeals([]);
+    setOrderProducts([]);
+    setOrderPrice(null);
+    setOrderType(null);
+    setOrderUserId(null);
+  };
 
   const handleProductAdd = async (product) => {
     try {
@@ -289,6 +297,9 @@ const OrderProvider = ({children}) => {
         orderPrice,
         orderType,
         orderInfo,
+        isActiveOrder,
+        setIsActiveOrder,
+        resetOrderContext,
       }}
     >
       {children}

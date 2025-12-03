@@ -1,6 +1,5 @@
 const fetchData = async (url, options = {}) => {
   // console.log('fetching data from url: ', url);
-  console.log(options);
   const response = await fetch(url, options);
   const json = await response.json();
   if (!response.ok) {

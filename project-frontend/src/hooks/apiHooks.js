@@ -131,7 +131,7 @@ const useOrder = () => {
     orderPrice,
   ) => {
     try {
-      console.log(orderInfo);
+      //console.log(orderInfo);
       const options = {
         method: 'POST',
         headers: {
@@ -155,50 +155,59 @@ const useOrder = () => {
         'http://127.0.0.1:3000/api/v1/orders',
         options,
       );
-      console.log('postOrder', orderResponse);
+      //console.log('postOrder', orderResponse);
 
       const orderId = orderResponse.order_id;
 
+      // Collect all the products from the orderProducts and orderMeals to an object:
       const mergedProducts = {};
 
+      // Go through the orderProducts:
       orderProducts.forEach((item) => {
+        // Each product id is the key for the main object:
         const id = item.product.id;
 
+        // If there are no keys with same value already in the main object, create a new key and give it a value of two key-value pairs:
         if (!mergedProducts[id]) {
           mergedProducts[id] = {
             product: item.product,
             quantity: item.quantity,
           };
-        } else {
+        } // If key already exists, raise the quantity:
+        else {
           mergedProducts[id].quantity += item.quantity;
         }
       });
 
+      // Do the same to all the meals:
       orderMeals.forEach((mealItem) => {
         const meal = mealItem.meal;
         const mealQty = meal.quantity ?? 1;
 
+        // Go through each product in the meal:
         meal.products.forEach((prod) => {
           const id = prod.id;
 
+          // If product key does not exist, make it:
           if (!mergedProducts[id]) {
             mergedProducts[id] = {
               product: prod,
               quantity: mealQty,
             };
-          } else {
+          } //If it does, raise quantity
+          else {
             mergedProducts[id].quantity += mealQty;
           }
         });
       });
 
-      console.log('Merged: ', mergedProducts);
       const finalProducts = Object.values(mergedProducts);
 
-      console.log(finalProducts);
+      //console.log('Merged: ', mergedProducts);
+      //console.log(finalProducts);
 
       finalProducts.forEach(async (p) => {
-        console.log(p);
+        //console.log(p);
         const options2 = {
           method: 'POST',
           headers: {
@@ -213,12 +222,13 @@ const useOrder = () => {
           `http://127.0.0.1:3000/api/v1/orders/${orderId}/products`,
           options2,
         );
-        console.log(orderProductsResponse);
+        //console.log(orderProductsResponse);
       });
 
       return orderId;
     } catch (error) {
       console.log('ERROR', error);
+      return error;
     }
   };
   return {postOrder};

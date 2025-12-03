@@ -1,12 +1,10 @@
 import {useOrderForm} from '../hooks/orderFormHooks';
 import {useOrderContext} from '../hooks/contextHooks';
 import {useNavigate} from 'react-router';
-import {useState} from 'react';
 
 const DeliveryForm = () => {
   const navigate = useNavigate();
   const {orderInfo} = useOrderContext();
-  console.log(orderInfo.day, orderInfo.time);
 
   const proceedToCheckout = () => {
     navigate('/checkout');

@@ -2,11 +2,12 @@ import {useNavigate} from 'react-router';
 import {useOrderContext} from '../hooks/contextHooks';
 
 const OrderTypeButtons = () => {
-  const {handleTypeChange, orderType} = useOrderContext();
+  const {handleTypeChange, orderType, setIsActiveOrder} = useOrderContext();
   const navigate = useNavigate();
 
   const handleButtonClick = (type) => {
     handleTypeChange(type);
+    setIsActiveOrder(true);
     navigate('/order');
   };
 

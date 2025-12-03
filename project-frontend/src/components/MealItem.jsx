@@ -3,7 +3,6 @@ import {useOrderContext} from '../hooks/contextHooks';
 const MealItem = ({item}) => {
   const {handleMealAdd} = useOrderContext();
   const products = item.products;
-  console.log(item);
   return (
     <>
       <div
