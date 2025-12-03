@@ -1,10 +1,12 @@
 import {useOrderForm} from '../hooks/orderFormHooks';
 import {useOrderContext} from '../hooks/contextHooks';
 import {useNavigate} from 'react-router';
+import {useState} from 'react';
 
 const DeliveryForm = () => {
   const navigate = useNavigate();
   const {orderInfo} = useOrderContext();
+  console.log(orderInfo.day, orderInfo.time);
 
   const proceedToCheckout = () => {
     navigate('/checkout');
@@ -17,7 +19,7 @@ const DeliveryForm = () => {
       <div style={{border: '1px solid black'}}>
         <h3>DELIVERY</h3>
         <form
-          action=""
+          action={handleSubmit}
           id="delivery-form"
           style={{
             display: 'flex',
@@ -34,7 +36,7 @@ const DeliveryForm = () => {
               flexDirection: 'column',
             }}
           >
-            <label htmlFor="userAddress">Adress: </label>
+            <label htmlFor="userAddress">ADRESS*: </label>
             <input
               type="text"
               name="userAddress"
@@ -43,8 +45,11 @@ const DeliveryForm = () => {
               placeholder="Street name and number, postal code, city"
               onChange={handleInputChange}
               value={orderInfo.userAddress}
+              required
             ></input>
-            <label htmlFor="userAddress2">Building/apartment: </label>
+            <label htmlFor="userAddress2">
+              BUILDING/APARTMENT (type - to leave empty)*:{' '}
+            </label>
             <input
               type="text"
               name="userAddress2"
@@ -53,6 +58,7 @@ const DeliveryForm = () => {
               placeholder="e.g. Apartment B 2"
               onChange={handleInputChange}
               value={orderInfo.userAddress2}
+              required
             ></input>
           </div>
           {/*En tiedä mistä/miten nää pizzeria vaihtoehdot täytyy hakea. Onko vielä osa suunnitelmaa vai onko meillä vaan yksi lokaatio?*/}
@@ -60,7 +66,7 @@ const DeliveryForm = () => {
             id="pizzeria-choice-container"
             style={{backgroundColor: 'lightgray'}}
           >
-            <h4>Choose a pizzeria: </h4>
+            <h4>Choose a pizzeria*: </h4>
             <div>
               <label htmlFor="pizzeriaChoice1">Pizzeria 1, Osoite 1</label>
               <input
@@ -70,6 +76,7 @@ const DeliveryForm = () => {
                 value="pizzeria-1"
                 onChange={handleInputChange}
                 checked={orderInfo.pizzeriaAddress === 'pizzeria-1'}
+                required
               ></input>
             </div>
             <div>
@@ -81,6 +88,7 @@ const DeliveryForm = () => {
                 value="pizzeria-2"
                 onChange={handleInputChange}
                 checked={orderInfo.pizzeriaAddress === 'pizzeria-2'}
+                required
               ></input>
             </div>
             <div>
@@ -92,6 +100,7 @@ const DeliveryForm = () => {
                 value="pizzeria-3"
                 onChange={handleInputChange}
                 checked={orderInfo.pizzeriaAddress === 'pizzeria-3'}
+                required
               ></input>
             </div>
           </div>
@@ -104,7 +113,7 @@ const DeliveryForm = () => {
             }}
           >
             {' '}
-            <h4>Delivery time: </h4>
+            <h4>Delivery time*: </h4>
             <label htmlFor="time-option1">PREORDER</label>
             <input
               type="radio"
@@ -113,6 +122,7 @@ const DeliveryForm = () => {
               value="preorder"
               onChange={handleInputChange}
               checked={orderInfo.timeOption === 'preorder'}
+              required
             ></input>
             <label htmlFor="time-option2">NOW</label>
             <input
@@ -122,24 +132,27 @@ const DeliveryForm = () => {
               value="now"
               onChange={handleInputChange}
               checked={orderInfo.timeOption === 'now'}
+              required
             ></input>
             {orderInfo.timeOption === 'preorder' && (
               <div>
-                <label htmlFor="day-input">DATE: </label>
+                <label htmlFor="day-input">DATE*: </label>
                 <input
                   type="date"
                   name="day"
                   id="day-input"
                   onChange={handleInputChange}
                   value={orderInfo.day}
+                  required
                 ></input>
-                <label htmlFor="time-input">TIME: </label>
+                <label htmlFor="time-input">TIME*: </label>
                 <input
                   type="time"
                   name="time"
                   id="time-input"
                   onChange={handleInputChange}
                   value={orderInfo.time}
+                  required
                 ></input>
               </div>
             )}
@@ -153,7 +166,7 @@ const DeliveryForm = () => {
             }}
           >
             <h4>Contact information: </h4>
-            <label htmlFor="firstname-lastname">FIRSTNAME & LASTNAME: </label>
+            <label htmlFor="firstname-lastname">FIRSTNAME & LASTNAME*: </label>
             <input
               type="text"
               name="name"
@@ -162,26 +175,30 @@ const DeliveryForm = () => {
               placeholder="Firstname Lastname"
               onChange={handleInputChange}
               value={orderInfo.name}
+              required
             ></input>
-            <label htmlFor="phonenumber">PHONENUMBER: </label>
+            <label htmlFor="phonenumber">PHONENUMBER*: </label>
             <input
-              type="text"
+              type="number"
               name="phonenumber"
               id="phonenumber"
               style={{margin: 'auto'}}
               placeholder="e.g. 050 000 000 00"
               onChange={handleInputChange}
               value={orderInfo.phonenumber}
+              required
             ></input>
-            <label htmlFor="email">EMAIL: </label>
+            <label htmlFor="email">EMAIL*: </label>
             <input
-              type="text"
+              type="email"
+              size="30"
               name="email"
               id="email"
               style={{margin: 'auto'}}
               placeholder="Email address"
               onChange={handleInputChange}
               value={orderInfo.email}
+              required
             ></input>
           </div>
           <div
@@ -201,8 +218,8 @@ const DeliveryForm = () => {
               value={orderInfo.details}
             ></textarea>
           </div>
+          <button type="submit">TO CHECKOUT</button>
         </form>
-        <button onClick={handleSubmit}>TO CHECKOUT</button>
       </div>
     </>
   );

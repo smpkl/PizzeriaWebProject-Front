@@ -61,16 +61,25 @@ const CheckOut = () => {
           <p>{orderInfo.phonenumber}</p>
         </div>
       </div>
-      <div style={{backgroundColor: 'lightgray', border: '1px solid black'}}>
-        <h2>
-          ORDER DETAILS
-          <br />
-          FOR THE PIZZERIA:
-        </h2>
-        <p style={{backgroundColor: 'white', width: '90%', margin: 'auto'}}>
-          {orderInfo.details}
-        </p>
-      </div>
+      {orderInfo.details && (
+        <div style={{backgroundColor: 'lightgray', border: '1px solid black'}}>
+          <h2>
+            ORDER DETAILS
+            <br />
+            FOR THE PIZZERIA:
+          </h2>
+          <p
+            style={{
+              backgroundColor: 'white',
+              width: '90%',
+              minHeight: '20px',
+              margin: 'auto',
+            }}
+          >
+            {orderInfo.details}
+          </p>
+        </div>
+      )}
       <div>
         <h2>ITEMS:</h2>
         <div>
