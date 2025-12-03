@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import useForm from '../hooks/formHooks';
-import {useProducts} from '../hooks/apiHooks';
+import {useProducts, useTags, useCategories} from '../hooks/apiHooks';
 
 const ProductCard = () => {
   const styles = {
@@ -30,21 +30,54 @@ const ProductCard = () => {
       minHeight: '150px',
     },
     tagsRow: {
-      display: 'flex',
-      gap: '10px',
+      display: 'grid',
+      gridTemplateColumns: 'auto auto auto',
       marginTop: '6px',
     },
+    tagsRowCheckbox: {
+      display: 'none',
+    },
+    tagsRowLabel: {
+      width: '20px',
+      height: 'auto',
+    },
+    tagsRowLabelChecked: {
+      backgroundColor: 'green',
+    },
+    tagsRowLabelUnChecked: {
+      backgroundColor: 'red',
+    },
     imageWrapper: {
+      marginTop: '22px',
+      width: '250px',
+      height: '250px',
       display: 'flex',
       flexDirection: 'column',
       gap: '10px',
     },
-    footer: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginTop: '24px',
+    buttons: {
+      paddingLeft: '50%',
+      paddingTop: '30%',
     },
+    button: {
+      margin: '0.1rem',
+    },
+  };
+
+  const [checkboxChecked, setCheckboxChecked] = useState([]);
+
+  const handleCheckBoxColor = (event) => {
+    const {value, checked} = event.target;
+    const id = Number(value);
+
+    setCheckboxChecked((prev) => {
+      if (checked) {
+        if (prev.includes(id)) return prev;
+        return [...prev, id];
+      } else {
+        return prev.filter((tagId) => tagId !== id);
+      }
+    });
   };
 
   //joko näin tai yhtenäinen formhook
@@ -57,7 +90,10 @@ const ProductCard = () => {
   const [description, setDescription] = useState('');
   */
   const [image, setImage] = useState(null);
-  const {postProduct} = useProducts();
+  const [preview, setPreview] = useState(null);
+  const {postProduct, postProductTag} = useProducts();
+  const {tags} = useTags();
+  const {categories} = useCategories();
 
   const initValues = {
     name: '',
@@ -71,8 +107,9 @@ const ProductCard = () => {
 
   const doPost = async (inputs, checkbox, image) => {
     try {
-      console.log('inputs', inputs, 'checkbox', checkbox);
-      await postProduct(inputs, checkbox, image);
+      const product = await postProduct(inputs, checkbox, image);
+      const producId = product.result.productId
+      await postProductTag(checkbox, producId)
     } catch (error) {
       console.log(error);
     }
@@ -97,10 +134,11 @@ const ProductCard = () => {
                 onChange={(evt) => {
                   handleInputChange(evt);
                 }}
+                required
               />
             </div>
             <div style={styles.field}>
-              <label htmlFor="productsPrice">Price: </label>
+              <label htmlFor="price">Price: </label>
               <input
                 type="number"
                 name="price"
@@ -110,50 +148,63 @@ const ProductCard = () => {
                 onChange={(evt) => {
                   handleInputChange(evt);
                 }}
+                required
               />
             </div>
-            {/*tähän koitan keksitä paremmat kuvat */}
-            {/*korjaa kun saadaan suoraa DB */}
+            {/* Tag list comes from db directly, checkbox itself is invisible and change label to include image if wanted to */}
             <div style={styles.field}>
               <div style={styles.tagsRow}>
-                <input
-                  type="checkbox"
-                  name="placeholder-tag1"
-                  id="placeholder-tag1"
-                  value={'placeholder 1'}
-                  onChange={(evt) => handleCheckBox(evt)}
-                />
-                <label htmlFor="placeholder-tag1">Placeholder tag</label>
-                <input
-                  type="checkbox"
-                  name="placeholder-tag2"
-                  id="placeholder-tag2"
-                  value={'placeholder 2'}
-                  onChange={(evt) => handleCheckBox(evt)}
-                />
-                <label htmlFor="placeholder-tag2">Placeholder tag</label>
-                <input
-                  type="checkbox"
-                  name="placeholder-tag3"
-                  id="placeholder-tag3"
-                  value={'placeholder 3'}
-                  onChange={(evt) => handleCheckBox(evt)}
-                />
-                <label htmlFor="placeholder-tag3">Placeholder tag</label>
+                {tags.map((tag) => {
+                  const isChecked = checkboxChecked.includes(tag.id);
+
+                  return (
+                    <div key={`tag-${tag.id}`}>
+                      <input
+                        style={styles.tagsRowCheckbox}
+                        type="checkbox"
+                        name={tag.title}
+                        id={tag.id}
+                        value={tag.id}
+                        checked={isChecked}
+                        onChange={(evt) => {
+                          handleCheckBox(evt);
+                          handleCheckBoxColor(evt);
+                        }}
+                        required
+                      />
+                      <label
+                        htmlFor={tag.id}
+                        id={`tag-${tag.id}`}
+                        style={{
+                          ...styles.tagsRowLabel,
+                          ...(isChecked
+                            ? styles.tagsRowLabelChecked
+                            : styles.tagsRowLabelUnChecked),
+                        }}
+                      >
+                        {tag.title}
+                      </label>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-            <label htmlFor="productsCategory">Category: </label>
-            {/* Muokka tulemaan db kun sekin ok. */}
+            <label htmlFor="category">Category: </label>
             <select
               name="category"
               id="category"
               onChange={handleInputChange}
-              defaultValue={1}
+              defaultValue={0}
+              required
             >
-              <option value={1}>Pizza</option>
-              <option value={2}>Kebab</option>
-              <option value={3}>Drink</option>
-              <option value={4}>Dip</option>
+              <option value={0} disabled>choose category</option>
+              {categories.map((category) => {
+                return (
+                  <option key={`category-${category.id}`} value={category.id}>
+                    {category.name}
+                  </option>
+                );
+              })}
             </select>
           </div>
 
@@ -170,6 +221,7 @@ const ProductCard = () => {
                 onChange={(evt) => {
                   handleInputChange(evt);
                 }}
+                required
               ></textarea>
             </div>
             <div style={styles.field}>
@@ -183,6 +235,7 @@ const ProductCard = () => {
                 onChange={(evt) => {
                   handleInputChange(evt);
                 }}
+                required
               ></textarea>
             </div>
           </div>
@@ -191,7 +244,7 @@ const ProductCard = () => {
           <div>
             <div style={styles.imageWrapper}>
               <img
-                src="https://placehold.co/100x100"
+                src={preview ?? 'https://placehold.co/100x100'}
                 alt="meals unique picture"
               />
             </div>
@@ -199,10 +252,20 @@ const ProductCard = () => {
               id="productImage"
               type="file"
               placeholder="change image"
-              onChange={(e) => setImage(e.target.files[0])}
+              onChange={(e) => {
+                setImage(e.target.files[0]);
+                setPreview(URL.createObjectURL(e.target.files[0]));
+              }}
             />
-            <button onClick={(evt) => handleSubmit(evt)}>Save</button>
-            <button>Delete</button>
+            <div style={styles.buttons}>
+              <button
+                style={styles.button}
+                onClick={(evt) => handleSubmit(evt)}
+              >
+                Save
+              </button>
+              <button style={styles.button}>Delete</button>
+            </div>
           </div>
         </div>
       </form>

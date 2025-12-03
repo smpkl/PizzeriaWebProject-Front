@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import fetchData from '../utils/fetchData';
 
 const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo3NiwiZmlyc3RuYW1lIjoiTmV3MSIsImxhc3RuYW1lIjoiQWRtaW4yIiwiZW1haWwiOiJuZXdhZG1pbisxMTE3NjQ2NjkzNjI4NzZAZXhhbXBsZS5jb20iLCJhZGRyZXNzIjoiQWRtaW4gc3RyZWV0IDIsIEhlbHNpbmtpIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY0NjcwMTQ3LCJleHAiOjE3NjQ3NTY1NDd9.wvVur03Z_OTxka0gXGGUVtBqQT00v4AppoAu_W0ojD4';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJmaXJzdG5hbWUiOiJOZXcxIiwibGFzdG5hbWUiOiJBZG1pbjIzIiwiZW1haWwiOiJuZXdhZG1pbisxMTE3NjQ2NjkzNjI4NzZAZXhhbXBsZS5jb20iLCJhZGRyZXNzIjoiQWRtaW4gc3RyZWV0IDIsIEhlbHNpbmtpIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY0NzU3MjI5LCJleHAiOjE3NjQ4NDM2Mjl9.YYXIDfiSj3Cc8iOVDVf7xeqJjIVqQRBBKAF5Wl3SiFY';
 
 const useProducts = () => {
   const productUrl = 'http://127.0.0.1:3000/api/v1/products';
@@ -21,32 +21,16 @@ const useProducts = () => {
   const postProduct = async (inputs, checkbox, image) => {
     const {price, name, category, ingredients, description} = inputs;
 
-  const formData = new FormData();
-  formData.append('name', name);
-  formData.append('price', parseFloat(price));
-  formData.append('category', parseInt(category));
-  formData.append('ingredients', ingredients);
-  formData.append('description', description);
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('price', parseFloat(price));
+    formData.append('category', parseInt(category));
+    formData.append('ingredients', ingredients);
+    formData.append('description', description);
 
-  // jos haluat tagit mukaan ja backend tukee niitä:
-  if (Array.isArray(checkbox)) {
-    checkbox.forEach((tag) => formData.append('tags[]', tag));
-  }
-
-  if (image) {
-    formData.append('file', image);               // tämä vastaa upload.single("file")
-  }
-
-    const postBody = {
-      name: name,
-      price: price,
-      tags: checkbox,
-      category: parseInt(category),
-      ingredients: ingredients,
-      description: description,
-      file: formData
-    };
-
+    if (image) {
+      formData.append('file', image);
+    }
 
     const options = {
       method: 'POST',
@@ -60,7 +44,7 @@ const useProducts = () => {
       console.log(productUrl);
       const postProductData = await fetchData(productUrl, options);
       if (postProductData) {
-        return true;
+        return postProductData;
       } else {
         return false;
       }
@@ -70,7 +54,32 @@ const useProducts = () => {
     }
   };
 
-  return {getProducts, postProduct};
+  const postProductTag = async (tags, productId) => {
+    tags.forEach(async (element) => {
+      const postBody = {
+        tag_id: element,
+      };
+
+      const options = {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postBody),
+      };
+
+      console.log(options)
+
+      try {
+        await fetchData(productUrl + `/${productId}/tags`, options);
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  };
+
+  return {getProducts, postProduct, postProductTag};
 };
 
 const useAnnouncements = () => {
