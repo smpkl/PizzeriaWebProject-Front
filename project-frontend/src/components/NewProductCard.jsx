@@ -1,10 +1,13 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import useForm from '../hooks/formHooks';
 import {useProducts, useTags, useCategories} from '../hooks/apiHooks';
+import {useNavigate} from 'react-router';
 
-const ProductCard = () => {
+const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
   const styles = {
     card: {
+      marginTop: '0.5rem',
+      marginBottom: '0.5rem',
       border: '2px solid #000',
       borderRadius: '14px',
       padding: '24px 28px',
@@ -64,59 +67,61 @@ const ProductCard = () => {
     },
   };
 
-  const [checkboxChecked, setCheckboxChecked] = useState([]);
-
-  const handleCheckBoxColor = (event) => {
-    const {value, checked} = event.target;
-    const id = Number(value);
-
-    setCheckboxChecked((prev) => {
-      if (checked) {
-        if (prev.includes(id)) return prev;
-        return [...prev, id];
-      } else {
-        return prev.filter((tagId) => tagId !== id);
-      }
-    });
-  };
-
-  //joko näin tai yhtenäinen formhook
-  /*
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState(0);
-  const [tags, setTags] = useState([]);
-  const [category, setCategory] = useState('');
-  const [ingredients, setIngredients] = useState('');
-  const [description, setDescription] = useState('');
-  */
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
-  const {postProduct, postProductTag} = useProducts();
+  const [originalTagIds, setOriginalTagIds] = useState([]);
+  const {postProduct, postProductTag, putProduct} = useProducts();
   const {tags} = useTags();
   const {categories} = useCategories();
+  const navigate = useNavigate();
 
   const initValues = {
-    name: '',
-    price: 0,
-    category: 0,
-    ingredients: '',
-    description: '',
+    name: item?.name ?? '',
+    price: item?.price ?? 0,
+    category: item?.category ?? 0,
+    ingredients: item?.ingredients ?? '',
+    description: item?.description ?? '',
   };
-
-  const initValuesCheckbox = [];
 
   const doPost = async (inputs, checkbox, image) => {
     try {
       const product = await postProduct(inputs, checkbox, image);
-      const producId = product.result.productId
-      await postProductTag(checkbox, producId)
+      const producId = product.result.productId;
+      await postProductTag(checkbox, producId);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const {handleSubmit, handleInputChange, handleCheckBox, inputs, checkbox} =
-    useForm(doPost, initValues, initValuesCheckbox);
+  const doPut = async (inputs, checkbox) => {
+    try {
+      await putProduct(item.id, inputs, checkbox, originalTagIds, image);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const {
+    handleSubmit,
+    handleInputChange,
+    handleCheckBox,
+    setCheckbox,
+    inputs,
+    checkbox,
+  } = useForm(setAddProduct ? doPost : doPut, initValues, []);
+
+  useEffect(() => {
+    if (!item?.tags || !tags.length) return;
+
+    const normalizedItemTags = item.tags.map((t) => t.trim());
+
+    const initialTagIds = tags
+      .filter((tag) => normalizedItemTags.includes(tag.title))
+      .map((tag) => tag.id);
+
+    setCheckbox(initialTagIds);
+    setOriginalTagIds(initialTagIds);
+  }, [item, tags, setCheckbox]);
 
   return (
     <div style={styles.card}>
@@ -131,6 +136,7 @@ const ProductCard = () => {
                 name="name"
                 id="name"
                 placeholder="enter name"
+                value={inputs.name}
                 onChange={(evt) => {
                   handleInputChange(evt);
                 }}
@@ -144,6 +150,7 @@ const ProductCard = () => {
                 name="price"
                 id="price"
                 step={0.01}
+                value={inputs.price}
                 placeholder="0.00"
                 onChange={(evt) => {
                   handleInputChange(evt);
@@ -155,7 +162,7 @@ const ProductCard = () => {
             <div style={styles.field}>
               <div style={styles.tagsRow}>
                 {tags.map((tag) => {
-                  const isChecked = checkboxChecked.includes(tag.id);
+                  const isChecked = checkbox.includes(tag.id);
 
                   return (
                     <div key={`tag-${tag.id}`}>
@@ -168,9 +175,7 @@ const ProductCard = () => {
                         checked={isChecked}
                         onChange={(evt) => {
                           handleCheckBox(evt);
-                          handleCheckBoxColor(evt);
                         }}
-                        required
                       />
                       <label
                         htmlFor={tag.id}
@@ -195,9 +200,11 @@ const ProductCard = () => {
               id="category"
               onChange={handleInputChange}
               defaultValue={0}
-              required
+              value={inputs.category}
             >
-              <option value={0} disabled>choose category</option>
+              <option value={0} disabled>
+                choose category
+              </option>
               {categories.map((category) => {
                 return (
                   <option key={`category-${category.id}`} value={category.id}>
@@ -218,6 +225,7 @@ const ProductCard = () => {
                 cols={20}
                 rows={5}
                 style={styles.textarea}
+                value={inputs.ingredients}
                 onChange={(evt) => {
                   handleInputChange(evt);
                 }}
@@ -232,6 +240,7 @@ const ProductCard = () => {
                 cols={20}
                 rows={5}
                 style={styles.textarea}
+                value={inputs.description}
                 onChange={(evt) => {
                   handleInputChange(evt);
                 }}
@@ -260,11 +269,29 @@ const ProductCard = () => {
             <div style={styles.buttons}>
               <button
                 style={styles.button}
-                onClick={(evt) => handleSubmit(evt)}
+                onClick={(evt) => {
+                  evt.preventDefault();
+                  handleSubmit(evt);
+                  if (setAddProduct) {
+                    setAddProduct(!addProduct);
+                  }
+                  if (setShowModified) setShowModified(false);
+                }}
               >
                 Save
               </button>
-              <button style={styles.button}>Delete</button>
+              <button
+                style={styles.button}
+                onClick={(evt) => {
+                  evt.preventDefault();
+                  if (setAddProduct) {
+                    setAddProduct(!addProduct);
+                  }
+                  if (setShowModified) setShowModified(false);
+                }}
+              >
+                cancel
+              </button>
             </div>
           </div>
         </div>
@@ -273,4 +300,4 @@ const ProductCard = () => {
   );
 };
 
-export default ProductCard;
+export default NewProductCard;
