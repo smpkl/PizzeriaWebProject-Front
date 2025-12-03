@@ -19,3 +19,11 @@ a {
 .active {
   background-color: greenyellow;
 }
+
+.pizzeria-option:hover {
+  background-color: lightsalmon;
+}
+
+.selected-pizzeria {
+  background-color: salmon;
+}

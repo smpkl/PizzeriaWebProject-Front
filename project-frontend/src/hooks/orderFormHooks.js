@@ -12,6 +12,7 @@ const useOrderForm = (callback) => {
   };
 
   const handleInputChange = (event) => {
+    console.log(event);
     if (event.target.name === 'timeOption' && event.target.value === 'now') {
       handleOrderInfoChange({timeOption: 'now'});
 
