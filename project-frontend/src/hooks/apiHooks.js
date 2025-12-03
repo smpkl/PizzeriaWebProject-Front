@@ -123,21 +123,100 @@ const useDailyMeal = () => {
 };
 
 const useOrder = () => {
-  const postOrder = async () => {
+  const postOrder = async (
+    orderInfo,
+    orderType,
+    orderProducts,
+    orderMeals,
+    orderPrice,
+  ) => {
     try {
-      /*const response = await fetchData('http://127.0.0.1:3000/api/v1/meals');
-      const meals = response.meals;
-      //console.log(response);
-      const mealsWithProducts = await Promise.all(
-        meals.map(async (item) => {
-          const productsResponse = await fetchData(
-            `http://127.0.0.1:3000/api/v1/meals/${item.id}/products`,
-          );
-          return {...item, products: productsResponse.products};
+      console.log(orderInfo);
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          status: 'received',
+          orderType: orderType,
+          timeOption: orderInfo.timeOption,
+          dateTime: `${orderInfo.day} ${orderInfo.time}`,
+          deliveryAddress: `${orderInfo.userAddress} ${orderInfo.userAddress2}`,
+          pizzeriaAddress: orderInfo.pizzeriaAddress,
+          customerName: orderInfo.name,
+          customerPhone: orderInfo.phonenumber,
+          customerEmail: orderInfo.email,
+          details: orderInfo.details,
+          price: orderPrice,
         }),
-      ); */
-      console.log('postOrder');
-      return;
+      };
+      const orderResponse = await fetchData(
+        'http://127.0.0.1:3000/api/v1/orders',
+        options,
+      );
+      console.log('postOrder', orderResponse);
+
+      const orderId = orderResponse.order_id;
+
+      const mergedProducts = {};
+
+      orderProducts.forEach((item) => {
+        const id = item.product.id;
+
+        if (!mergedProducts[id]) {
+          mergedProducts[id] = {
+            product: item.product,
+            quantity: item.quantity,
+          };
+        } else {
+          mergedProducts[id].quantity += item.quantity;
+        }
+      });
+
+      orderMeals.forEach((mealItem) => {
+        const meal = mealItem.meal;
+        const mealQty = meal.quantity ?? 1;
+
+        meal.products.forEach((prod) => {
+          const id = prod.id;
+
+          if (!mergedProducts[id]) {
+            mergedProducts[id] = {
+              product: prod,
+              quantity: mealQty,
+            };
+          } else {
+            mergedProducts[id].quantity += mealQty;
+          }
+        });
+      });
+
+      console.log('Merged: ', mergedProducts);
+      const finalProducts = Object.values(mergedProducts);
+
+      console.log(finalProducts);
+
+      finalProducts.forEach(async (p) => {
+        console.log(p);
+        const options2 = {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            product_id: p.product.id,
+            quantity: p.quantity,
+          }),
+        };
+        const orderProductsResponse = await fetchData(
+          `http://127.0.0.1:3000/api/v1/orders/${orderId}/products`,
+          options2,
+        );
+        console.log(orderProductsResponse);
+      });
+
+      return orderId;
     } catch (error) {
       console.log('ERROR', error);
     }

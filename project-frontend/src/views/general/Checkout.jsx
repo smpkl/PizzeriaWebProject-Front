@@ -1,12 +1,32 @@
 import {useNavigate} from 'react-router';
 import {useOrderContext} from '../../hooks/contextHooks';
+import {useOrder} from '../../hooks/apiHooks';
 
 const CheckOut = () => {
   const navigate = useNavigate();
+
+  const {postOrder} = useOrder();
   const {orderInfo, orderType, orderProducts, orderMeals, orderPrice} =
     useOrderContext();
 
   console.log(orderProducts);
+
+  const doCheckout = async (event) => {
+    try {
+      console.log(orderInfo);
+      event.preventDefault;
+      const response = await postOrder(
+        orderInfo,
+        orderType,
+        orderProducts,
+        orderMeals,
+        orderPrice,
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -152,7 +172,7 @@ const CheckOut = () => {
       </div>
       <div>
         <form
-          action=""
+          action={doCheckout}
           style={{display: 'flex', flexDirection: 'column', margin: 'auto'}}
         >
           <label htmlFor="coupon-input">DISCOUNT COUPON: </label>
@@ -174,13 +194,17 @@ const CheckOut = () => {
             <option value="at-pickup">At pickup</option>
             <option value="bank">Online bank</option>
           </select>
+          <div
+            style={{display: 'flex', flexDirection: 'column', margin: 'auto'}}
+          >
+            <button type="submit" style={{margin: 'auto'}}>
+              ORDER
+            </button>
+            <button onClick={() => navigate('/order')} style={{margin: 'auto'}}>
+              EDIT ORDER
+            </button>
+          </div>
         </form>
-      </div>
-      <div style={{display: 'flex', flexDirection: 'column', margin: 'auto'}}>
-        <button style={{margin: 'auto'}}>ORDER</button>
-        <button onClick={() => navigate('/order')} style={{margin: 'auto'}}>
-          EDIT ORDER
-        </button>
       </div>
     </>
   );
