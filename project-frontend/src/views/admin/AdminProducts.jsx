@@ -1,37 +1,50 @@
-import React from 'react';
-import ProductCard from '../../components/ProductCard';
+import React, {useEffect, useState} from 'react';
+import NewProductCard from '../../components/NewProductCard';
+import {useProducts} from '../../hooks/apiHooks';
+import AdminProductViewCard from '../../components/AdminProductViewCard';
 
 const AdminProducts = () => {
-  //Laitan jo 2 kieli optiota joka hallitaa tod näk shared contextilla
-  const langEn = false;
-  const langFin = true;
+  const [addProduct, setAddProduct] = useState(false);
+  const [productList, setProductList] = useState([]);
+  const [showModified, setShowModified] = useState(false);
+  const [modifyProduct, setModifyProduct] = useState({});
+  const {getProducts} = useProducts();
+
+  const handleAddProduct = () => {
+    setAddProduct(!addProduct);
+  };
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setProductList(await getProducts());
+    };
+    fetchProducts();
+  }, );
+
   return (
     <div>
-      {langFin && (
+      {!addProduct && (
         <div>
-          <button>Lisää tuote</button>
-          <label htmlFor="product">Etsi tuote: </label>
-          <input
-            type="text"
-            id="product"
-            name="product"
-            placeholder="syötä nimi"
-          />
-        </div>
-      )}
-      {langEn && (
-        <div>
-          <button>Add product</button>
+          <button onClick={handleAddProduct}>Add product</button>
           <label htmlFor="product">Search for a product: </label>
-          <input
-            type="text"
-            id="product"
-            name="product"
-            placeholder="syötä nimi"
-          />
+          <input type="text" id="product" name="product" placeholder="" />
         </div>
       )}
-      <ProductCard />
+      {addProduct && (
+        <NewProductCard addProduct={addProduct} setAddProduct={setAddProduct}/>
+      )}
+      {productList &&
+        !addProduct &&
+        !showModified &&
+        productList.map((product) => (
+          <AdminProductViewCard
+            key={`product-${product.id}`}
+            product={product}
+            setModifyProduct={setModifyProduct}
+            setShowModified={setShowModified}
+          />
+        ))}
+      {showModified && <NewProductCard item={modifyProduct} setShowModified={setShowModified} />}
     </div>
   );
 };
