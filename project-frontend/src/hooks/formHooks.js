@@ -1,6 +1,6 @@
 import {useState} from 'react';
 
-const useForm = (callback, callback2, initState, initStateCheckbox) => {
+const useForm = (callback, initState, initStateCheckbox) => {
   const [inputs, setInputs] = useState(initState);
   const [checkbox, setCheckbox] = useState(initStateCheckbox);
 
@@ -29,15 +29,16 @@ const useForm = (callback, callback2, initState, initStateCheckbox) => {
   const handleCheckBox = (event) => {
     event.persist();
     const {value, checked} = event.target;
+    const id = Number(value);
     setCheckbox((prev) => {
       if (prev) {
         if (checked) {
-          if (prev.includes(value)) {
+          if (prev.includes(id)) {
             return prev;
           }
-          return [...prev, value];
+          return [...prev, id];
         } else {
-          return prev.filter((tag) => tag !== value);
+          return prev.filter((tagId) => tagId !== id);
         }
       } else {
         return [value];
@@ -49,6 +50,7 @@ const useForm = (callback, callback2, initState, initStateCheckbox) => {
     handleSubmit,
     handleInputChange,
     handleCheckBox,
+    setCheckbox,
     inputs,
     checkbox,
   };
