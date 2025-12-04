@@ -62,7 +62,7 @@ const OrderCard = (order) => {
         <p>Time option: {time_option}</p>
         <p>Date: {date_time}</p>
         <p>Pizzeria address: {pizzeria_address}</p>
-        {(status === 'new' || status==='received' && (
+        {((status === 'new' || status==='received') && (
           <>
             <button>Accept</button> <button>Cancel</button>
           </>
