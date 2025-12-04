@@ -1,8 +1,20 @@
+import {useState} from 'react';
 import {useOrderContext} from '../hooks/contextHooks';
+import ItemDialog from './ItemDialog';
 
 const MealItem = ({item}) => {
+  const [selectedProduct, setSelectedProduct] = useState();
   const {handleMealAdd} = useOrderContext();
   const products = item.products;
+
+  const handleShowItemDetails = (product) => {
+    setSelectedProduct(product);
+  };
+
+  const handleCloseItemDetails = () => {
+    setSelectedProduct(null);
+  };
+
   return (
     <>
       <div
@@ -33,18 +45,47 @@ const MealItem = ({item}) => {
         <div className="menu-item-info">
           <h3>{item.name}</h3>
           <h4>Products included in the meal:</h4>
+          <p>Click product to see details</p>
           <ul className="meal-products-ul">
             {products.map((product) => (
-              <li key={`meal-product-${product.id}`}>
-                <a href={`#product-${product.id}`} style={{width: '100%'}}>
-                  {product.name}
-                </a>
+              <li
+                key={`meal-product-${product.id}`}
+                className="products-in-meal"
+                onClick={() => handleShowItemDetails(product)}
+              >
+                {product.name}
               </li>
             ))}
           </ul>
-          <p>{item.price} €</p>
-          <button onClick={() => handleMealAdd(item)}>Add to order</button>
+          <div
+            style={{display: 'flex', justifyContent: 'right', width: '100%'}}
+          >
+            {item.oldPrice && (
+              <p
+                style={{
+                  textDecorationLine: 'line-through',
+                  color: 'darkred',
+                  marginRight: '10px',
+                }}
+              >
+                {item.oldPrice}€
+              </p>
+            )}
+            <p>{item.price}€</p>
+          </div>
+          <div
+            style={{display: 'flex', justifyContent: 'right', width: '100%'}}
+          >
+            <button onClick={() => handleMealAdd(item)}>Add to order</button>
+          </div>
         </div>
+        {selectedProduct && (
+          <ItemDialog
+            item={selectedProduct}
+            meal={item}
+            onClose={handleCloseItemDetails}
+          />
+        )}
       </div>
     </>
   );

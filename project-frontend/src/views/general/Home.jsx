@@ -18,6 +18,11 @@ import {
 const Home = () => {
   const navigate = useNavigate();
 
+  const {announcements} = useAnnouncements();
+  const {tags} = useTags();
+  const {categories} = useCategories();
+  const {dailyMeal} = useDailyMeal();
+
   const [originalProducts, setOriginalProducts] = useState([]);
   const [originalMeals, setOriginalMeals] = useState([]);
 
@@ -61,11 +66,6 @@ const Home = () => {
     }
   }, [location, menuProducts, menuMeals]);
 
-  const {announcements} = useAnnouncements();
-  const {tags} = useTags();
-  const {categories} = useCategories();
-  const {dailyMeal} = useDailyMeal();
-
   return (
     <>
       <h1>PIZZERIA TBA</h1>
@@ -81,11 +81,7 @@ const Home = () => {
       </div>
       <div id="announcements">
         {announcements.map((item) => (
-          <Announcement
-            key={item.id}
-            announcement={item}
-            //setSelectedItem={setSelectedItem}
-          />
+          <Announcement key={item.id} announcement={item} />
         ))}
       </div>
       <div id="meal-of-the-day" style={{backgroundColor: 'goldenrod'}}>
@@ -103,18 +99,10 @@ const Home = () => {
         />
         <div id="menu">
           {menuProducts.map((item) => (
-            <MenuItem
-              key={`product-${item.id}`}
-              item={item}
-              //setSelectedItem={setSelectedItem}
-            />
+            <MenuItem key={`product-${item.id}`} item={item} />
           ))}
           {menuMeals.map((item) => (
-            <MealItem
-              key={`meal-${item.id}`}
-              item={item}
-              //setSelectedItem={setSelectedItem}
-            />
+            <MealItem key={`meal-${item.id}`} item={item} />
           ))}
         </div>
       </div>
