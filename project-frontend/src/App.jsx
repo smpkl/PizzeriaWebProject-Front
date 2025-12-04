@@ -4,6 +4,7 @@ import Layout from './components/Layout';
 import Home from './views/general/Home';
 import AboutUs from './views/general/AboutUs';
 import Order from './views/general/Order';
+import CheckOut from './views/general/Checkout';
 import Profile from './views/general/Profile';
 import AdminOrders from './views/admin/AdminOrders';
 import AdminLayout from './components/AdminLayout';
@@ -25,6 +26,7 @@ const App = () => {
               <Route path="/" element={<Home />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/order" element={<Order />} />
+              <Route path="/checkout" element={<CheckOut />} />
               <Route path="/about" element={<AboutUs />} />
             </Route>
             {/* Admin sivut, placeholder kunnes keksitää yhessä miten lopulta toteutetaa */}

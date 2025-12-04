@@ -211,6 +211,26 @@ const useAnnouncements = () => {
   return {announcements};
 };
 
+const usePizzerias = () => {
+  const [pizzerias, setPizzerias] = useState([]);
+
+  useEffect(() => {
+    try {
+      const getPizzerias = async () => {
+        const response = await fetchData(
+          'http://127.0.0.1:3000/api/v1/locations',
+        );
+        //console.log(response);
+        setPizzerias(response.locations);
+      };
+      getPizzerias();
+    } catch (error) {
+      console.log('ERROR', error);
+    }
+  }, []);
+  return {pizzerias};
+};
+
 const useTags = () => {
   const [tags, setTags] = useState([]);
 
@@ -281,7 +301,12 @@ const useDailyMeal = () => {
         const response = await fetchData(
           'http://127.0.0.1:3000/api/v1/dailymeals/monday',
         );
-        //console.log(response);
+        const dailymeal = response.dailymeal;
+        const productsResponse = await fetchData(
+          `http://127.0.0.1:3000/api/v1/meals/${dailymeal.id}/products`,
+        );
+        //console.log(productsResponse);
+        dailymeal.products = productsResponse.products;
         setDailyMeal(response.dailymeal);
       };
       getDailyMeal();
@@ -325,23 +350,112 @@ const useOrder = () => {
     }
   };
 
-  const postOrder = async () => {
+  const postOrder = async (
+    orderInfo,
+    orderType,
+    orderProducts,
+    orderMeals,
+    orderPrice,
+  ) => {
     try {
-      /*const response = await fetchData('http://127.0.0.1:3000/api/v1/meals');
-      const meals = response.meals;
-      //console.log(response);
-      const mealsWithProducts = await Promise.all(
-        meals.map(async (item) => {
-          const productsResponse = await fetchData(
-            `http://127.0.0.1:3000/api/v1/meals/${item.id}/products`,
-          );
-          return {...item, products: productsResponse.products};
+      //console.log(orderInfo);
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          status: 'received',
+          orderType: orderType,
+          timeOption: orderInfo.timeOption,
+          dateTime: `${orderInfo.day} ${orderInfo.time}`,
+          deliveryAddress: `${orderInfo.userAddress} ${orderInfo.userAddress2}`,
+          pizzeriaAddress: orderInfo.pizzeriaAddress,
+          customerName: orderInfo.name,
+          customerPhone: orderInfo.phonenumber,
+          customerEmail: orderInfo.email,
+          details: orderInfo.details,
+          price: (orderPrice + Number(orderInfo.deliveryFee)).toFixed(2),
         }),
-      ); */
-      console.log('postOrder');
-      return;
+      };
+      const orderResponse = await fetchData(
+        'http://127.0.0.1:3000/api/v1/orders',
+        options,
+      );
+      //console.log('postOrder', orderResponse);
+
+      const orderId = orderResponse.order_id;
+
+      // Collect all the products from the orderProducts and orderMeals to an object:
+      const mergedProducts = {};
+
+      // Go through the orderProducts:
+      orderProducts.forEach((item) => {
+        // Each product id is the key for the main object:
+        const id = item.product.id;
+
+        // If there are no keys with same value already in the main object, create a new key and give it a value of two key-value pairs:
+        if (!mergedProducts[id]) {
+          mergedProducts[id] = {
+            product: item.product,
+            quantity: item.quantity,
+          };
+        } // If key already exists, raise the quantity:
+        else {
+          mergedProducts[id].quantity += item.quantity;
+        }
+      });
+
+      // Do the same to all the meals:
+      orderMeals.forEach((mealItem) => {
+        const meal = mealItem.meal;
+        const mealQty = meal.quantity ?? 1;
+
+        // Go through each product in the meal:
+        meal.products.forEach((prod) => {
+          const id = prod.id;
+
+          // If product key does not exist, make it:
+          if (!mergedProducts[id]) {
+            mergedProducts[id] = {
+              product: prod,
+              quantity: mealQty,
+            };
+          } //If it does, raise quantity
+          else {
+            mergedProducts[id].quantity += mealQty;
+          }
+        });
+      });
+
+      const finalProducts = Object.values(mergedProducts);
+
+      //console.log('Merged: ', mergedProducts);
+      //console.log(finalProducts);
+
+      finalProducts.forEach(async (p) => {
+        //console.log(p);
+        const options2 = {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            product_id: p.product.id,
+            quantity: p.quantity,
+          }),
+        };
+        const orderProductsResponse = await fetchData(
+          `http://127.0.0.1:3000/api/v1/orders/${orderId}/products`,
+          options2,
+        );
+        //console.log(orderProductsResponse);
+      });
+
+      return orderId;
     } catch (error) {
       console.log('ERROR', error);
+      throw error;
     }
   };
   return {postOrder, getOrders, getOrderProducts};
@@ -395,6 +509,7 @@ const useUser = () => {
 export {
   useProducts,
   useAnnouncements,
+  usePizzerias,
   useTags,
   useCategories,
   useDailyMeal,

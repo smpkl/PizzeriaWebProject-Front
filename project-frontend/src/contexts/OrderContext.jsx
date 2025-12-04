@@ -1,30 +1,49 @@
 import {createContext, useState, useEffect} from 'react';
-import {useOrder} from '../hooks/apiHooks';
 
 const OrderContext = createContext(null);
 
 const OrderProvider = ({children}) => {
   const [isActiveOrder, setIsActiveOrder] = useState(false);
-  const [orderId, setOrderId] = useState(null);
   const [orderUserId, setOrderUserId] = useState(null);
+
+  const [orderType, setOrderType] = useState(null);
+
+  const [orderInfo, setOrderInfo] = useState({
+    userAddress: '',
+    userAddress2: '',
+    pizzeriaAddress: '',
+    deliveryFee: '',
+    timeOption: '',
+    day: '',
+    time: '',
+    name: '',
+    email: '',
+    phonenumber: '',
+    details: '',
+  });
+
+  //Shopping cart related:
   const [orderProducts, setOrderProducts] = useState([]);
   const [orderMeals, setOrderMeals] = useState([]);
   const [orderPrice, setOrderPrice] = useState(0);
 
-  const {postOrder, postProductToOrder} = useOrder();
-
   const [hasLoaded, setHasLoaded] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem('order');
-    if (saved) {
-      const data = JSON.parse(saved);
+    const savedCart = localStorage.getItem('order');
+    const savedDetails = sessionStorage.getItem('order-info');
+    if (savedCart) {
+      const data = JSON.parse(savedCart);
       setOrderProducts(data.orderProducts || []);
       setOrderMeals(data.orderMeals || []);
-      setOrderId(data.orderId || null);
-      setOrderUserId(data.orderUserId || null);
       setOrderPrice(data.orderPrice || 0);
       setIsActiveOrder(data.isActiveOrder || false);
+      setOrderUserId(data.orderUserId || null);
+    }
+    if (savedDetails) {
+      const data2 = JSON.parse(savedDetails);
+      setOrderInfo(data2);
+      setOrderType(data2.type);
     }
     setHasLoaded(true);
   }, []);
@@ -35,7 +54,6 @@ const OrderProvider = ({children}) => {
     const data = {
       orderProducts,
       orderMeals,
-      orderId,
       orderUserId,
       orderPrice,
       isActiveOrder,
@@ -45,11 +63,41 @@ const OrderProvider = ({children}) => {
   }, [
     orderProducts,
     orderMeals,
-    orderId,
     orderPrice,
     isActiveOrder,
     hasLoaded,
+    orderUserId,
   ]);
+
+  useEffect(() => {
+    if (!hasLoaded) return;
+
+    sessionStorage.setItem(
+      'order-info',
+      JSON.stringify({...orderInfo, type: orderType}),
+    );
+  }, [orderType, orderInfo, hasLoaded]);
+
+  const resetOrderContext = () => {
+    setIsActiveOrder(false);
+    setOrderMeals([]);
+    setOrderProducts([]);
+    setOrderPrice(null);
+    setOrderType(null);
+    setOrderUserId(null);
+    setOrderInfo({
+      userAddress: '',
+      userAddress2: '',
+      pizzeriaAddress: '',
+      timeOption: '',
+      day: '',
+      time: '',
+      name: '',
+      email: '',
+      phonenumber: '',
+      details: '',
+    });
+  };
 
   const handleProductAdd = async (product) => {
     try {
@@ -68,7 +116,7 @@ const OrderProvider = ({children}) => {
           updated = [...prev, {product, quantity: 1}];
         }
 
-        console.log('Products in order:', updated);
+        //console.log('Products in order:', updated);
         return updated;
       });
 
@@ -81,8 +129,9 @@ const OrderProvider = ({children}) => {
 
   const handleProductRemove = async (product) => {
     try {
-      const newPrice = orderPrice - Number(product.price);
-      setOrderPrice(newPrice);
+      setOrderPrice((prev) =>
+        Number((prev - Number(product.price)).toFixed(2)),
+      );
       setOrderProducts((prev) => {
         const existing = prev.find((p) => p.product.id === product.id);
 
@@ -96,7 +145,7 @@ const OrderProvider = ({children}) => {
         }
 
         if (updated.length === 0 && orderMeals.length === 0) {
-          console.log('No items. Clear cart...');
+          //console.log('No items. Clear cart...');
           setIsActiveOrder(true);
           setOrderPrice(0);
         }
@@ -114,16 +163,18 @@ const OrderProvider = ({children}) => {
         (p) => p.product.id === product.id,
       );
 
-      const newPrice =
-        orderPrice - Number(product.price) * theseProducts.quantity;
-      setOrderPrice(newPrice);
+      setOrderPrice((prev) =>
+        Number(
+          (prev - Number(product.price) * theseProducts.quantity).toFixed(2),
+        ),
+      );
 
       let updated;
       setOrderProducts((prev) => {
         updated = prev.filter((p) => p.product.id !== product.id);
 
         if (updated.length === 0 && orderMeals.length === 0) {
-          console.log('No items. Clear cart...');
+          //console.log('No items. Clear cart...');
           setIsActiveOrder(true);
           setOrderPrice(0);
         }
@@ -138,8 +189,7 @@ const OrderProvider = ({children}) => {
 
   const handleMealAdd = async (meal) => {
     try {
-      const newPrice = orderPrice + Number(meal.price);
-      setOrderPrice(newPrice);
+      setOrderPrice((prev) => Number((prev + Number(meal.price)).toFixed(2)));
       setOrderMeals((prev) => {
         const existing = prev.find((m) => m.meal.id === meal.id);
 
@@ -152,7 +202,7 @@ const OrderProvider = ({children}) => {
           updated = [...prev, {meal, quantity: 1}];
         }
 
-        console.log('Meals in order:', updated);
+        //console.log('Meals in order:', updated);
         return updated;
       });
       setIsActiveOrder(true);
@@ -164,8 +214,7 @@ const OrderProvider = ({children}) => {
 
   const handleMealRemove = async (meal) => {
     try {
-      const newPrice = orderPrice - Number(meal.price);
-      setOrderPrice(newPrice);
+      setOrderPrice((prev) => Number((prev - Number(meal.price)).toFixed(2)));
       setOrderMeals((prev) => {
         const existing = prev.find((m) => m.meal.id === meal.id);
 
@@ -179,7 +228,7 @@ const OrderProvider = ({children}) => {
         }
 
         if (updated.length === 0 && orderProducts.length === 0) {
-          console.log('No items. Clear cart...');
+          //console.log('No items. Clear cart...');
           setIsActiveOrder(true);
           setOrderPrice(0);
         }
@@ -195,15 +244,16 @@ const OrderProvider = ({children}) => {
     try {
       const theseMeals = orderMeals.find((m) => m.meal.id === meal.id);
 
-      const newPrice = orderPrice - Number(meal.price) * theseMeals.quantity;
-      setOrderPrice(newPrice);
+      setOrderPrice((prev) =>
+        Number((prev - Number(meal.price) * theseMeals).toFixed(2)),
+      );
 
       let updated;
       setOrderMeals((prev) => {
         updated = prev.filter((m) => m.meal.id !== meal.id);
 
         if (updated.length === 0 && orderProducts.length === 0) {
-          console.log('No items. Clear cart...');
+          //console.log('No items. Clear cart...');
           setIsActiveOrder(true);
           setOrderPrice(0);
         }
@@ -227,6 +277,28 @@ const OrderProvider = ({children}) => {
     }
   };
 
+  const handleTypeChange = (type) => {
+    try {
+      setOrderType(type);
+    } catch (e) {
+      console.log(e.message);
+      throw e;
+    }
+  };
+
+  const handleDeliveryFee = (fee) => {
+    try {
+      setOrderInfo((prev) => ({...prev, deliveryFee: fee}));
+    } catch (e) {
+      console.log(e.message);
+      throw e;
+    }
+  };
+
+  const handleOrderInfoChange = (newValues) => {
+    setOrderInfo((prev) => ({...prev, ...newValues}));
+  };
+
   return (
     <OrderContext.Provider
       value={{
@@ -237,9 +309,17 @@ const OrderProvider = ({children}) => {
         handleMealRemove,
         handleMealDelete,
         handleClear,
+        handleTypeChange,
+        handleOrderInfoChange,
+        handleDeliveryFee,
         orderProducts,
         orderMeals,
         orderPrice,
+        orderType,
+        orderInfo,
+        isActiveOrder,
+        setIsActiveOrder,
+        resetOrderContext,
       }}
     >
       {children}
