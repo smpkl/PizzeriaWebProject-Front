@@ -10,11 +10,8 @@ const DeliveryForm = () => {
   const [topThreePizzerias, setTopThreePizzerias] = useState();
   const {pizzerias} = usePizzerias();
   const navigate = useNavigate();
-  const {orderInfo, handleDeliveryFee, orderPrice, handleOrderInfoChange} =
+  const {orderInfo, handleDeliveryFee, handleOrderInfoChange} =
     useOrderContext();
-
-  console.log(orderInfo.deliveryFee);
-  console.log(orderPrice);
 
   const reactToPizzeriaSelect = (event, fee) => {
     handleInputChange(event);

@@ -13,8 +13,6 @@ const AtPizzeriaForm = () => {
   const navigate = useNavigate();
   const {orderInfo, handleOrderInfoChange} = useOrderContext();
 
-  console.log(filteredPizzerias);
-
   useEffect(() => {
     handleOrderInfoChange({
       userAddress: 'xxxxxxxxxxx',
@@ -25,7 +23,6 @@ const AtPizzeriaForm = () => {
 
   useEffect(() => {
     let filtered = [...pizzerias];
-    console.log(filtered);
     if (key) {
       filtered = filtered.filter(
         (p) =>

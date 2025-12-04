@@ -37,7 +37,6 @@ const CheckOut = () => {
         orderMeals,
         orderPrice,
       );
-      console.log(response);
       setOrderId(response);
       resetOrderContext();
     } catch (error) {

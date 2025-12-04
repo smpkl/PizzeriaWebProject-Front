@@ -15,8 +15,6 @@ const PickUpForm = () => {
   const navigate = useNavigate();
   const {orderInfo, handleOrderInfoChange} = useOrderContext();
 
-  console.log(filteredPizzerias);
-
   useEffect(() => {
     handleOrderInfoChange({
       userAddress: 'xxxxxxxxxxx',
@@ -27,7 +25,6 @@ const PickUpForm = () => {
 
   useEffect(() => {
     let filtered = [...pizzerias];
-    console.log(filtered);
     if (key) {
       filtered = filtered.filter(
         (p) =>
