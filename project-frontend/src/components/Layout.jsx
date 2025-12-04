@@ -13,7 +13,7 @@ const Layout = () => {
     if (orderProducts) orderProducts.forEach((p) => (count += p.quantity));
     if (orderMeals) orderMeals.forEach((m) => (count += m.quantity));
     setItemCount(count);
-    console.log(itemCount);
+    //console.log(itemCount);
   }, [orderProducts, orderMeals]);
 
   return (

@@ -35,7 +35,7 @@ const MealItem = ({item}) => {
           <h4>Products included in the meal:</h4>
           <ul className="meal-products-ul">
             {products.map((product) => (
-              <li>
+              <li key={`meal-product-${product.id}`}>
                 <a href={`#product-${product.id}`} style={{width: '100%'}}>
                   {product.name}
                 </a>
