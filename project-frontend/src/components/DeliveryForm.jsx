@@ -10,9 +10,16 @@ const DeliveryForm = () => {
   const [topThreePizzerias, setTopThreePizzerias] = useState();
   const {pizzerias} = usePizzerias();
   const navigate = useNavigate();
-  const {orderInfo} = useOrderContext();
+  const {orderInfo, handleDeliveryFee, orderPrice, handleOrderInfoChange} =
+    useOrderContext();
 
-  console.log(orderInfo.pizzeriaAddress);
+  console.log(orderInfo.deliveryFee);
+  console.log(orderPrice);
+
+  const reactToPizzeriaSelect = (event, fee) => {
+    handleInputChange(event);
+    handleDeliveryFee(fee);
+  };
 
   // Error for cases when location cannot be found:
   function error(err) {
@@ -26,6 +33,10 @@ const DeliveryForm = () => {
     setUserLocation({lat: latitude, long: longitude});
   }
 
+  useEffect(() => {
+    handleOrderInfoChange({userAddress: '', userAddress2: ''});
+  }, []);
+
   // Try to add distances to pizzerias and sort them if userLocation is found:
   useEffect(() => {
     const sorted = [...pizzerias];
@@ -38,6 +49,18 @@ const DeliveryForm = () => {
               (userLocation.long - p.longitude) ** 2,
           ) * 100;
 
+        // Tätä voi jossain vaiheessa työstää pidemmälle. Olisi varmaan järkevämpi selvittää käyttäjän syöttämän osoitteen koordinaatit, ettei käyttäjä pysty huijaamaan halvempaa kuljetusta (= geolocation koordinaatit ei vastaa osoitteen koordinaatteja). Tähän tarvis varmaan jokin ulkoisen APIn. En nyt jaksa tutkia asiaa. -Riikka
+
+        /*if (distance < 2) {
+          p.fee = 4.59;
+        } else if (distance > 10) {
+          p.fee = 9.99;
+        } else {
+          p.fee = 6.75;
+        } */
+
+        // Let's use default delivery fee for now
+        p.fee = 6.95;
         p.distance = distance;
       });
     }
@@ -133,7 +156,7 @@ const DeliveryForm = () => {
           </div>
           <div id="pizzeria-choice-container" style={{border: '1px solid '}}>
             <h4 style={{backgroundColor: 'lightgray', marginBottom: '0'}}>
-              Choose a pizzeria*:{' '}
+              CHOOSE A PIZZERIA*:{' '}
             </h4>
             <p style={{backgroundColor: 'lightgray', marginTop: '0'}}>
               To find closest pizzeria, and cheapest delivery price,
@@ -164,13 +187,17 @@ const DeliveryForm = () => {
                         {p.address}
                         <br />
                         {p.distance.toFixed(0)} km
+                        <br />
+                        Delivery fee: {p.fee}€
                       </label>
                       <input
                         type="radio"
                         id={'delivery-pizzeria-' + p.name}
                         value={`${p.name} - ${p.address}`}
                         name="pizzeriaAddress"
-                        onChange={handleInputChange}
+                        onChange={(event) =>
+                          reactToPizzeriaSelect(event, p.fee)
+                        }
                         style={{
                           display: 'none',
                         }}
@@ -228,7 +255,7 @@ const DeliveryForm = () => {
             }}
           >
             {' '}
-            <h4>Delivery time*: </h4>
+            <h4>DELIVERY TIME*: </h4>
             <label htmlFor="time-option1">PREORDER</label>
             <input
               type="radio"
@@ -280,7 +307,7 @@ const DeliveryForm = () => {
               flexDirection: 'column',
             }}
           >
-            <h4>Contact information: </h4>
+            <h4>CONTACT INFORMATION: </h4>
             <label htmlFor="firstname-lastname">FIRSTNAME & LASTNAME*: </label>
             <input
               type="text"
@@ -320,7 +347,7 @@ const DeliveryForm = () => {
             id="delivery-details-container"
             style={{display: 'flex', flexDirection: 'column'}}
           >
-            <h4>Delivery details: </h4>
+            <h4>DELIVERY DETAILS: </h4>
             <label htmlFor="delivery-details">DETAILS: </label>
             <textarea
               rows="10"

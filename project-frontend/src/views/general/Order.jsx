@@ -145,9 +145,9 @@ const Order = () => {
                   </p>
                 )}
                 <OrderTypeButtons />
-                {orderType === 'delivery' && <DeliveryForm />}
-                {orderType === 'pick-up' && <PickUpForm />}
-                {orderType === 'at-pizzeria' && <AtPizzeriaForm />}
+                {orderType === 'Delivery' && <DeliveryForm />}
+                {orderType === 'Pick up' && <PickUpForm />}
+                {orderType === 'At pizzeria' && <AtPizzeriaForm />}
               </div>
             </div>
           )

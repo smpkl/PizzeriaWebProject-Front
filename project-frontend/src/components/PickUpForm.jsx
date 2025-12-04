@@ -2,17 +2,52 @@ import {useNavigate} from 'react-router';
 import {useOrderContext} from '../hooks/contextHooks';
 import {useOrderForm} from '../hooks/orderFormHooks';
 import {usePizzerias} from '../hooks/apiHooks';
+import {useEffect, useState} from 'react';
 
 //import {pizzerias} from '../mock-data/pizzeriaLocations';
 
 const PickUpForm = () => {
+  const [filteredPizzerias, setFilteredPizzeria] = useState([]);
+  const [key, setKey] = useState(null);
+  const [error, setError] = useState('');
+
   const {pizzerias} = usePizzerias();
   const navigate = useNavigate();
-  const {orderInfo} = useOrderContext();
+  const {orderInfo, handleOrderInfoChange} = useOrderContext();
 
-  console.log(orderInfo.pizzeriaAddress);
+  console.log(filteredPizzerias);
+
+  useEffect(() => {
+    handleOrderInfoChange({
+      userAddress: 'xxxxxxxxxxx',
+      userAddress2: '',
+      deliveryFee: '',
+    });
+  }, []);
+
+  useEffect(() => {
+    let filtered = [...pizzerias];
+    console.log(filtered);
+    if (key) {
+      filtered = filtered.filter(
+        (p) =>
+          p.address.toLowerCase().includes(key.toLowerCase()) ||
+          p.name.toLowerCase().includes(key.toLowerCase()),
+      );
+    }
+    setFilteredPizzeria(filtered);
+  }, [key, pizzerias]);
+
+  const handleSearch = (event) => {
+    setKey(event.target.value);
+  };
 
   const proceedToCheckout = () => {
+    if (!orderInfo.pizzeriaAddress) {
+      setError('Select a pizzeria');
+      return;
+    }
+    setError('');
     navigate('/checkout');
   };
 
@@ -44,12 +79,20 @@ const PickUpForm = () => {
               type="text"
               name="pizzeriaSearch"
               id="pickup-search-pizzeria"
-              style={{margin: 'auto'}}
-              placeholder="Search for a pizzeria with address"
+              style={{margin: '20px auto'}}
+              onChange={handleSearch}
+              placeholder="Search for a pizzeria"
             ></input>
-            <div>
-              {pizzerias.map((l) => (
+            <div
+              style={{
+                height: '140px',
+                overflow: 'scroll',
+                border: '2px solid black',
+              }}
+            >
+              {filteredPizzerias.map((l) => (
                 <div
+                  key={`pickup-pizzeria-${l.id}`}
                   className={`pizzeria-option ${orderInfo.pizzeriaAddress === l.address ? 'selected-pizzeria' : ''}`}
                   style={{
                     display: 'block',
@@ -81,7 +124,7 @@ const PickUpForm = () => {
             </div>
           </div>
           <div
-            id="delivery-time-container"
+            id="pickup-time-container"
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -89,7 +132,7 @@ const PickUpForm = () => {
             }}
           >
             {' '}
-            <h4>Delivery time*: </h4>
+            <h4>PICK UP TIME*: </h4>
             <label htmlFor="time-option1">PREORDER</label>
             <input
               type="radio"
@@ -141,7 +184,7 @@ const PickUpForm = () => {
               flexDirection: 'column',
             }}
           >
-            <h4>Contact information: </h4>
+            <h4>CONTACT INFORMATION: </h4>
             <label htmlFor="firstname-lastname">FIRSTNAME & LASTNAME*: </label>
             <input
               type="text"
@@ -178,16 +221,16 @@ const PickUpForm = () => {
             ></input>
           </div>
           <div
-            id="delivery-details-container"
+            id="pickup-details-container"
             style={{display: 'flex', flexDirection: 'column'}}
           >
-            <h4>Delivery details: </h4>
-            <label htmlFor="delivery-details">DETAILS: </label>
+            <h4>PICK UP DETAILS: </h4>
+            <label htmlFor="pickup-details">DETAILS: </label>
             <textarea
               rows="10"
               cols="45"
               name="details"
-              id="delivery-details"
+              id="pickup-details"
               placeholder="Type details for the pizzeria here"
               style={{margin: 'auto'}}
               onChange={handleInputChange}
@@ -196,6 +239,7 @@ const PickUpForm = () => {
           </div>
           <button type="submit">TO CHECKOUT</button>
         </form>
+        {error && <p style={{color: 'red', fontWeight: 'bold'}}>{error}</p>}
       </div>
     </>
   );

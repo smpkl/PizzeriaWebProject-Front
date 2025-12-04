@@ -12,6 +12,7 @@ const OrderProvider = ({children}) => {
     userAddress: '',
     userAddress2: '',
     pizzeriaAddress: '',
+    deliveryFee: '',
     timeOption: '',
     day: '',
     time: '',
@@ -285,6 +286,15 @@ const OrderProvider = ({children}) => {
     }
   };
 
+  const handleDeliveryFee = (fee) => {
+    try {
+      setOrderInfo((prev) => ({...prev, deliveryFee: fee}));
+    } catch (e) {
+      console.log(e.message);
+      throw e;
+    }
+  };
+
   const handleOrderInfoChange = (newValues) => {
     setOrderInfo((prev) => ({...prev, ...newValues}));
   };
@@ -301,6 +311,7 @@ const OrderProvider = ({children}) => {
         handleClear,
         handleTypeChange,
         handleOrderInfoChange,
+        handleDeliveryFee,
         orderProducts,
         orderMeals,
         orderPrice,

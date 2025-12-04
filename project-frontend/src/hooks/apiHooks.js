@@ -168,7 +168,7 @@ const useOrder = () => {
           customerPhone: orderInfo.phonenumber,
           customerEmail: orderInfo.email,
           details: orderInfo.details,
-          price: orderPrice,
+          price: (orderPrice + Number(orderInfo.deliveryFee)).toFixed(2),
         }),
       };
       const orderResponse = await fetchData(

@@ -65,12 +65,15 @@ const CheckOut = () => {
                 <p>FROM:</p>
                 <p>{orderInfo.pizzeriaAddress}</p>
               </div>
-              <div style={{marginLeft: '10px'}}>
-                <p>TO:</p>
-                <p>
-                  {orderInfo.userAddress} {orderInfo.userAddress2}
-                </p>
-              </div>
+              {orderType ===
+                'delivery' && (
+                  <div style={{marginLeft: '10px'}}>
+                    <p>TO:</p>
+                    <p>
+                      {orderInfo.userAddress} {orderInfo.userAddress2}
+                    </p>
+                  </div>,
+                )}
             </div>
           </div>
           <div style={{backgroundColor: 'gray'}}>
@@ -196,8 +199,11 @@ const CheckOut = () => {
                 </div>
               ))}
             </div>
-            <p>
-              <b>TOTAL: </b> {orderPrice.toFixed(2)}€
+            <p>ITEMS: {orderPrice.toFixed(2)}€</p>
+            <p>DELIVERY: {Number(orderInfo.deliveryFee).toFixed(2)}€</p>
+            <p style={{fontSize: '18px'}}>
+              <b>TOTAL: </b>
+              {(orderPrice + Number(orderInfo.deliveryFee)).toFixed(2)}€
             </p>
           </div>
           <div>
@@ -245,7 +251,16 @@ const CheckOut = () => {
       {orderId && (
         <div>
           <h1>ORDER PLACED</h1>
-          <p>Your order number: {orderId}</p>
+          <p>
+            Your order number: <b>{orderId}</b>
+          </p>
+          <p>
+            Logged in users can check their order's progress through profile
+            page. <br />
+            All customers will be send a notice through email and phone when
+            order is ready.
+          </p>
+          <button onClick={() => navigate('/')}>Return to main page</button>
         </div>
       )}
     </>

@@ -1,16 +1,62 @@
-import {useState} from 'react';
-
-import {pizzerias} from '../mock-data/pizzeriaLocations';
+import {useState, useEffect} from 'react';
+import {usePizzerias} from '../hooks/apiHooks';
+import {useNavigate} from 'react-router';
+import {useOrderContext} from '../hooks/contextHooks';
+import {useOrderForm} from '../hooks/orderFormHooks';
 
 const AtPizzeriaForm = () => {
-  const [timeOption, setTimeOption] = useState('preorder');
+  const [filteredPizzerias, setFilteredPizzeria] = useState([]);
+  const [key, setKey] = useState(null);
+  const [error, setError] = useState('');
+
+  const {pizzerias} = usePizzerias();
+  const navigate = useNavigate();
+  const {orderInfo, handleOrderInfoChange} = useOrderContext();
+
+  console.log(filteredPizzerias);
+
+  useEffect(() => {
+    handleOrderInfoChange({
+      userAddress: 'xxxxxxxxxxx',
+      userAddress2: '',
+      deliveryFee: '',
+    });
+  }, []);
+
+  useEffect(() => {
+    let filtered = [...pizzerias];
+    console.log(filtered);
+    if (key) {
+      filtered = filtered.filter(
+        (p) =>
+          p.address.toLowerCase().includes(key.toLowerCase()) ||
+          p.name.toLowerCase().includes(key.toLowerCase()),
+      );
+    }
+    setFilteredPizzeria(filtered);
+  }, [key, pizzerias]);
+
+  const handleSearch = (event) => {
+    setKey(event.target.value);
+  };
+
+  const proceedToCheckout = () => {
+    if (!orderInfo.pizzeriaAddress) {
+      setError('Select a pizzeria');
+      return;
+    }
+    setError('');
+    navigate('/checkout');
+  };
+
+  const {handleInputChange, handleSubmit} = useOrderForm(proceedToCheckout);
 
   return (
     <>
       <div style={{border: '1px solid black'}}>
         <h3>AT PIZZERIA</h3>
         <form
-          action=""
+          onSubmit={handleSubmit}
           id="atPizzeria-form"
           style={{
             display: 'flex',
@@ -19,7 +65,6 @@ const AtPizzeriaForm = () => {
           }}
         >
           <div
-            action=""
             id="atPizzeria-location-container"
             style={{
               display: 'flex',
@@ -32,16 +77,49 @@ const AtPizzeriaForm = () => {
             </label>
             <input
               type="text"
-              name="atPizzeria-search-pizzeria"
+              name="pizzeriaSearch"
               id="atPizzeria-search-pizzeria"
-              style={{margin: 'auto'}}
-              placeholder="Search for a pizzeria with address"
+              style={{margin: '20px auto'}}
+              onChange={handleSearch}
+              placeholder="Search for a pizzeria"
             ></input>
-            <div>
-              {pizzerias.map((l) => (
-                <p>
-                  {l.name} - {l.address}
-                </p>
+            <div
+              style={{
+                height: '140px',
+                overflow: 'scroll',
+                border: '2px solid black',
+              }}
+            >
+              {filteredPizzerias.map((l) => (
+                <div
+                  key={`atPizzeria-pizzeria-${l.id}`}
+                  className={`atPizzeria-option ${orderInfo.pizzeriaAddress === l.address ? 'selected-pizzeria' : ''}`}
+                  style={{
+                    display: 'block',
+                    border: '1px solid lightgray',
+                    margin: '10px auto',
+                    width: 'auto',
+                  }}
+                >
+                  <label
+                    htmlFor={'atPizzeria-pizzeria-' + l.name}
+                    style={{width: '100%'}}
+                  >
+                    <b>{l.name}</b>
+                    <br />
+                    {l.address}
+                  </label>
+                  <input
+                    type="radio"
+                    id={'atPizzeria-pizzeria-' + l.name}
+                    value={l.address}
+                    name="pizzeriaAddress"
+                    onChange={handleInputChange}
+                    style={{
+                      display: 'none',
+                    }}
+                  ></input>
+                </div>
               ))}
             </div>
           </div>
@@ -54,91 +132,114 @@ const AtPizzeriaForm = () => {
             }}
           >
             {' '}
-            <h4>Arrival time: </h4>
-            <label htmlFor="atPizzeria-time-option1">PREORDER</label>
+            <h4>ARRIVAL TIME*: </h4>
+            <label htmlFor="time-option1">PREORDER</label>
             <input
               type="radio"
-              name="atPizzeria-time-option"
-              id="atPizzeria-time-option1"
+              name="timeOption"
+              id="time-option1"
               value="preorder"
+              onChange={handleInputChange}
+              checked={orderInfo.timeOption === 'preorder'}
+              required
             ></input>
-            <label htmlFor="atPizzeria-time-option2">NOW</label>
+            <label htmlFor="time-option2">NOW</label>
             <input
               type="radio"
-              name="atPizzeria-time-option"
-              id="atPizzeria-time-option2"
+              name="timeOption"
+              id="time-option2"
               value="now"
+              onChange={handleInputChange}
+              checked={orderInfo.timeOption === 'now'}
+              required
             ></input>
-            {timeOption === 'preorder' && (
+            {orderInfo.timeOption === 'preorder' && (
               <div>
-                <label htmlFor="atPizzeria-day-input">DATE: </label>
+                <label htmlFor="day-input">DATE*: </label>
                 <input
                   type="date"
-                  name="atPizzeria-day-input"
-                  id="atPizzeria-day-input"
+                  name="day"
+                  id="day-input"
+                  onChange={handleInputChange}
+                  value={orderInfo.day}
+                  required
                 ></input>
-                <label htmlFor="atPizzeria-time-input">TIME: </label>
+                <label htmlFor="time-input">TIME*: </label>
                 <input
                   type="time"
-                  name="atPizzeria-time-input"
-                  id="atPizzeria-time-input"
+                  name="time"
+                  id="time-input"
+                  onChange={handleInputChange}
+                  value={orderInfo.time}
+                  required
                 ></input>
               </div>
             )}
           </div>
           <div
-            id="atPizzeria-contact-information-container"
+            id="contact-information-container"
             style={{
               backgroundColor: 'gray',
               display: 'flex',
               flexDirection: 'column',
             }}
           >
-            <h4>Contact information: </h4>
-            <label htmlFor="atPizzeria-firstname-lastname">
-              FIRSTNAME & LASTNAME:{' '}
-            </label>
+            <h4>CONTACT INFORMATION: </h4>
+            <label htmlFor="firstname-lastname">FIRSTNAME & LASTNAME*: </label>
             <input
               type="text"
-              name="atPizzeria-firstname-lastname"
-              id="atPizzeria-firstname-lastname"
+              name="name"
+              id="firstname-lastname"
               style={{margin: 'auto'}}
               placeholder="Firstname Lastname"
+              onChange={handleInputChange}
+              value={orderInfo.name}
+              required
             ></input>
-            <label htmlFor="atPizzeria-phonenumber">PHONENUMBER: </label>
+            <label htmlFor="phonenumber">PHONENUMBER*: </label>
             <input
-              type="text"
-              name="atPizzeria-phonenumber"
-              id="atPizzeria-phonenumber"
+              type="number"
+              name="phonenumber"
+              id="phonenumber"
               style={{margin: 'auto'}}
               placeholder="e.g. 050 000 000 00"
+              onChange={handleInputChange}
+              value={orderInfo.phonenumber}
+              required
             ></input>
-            <label htmlFor="atPizzeria-email">EMAIL: </label>
+            <label htmlFor="email">EMAIL*: </label>
             <input
-              type="text"
-              name="atPizzeria-email"
-              id="atPizzeria-email"
+              type="email"
+              size="30"
+              name="email"
+              id="email"
               style={{margin: 'auto'}}
               placeholder="Email address"
+              onChange={handleInputChange}
+              value={orderInfo.email}
+              required
             ></input>
           </div>
           <div
             id="atPizzeria-details-container"
             style={{display: 'flex', flexDirection: 'column'}}
           >
-            <h4>Order details: </h4>
-            <label htmlFor="atPizzeria-details">DETAILS: </label>
+            <h4>ORDER DETAILS: </h4>
+            <label htmlFor="pickup-details">DETAILS: </label>
             <textarea
               rows="10"
               cols="45"
-              name="atPizzeria-details"
+              name="details"
               id="atPizzeria-details"
               placeholder="Type details for the pizzeria here"
               style={{margin: 'auto'}}
+              onChange={handleInputChange}
+              value={orderInfo.details}
             ></textarea>
           </div>
+          <button type="submit">TO CHECKOUT</button>
         </form>
-        <button>TO CHECKOUT</button>
+        {error && <p style={{color: 'red', fontWeight: 'bold'}}>{error}</p>}
       </div>
     </>
   );

@@ -16,40 +16,40 @@ const OrderTypeButtons = () => {
       <div className="order-type-buttons">
         <button
           id="delivery"
-          onClick={() => handleButtonClick('delivery')}
+          onClick={() => handleButtonClick('Delivery')}
           style={{
             width: '100px',
             height: '100px',
             borderRadius: '50%',
             margin: '2%',
           }}
-          className={orderType === 'delivery' ? 'active' : ''}
+          className={orderType === 'Delivery' ? 'active' : ''}
         >
           Delivery
         </button>
         <button
           id="pick-up"
-          onClick={() => handleButtonClick('pick-up')}
+          onClick={() => handleButtonClick('Pick up')}
           style={{
             width: '100px',
             height: '100px',
             borderRadius: '50%',
             margin: '2%',
           }}
-          className={orderType === 'pick-up' ? 'active' : ''}
+          className={orderType === 'Pick up' ? 'active' : ''}
         >
           Pick Up
         </button>
         <button
           id="at-pizzeria"
-          onClick={() => handleButtonClick('at-pizzeria')}
+          onClick={() => handleButtonClick('At pizzeria')}
           style={{
             width: '100px',
             height: '100px',
             borderRadius: '50%',
             margin: '2%',
           }}
-          className={orderType === 'at-pizzeria' ? 'active' : ''}
+          className={orderType === 'At pizzeria' ? 'active' : ''}
         >
           At Pizzeria
         </button>
