@@ -1,8 +1,7 @@
 import React from 'react';
 import {useCategories, useProducts} from '../hooks/apiHooks';
-import {useNavigate} from 'react-router';
 
-const AdminProductViewCard = ({product, setShowModified, setModifyProduct}) => {
+const AdminProductViewCard = ({product, setShowModified, setModifyProduct, setDeleteAction, deleteAction}) => {
   const styles = {
     card: {
       border: '2px solid #000',
@@ -105,7 +104,6 @@ const AdminProductViewCard = ({product, setShowModified, setModifyProduct}) => {
   const categoryName =
     categories.find((c) => c.id === product.category)?.name || '';
 
-  const navigate = useNavigate();
   const baseImageUrl = 'http://127.0.0.1:3000/api/v1/uploads/';
   const imageSrc = product.filename
     ? baseImageUrl + product.filename
@@ -113,7 +111,8 @@ const AdminProductViewCard = ({product, setShowModified, setModifyProduct}) => {
 
   const doDelete = async () => {
     try {
-      deleteProduct(product.id);
+      await deleteProduct(product.id);
+      setDeleteAction((prev) => prev + 1);
     } catch (error) {
       console.log(error);
     }
@@ -175,10 +174,9 @@ const AdminProductViewCard = ({product, setShowModified, setModifyProduct}) => {
               <button
                 type="button"
                 style={styles.button}
-                onClick={(evt) => {
+                onClick={async (evt) => {
                   evt.preventDefault();
-                  doDelete();
-                  navigate('/admin/products')
+                  await doDelete();
                 }}
               >
                 Delete product
