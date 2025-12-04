@@ -9,6 +9,11 @@ import AdminOrders from './views/admin/AdminOrders';
 import AdminLayout from './components/AdminLayout';
 import AdminProducts from './views/admin/AdminProducts';
 import {OrderProvider} from './contexts/OrderContext';
+import AdminLogin from './views/admin/AdminLogin';
+import AdminAnouncements from './views/admin/AdminAnnouncements';
+import AdminCoupons from './views/admin/AdminCoupons';
+//import AdminFeedbacks from './views/admin/AdminFeedbacks';
+import AdminProfile from './views/admin/AdminProfile';
 
 const App = () => {
   return (
@@ -24,8 +29,17 @@ const App = () => {
             </Route>
             {/* Admin sivut, placeholder kunnes keksitää yhessä miten lopulta toteutetaa */}
             <Route path="/admin/" element={<AdminLayout />}>
+              <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin/orders" element={<AdminOrders />} />
               <Route path="/admin/products" element={<AdminProducts />} />
+              <Route
+                path="/admin/announcements"
+                element={<AdminAnouncements />}
+              />
+              <Route path="/admin/coupons" element={<AdminCoupons />} />
+              {/* aktivoi kun exporttaa myös jtn: */}
+              {/* <Route path="/admin/feedbacsk" element={<AdminFeedbacks />} /> */}
+              <Route path="/admin/profile" element={<AdminProfile />} />
             </Route>
           </Routes>
         </OrderProvider>
