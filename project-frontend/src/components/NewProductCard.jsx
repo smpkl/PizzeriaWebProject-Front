@@ -44,7 +44,7 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
       border: '2px solid #000',
       borderRadius: '15px',
       padding: '4px',
-      margin: '2px', 
+      margin: '2px',
       width: '20px',
       height: 'auto',
     },
@@ -85,25 +85,44 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
 
   const initValues = {
     name: item?.name ?? '',
-    price: item?.price ?? 0,
+    price: item?.price ?? '',
     category: item?.category ?? 0,
     ingredients: item?.ingredients ?? '',
     description: item?.description ?? '',
   };
 
+  const validatePost = () => {
+    const emptyFields = Object.entries(inputs)
+      .filter(
+        ([key, value]) => value === '' || value === null || value === undefined,
+      )
+      .map(([key]) => key);
+      console.log(emptyFields)
+    if (emptyFields.length > 0) return {successfull: false, emptyFields};
+    else return {successfull: true, emptyFields};
+  };
+
   const doPost = async (inputs, checkbox) => {
-    try {
-      const product = await postProduct(inputs, checkbox, image);
-      const producId = product.result.productId;
-      await postProductTag(checkbox, producId);
-    } catch (error) {
-      console.log(error);
+    const validation = validatePost();
+    if (validation.successfull) {
+      try {
+        const product = await postProduct(inputs, checkbox, image);
+        const producId = product.result.productId;
+        await postProductTag(checkbox, producId);
+        setAddProduct(!addProduct);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      const missingFieldsToString = validation.emptyFields.join(', ')
+      window.alert(`Please fill ${missingFieldsToString}`);
     }
   };
 
   const doPut = async (inputs, checkbox) => {
     try {
       await putProduct(item.id, inputs, checkbox, originalTagIds, image);
+      setShowModified(false);
     } catch (error) {
       console.log(error);
     }
@@ -280,10 +299,6 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
                 onClick={(evt) => {
                   evt.preventDefault();
                   handleSubmit(evt);
-                  if (setAddProduct) {
-                    setAddProduct(!addProduct);
-                  }
-                  if (setShowModified) setShowModified(false);
                 }}
               >
                 Save
