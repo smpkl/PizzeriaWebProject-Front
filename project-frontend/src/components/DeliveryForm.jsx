@@ -1,10 +1,82 @@
 import {useOrderForm} from '../hooks/orderFormHooks';
 import {useOrderContext} from '../hooks/contextHooks';
 import {useNavigate} from 'react-router';
+import {useEffect, useState} from 'react';
+import {usePizzerias} from '../hooks/apiHooks';
 
 const DeliveryForm = () => {
+  const [userLocation, setUserLocation] = useState({});
+  const [sortedPizzerias, setSortedPizzerias] = useState();
+  const [topThreePizzerias, setTopThreePizzerias] = useState();
+  const {pizzerias} = usePizzerias();
   const navigate = useNavigate();
   const {orderInfo} = useOrderContext();
+
+  console.log(orderInfo.pizzeriaAddress);
+
+  // Error for cases when location cannot be found:
+  function error(err) {
+    console.log('ERROR ' + err.code + ': ' + err.message);
+  }
+
+  // If users position is found:
+  function success(position) {
+    const longitude = position.coords.longitude;
+    const latitude = position.coords.latitude;
+    setUserLocation({lat: latitude, long: longitude});
+  }
+
+  // Try to add distances to pizzerias and sort them if userLocation is found:
+  useEffect(() => {
+    const sorted = [...pizzerias];
+
+    function addDistances() {
+      sorted.map((p) => {
+        const distance =
+          Math.sqrt(
+            (userLocation.lat - p.latitude) ** 2 +
+              (userLocation.long - p.longitude) ** 2,
+          ) * 100;
+
+        p.distance = distance;
+      });
+    }
+
+    function sortPizzerias() {
+      sorted.sort((a, b) => a.distance - b.distance);
+    }
+
+    function collectTopThree() {
+      let count = 0;
+      let topThree = [];
+      sorted.forEach((p) => {
+        if (count < 3) {
+          topThree.push(p);
+          count++;
+        }
+      });
+      setTopThreePizzerias(topThree);
+    }
+
+    if (pizzerias && userLocation) {
+      addDistances();
+      sortPizzerias();
+      collectTopThree();
+      setSortedPizzerias(sorted);
+    }
+  }, [userLocation, pizzerias]);
+
+  // Find user location:
+  useEffect(() => {
+    function findLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(success, error);
+      } else {
+        console.log('Not supported');
+      }
+    }
+    findLocation();
+  }, []);
 
   const proceedToCheckout = () => {
     navigate('/checkout');
@@ -59,48 +131,93 @@ const DeliveryForm = () => {
               required
             ></input>
           </div>
-          {/*En tiedä mistä/miten nää pizzeria vaihtoehdot täytyy hakea. Onko vielä osa suunnitelmaa vai onko meillä vaan yksi lokaatio?*/}
-          <div
-            id="pizzeria-choice-container"
-            style={{backgroundColor: 'lightgray'}}
-          >
-            <h4>Choose a pizzeria*: </h4>
-            <div>
-              <label htmlFor="pizzeriaChoice1">Pizzeria 1, Osoite 1</label>
-              <input
-                id="pizzeriaChoice1"
-                type="radio"
-                name="pizzeriaAddress"
-                value="pizzeria-1"
-                onChange={handleInputChange}
-                checked={orderInfo.pizzeriaAddress === 'pizzeria-1'}
-                required
-              ></input>
-            </div>
-            <div>
-              <label htmlFor="pizzeriaChoice2">Pizzeria 2, Osoite 2</label>
-              <input
-                id="pizzeriaChoice2"
-                type="radio"
-                name="pizzeriaAddress"
-                value="pizzeria-2"
-                onChange={handleInputChange}
-                checked={orderInfo.pizzeriaAddress === 'pizzeria-2'}
-                required
-              ></input>
-            </div>
-            <div>
-              <label htmlFor="pizzeriaChoice3">Pizzeria 3, Osoite 3</label>
-              <input
-                id="pizzeriaChoice3"
-                type="radio"
-                name="pizzeriaAddress"
-                value="pizzeria-3"
-                onChange={handleInputChange}
-                checked={orderInfo.pizzeriaAddress === 'pizzeria-3'}
-                required
-              ></input>
-            </div>
+          <div id="pizzeria-choice-container" style={{border: '1px solid '}}>
+            <h4 style={{backgroundColor: 'lightgray', marginBottom: '0'}}>
+              Choose a pizzeria*:{' '}
+            </h4>
+            <p style={{backgroundColor: 'lightgray', marginTop: '0'}}>
+              To find closest pizzeria, and cheapest delivery price,
+              <br />
+              please turn on location finder.
+            </p>
+            {
+              //If pizzerias could be sorted (aka userLocation was found), display three closest pizzerias:
+              sortedPizzerias && (
+                <div>
+                  {topThreePizzerias.map((p) => (
+                    <div
+                      key={`delivery-pizzeria-${p.id}`}
+                      className={`pizzeria-option ${orderInfo.pizzeriaAddress === `${p.name} - ${p.address}` ? 'selected-pizzeria' : ''}`}
+                      style={{
+                        display: 'block',
+                        border: '1px solid lightgray',
+                        margin: '10px auto',
+                        width: 'auto',
+                      }}
+                    >
+                      <label
+                        htmlFor={'delivery-pizzeria-' + p.name}
+                        style={{width: '100%'}}
+                      >
+                        <b>{p.name}</b>
+                        <br />
+                        {p.address}
+                        <br />
+                        {p.distance.toFixed(0)} km
+                      </label>
+                      <input
+                        type="radio"
+                        id={'delivery-pizzeria-' + p.name}
+                        value={`${p.name} - ${p.address}`}
+                        name="pizzeriaAddress"
+                        onChange={handleInputChange}
+                        style={{
+                          display: 'none',
+                        }}
+                      ></input>
+                    </div>
+                  ))}
+                </div>
+              )
+            }
+            {
+              // If no userLocation was found and pizzerias could not be sorted, display them all:
+              !sortedPizzerias && (
+                <div>
+                  {pizzerias.map((p) => (
+                    <div
+                      key={`delivery-pizzeria-${p.id}`}
+                      className={`pizzeria-option ${orderInfo.pizzeriaAddress === `${p.name} - ${p.address}` ? 'selected-pizzeria' : ''}`}
+                      style={{
+                        display: 'block',
+                        border: '1px solid lightgray',
+                        margin: '10px auto',
+                        width: 'auto',
+                      }}
+                    >
+                      <label
+                        htmlFor={'delivery-pizzeria-' + p.name}
+                        style={{width: '100%'}}
+                      >
+                        <b>{p.name}</b>
+                        <br />
+                        {p.address}
+                      </label>
+                      <input
+                        type="radio"
+                        id={'delivery-pizzeria-' + p.name}
+                        value={`${p.name} - ${p.address}`}
+                        name="pizzeriaAddress"
+                        onChange={handleInputChange}
+                        style={{
+                          display: 'none',
+                        }}
+                      ></input>
+                    </div>
+                  ))}
+                </div>
+              )
+            }
           </div>
           <div
             id="delivery-time-container"

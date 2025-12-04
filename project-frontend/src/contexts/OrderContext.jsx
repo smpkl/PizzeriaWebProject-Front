@@ -1,5 +1,4 @@
 import {createContext, useState, useEffect} from 'react';
-import {useOrder} from '../hooks/apiHooks';
 
 const OrderContext = createContext(null);
 
@@ -26,8 +25,6 @@ const OrderProvider = ({children}) => {
   const [orderProducts, setOrderProducts] = useState([]);
   const [orderMeals, setOrderMeals] = useState([]);
   const [orderPrice, setOrderPrice] = useState(0);
-
-  const {postOrder, postProductToOrder} = useOrder();
 
   const [hasLoaded, setHasLoaded] = useState(false);
 
@@ -87,6 +84,18 @@ const OrderProvider = ({children}) => {
     setOrderPrice(null);
     setOrderType(null);
     setOrderUserId(null);
+    setOrderInfo({
+      userAddress: '',
+      userAddress2: '',
+      pizzeriaAddress: '',
+      timeOption: '',
+      day: '',
+      time: '',
+      name: '',
+      email: '',
+      phonenumber: '',
+      details: '',
+    });
   };
 
   const handleProductAdd = async (product) => {

@@ -36,6 +36,26 @@ const useAnnouncements = () => {
   return {announcements};
 };
 
+const usePizzerias = () => {
+  const [pizzerias, setPizzerias] = useState([]);
+
+  useEffect(() => {
+    try {
+      const getPizzerias = async () => {
+        const response = await fetchData(
+          'http://127.0.0.1:3000/api/v1/locations',
+        );
+        //console.log(response);
+        setPizzerias(response.locations);
+      };
+      getPizzerias();
+    } catch (error) {
+      console.log('ERROR', error);
+    }
+  }, []);
+  return {pizzerias};
+};
+
 const useTags = () => {
   const [tags, setTags] = useState([]);
 
@@ -282,6 +302,7 @@ const useUser = () => {
 export {
   useProducts,
   useAnnouncements,
+  usePizzerias,
   useTags,
   useCategories,
   useDailyMeal,

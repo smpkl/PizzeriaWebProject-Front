@@ -1,10 +1,12 @@
 import {useNavigate} from 'react-router';
 import {useOrderContext} from '../hooks/contextHooks';
 import {useOrderForm} from '../hooks/orderFormHooks';
+import {usePizzerias} from '../hooks/apiHooks';
 
-import {pizzerias} from '../mock-data/pizzeriaLocations';
+//import {pizzerias} from '../mock-data/pizzeriaLocations';
 
 const PickUpForm = () => {
+  const {pizzerias} = usePizzerias();
   const navigate = useNavigate();
   const {orderInfo} = useOrderContext();
 
@@ -21,7 +23,7 @@ const PickUpForm = () => {
       <div style={{border: '1px solid black'}}>
         <h3>PICK UP</h3>
         <form
-          action={handleSubmit}
+          onSubmit={handleSubmit}
           id="pickup-form"
           style={{
             display: 'flex',

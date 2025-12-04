@@ -40,8 +40,6 @@ const CheckOut = () => {
       console.log(response);
       setOrderId(response);
       resetOrderContext();
-      sessionStorage.clear();
-      localStorage.clear();
     } catch (error) {
       console.log(error);
       navigate('/order', {state: {error}});
@@ -236,15 +234,12 @@ const CheckOut = () => {
                 <button type="submit" style={{margin: 'auto'}}>
                   ORDER
                 </button>
-                <button
-                  onClick={() => navigate('/order')}
-                  style={{margin: 'auto'}}
-                >
-                  EDIT ORDER
-                </button>
               </div>
             </form>
-          </div>{' '}
+            <button onClick={() => navigate('/order')} style={{margin: 'auto'}}>
+              EDIT ORDER
+            </button>
+          </div>
         </div>
       )}
       {orderId && (
