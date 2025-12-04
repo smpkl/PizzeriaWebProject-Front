@@ -9,7 +9,7 @@ const AdminProducts = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [showModified, setShowModified] = useState(false);
   const [modifyProduct, setModifyProduct] = useState({});
-  const [deleteAction, setDeleteAction] = useState(true);
+  const [deleteAction, setDeleteAction] = useState(0);
 
   const [search, setSearch] = useState('');
   const {getProducts} = useProducts();
@@ -40,8 +40,9 @@ const AdminProducts = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      setProductList(await getProducts());
-      setAllProducts(productList);
+      const products = await getProducts();
+      setProductList(products);
+      setAllProducts(products);
     };
     fetchProducts();
   }, [addProduct, showModified, deleteAction]);
