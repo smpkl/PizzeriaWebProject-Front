@@ -25,7 +25,7 @@ const AdminOrders = () => {
       <div style={styleOrders}>
         <h2>New orders</h2>
         {orders
-          .filter((order) => order.status === 'new')
+          .filter((order) => ['new', 'received'].includes(order.status))
           .map((order) => (
             <OrderCard key={order.id} orderInfo={order} />
           ))}
