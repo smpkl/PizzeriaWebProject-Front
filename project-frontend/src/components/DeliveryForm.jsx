@@ -17,7 +17,7 @@ const DeliveryForm = () => {
       <div style={{border: '1px solid black'}}>
         <h3>DELIVERY</h3>
         <form
-          action={handleSubmit}
+          onSubmit={handleSubmit}
           id="delivery-form"
           style={{
             display: 'flex',

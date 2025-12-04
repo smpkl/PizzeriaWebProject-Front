@@ -29,7 +29,7 @@ const CheckOut = () => {
 
   const doCheckout = async (event) => {
     try {
-      event.preventDefault;
+      event.preventDefault();
       const response = await postOrder(
         orderInfo,
         orderType,
@@ -44,6 +44,7 @@ const CheckOut = () => {
       localStorage.clear();
     } catch (error) {
       console.log(error);
+      navigate('/order', {state: {error}});
     }
   };
 
@@ -203,7 +204,7 @@ const CheckOut = () => {
           </div>
           <div>
             <form
-              action={doCheckout}
+              onSubmit={doCheckout}
               style={{display: 'flex', flexDirection: 'column', margin: 'auto'}}
             >
               <label htmlFor="coupon-input">DISCOUNT COUPON: </label>

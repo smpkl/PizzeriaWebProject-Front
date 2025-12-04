@@ -1,12 +1,34 @@
-import {useNavigate} from 'react-router';
+import {useNavigate, useLocation} from 'react-router';
 import {useOrderContext} from '../../hooks/contextHooks';
 import OrderTypeButtons from '../../components/OrderTypeButtons';
 import DeliveryForm from '../../components/DeliveryForm';
 import PickUpForm from '../../components/PickUpForm';
 import AtPizzeriaForm from '../../components/AtPizzeriaForm';
+import {useEffect, useState} from 'react';
 
-// Tilaus/Ostokori käyttäjälle (se ensimmäinen vaihe)
 const Order = () => {
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Check if location.state contains am error:
+  useEffect(() => {
+    const err = location.state?.error;
+
+    if (err) {
+      setError(err.message);
+      navigate(location.pathname, {replace: true, state: {}}); // Reset the state after a error is set
+    }
+  }, [location.state]);
+
+  // If there is an error, scroll to it:
+  useEffect(() => {
+    if (!error) return;
+
+    const elem = document.getElementById('error');
+    if (elem) elem.scrollIntoView({behavior: 'smooth'});
+  }, [error]);
+
   const {
     orderProducts,
     orderMeals,
@@ -21,7 +43,6 @@ const Order = () => {
     handleClear,
   } = useOrderContext();
   //console.log(orderMeals, orderProducts);
-  const navigate = useNavigate();
 
   return (
     <>
@@ -111,6 +132,18 @@ const Order = () => {
               </div>
               <div>
                 <h2>CHOOSE ORDER TYPE</h2>
+                {error && (
+                  <p
+                    id="error"
+                    style={{
+                      color: 'red',
+                      fontWeight: 'bold',
+                      scrollMarginTop: '40vh',
+                    }}
+                  >
+                    {error}
+                  </p>
+                )}
                 <OrderTypeButtons />
                 {orderType === 'delivery' && <DeliveryForm />}
                 {orderType === 'pick-up' && <PickUpForm />}

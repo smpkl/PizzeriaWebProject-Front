@@ -228,7 +228,7 @@ const useOrder = () => {
       return orderId;
     } catch (error) {
       console.log('ERROR', error);
-      return error;
+      throw error;
     }
   };
   return {postOrder};
