@@ -111,7 +111,8 @@ const AdminProductViewCard = ({product, setShowModified, setModifyProduct, setDe
 
   const doDelete = async () => {
     try {
-      deleteProduct(product.id);
+      await deleteProduct(product.id);
+      setDeleteAction((prev) => prev + 1);
     } catch (error) {
       console.log(error);
     }
@@ -173,10 +174,9 @@ const AdminProductViewCard = ({product, setShowModified, setModifyProduct, setDe
               <button
                 type="button"
                 style={styles.button}
-                onClick={(evt) => {
+                onClick={async (evt) => {
                   evt.preventDefault();
-                  doDelete();
-                  setDeleteAction(!deleteAction)
+                  await doDelete();
                 }}
               >
                 Delete product
