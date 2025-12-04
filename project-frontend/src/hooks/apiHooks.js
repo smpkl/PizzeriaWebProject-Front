@@ -1,8 +1,7 @@
 import {useState, useEffect} from 'react';
 import fetchData from '../utils/fetchData';
 
-const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJmaXJzdG5hbWUiOiJOZXcxIiwibGFzdG5hbWUiOiJBZG1pbjIzIiwiZW1haWwiOiJuZXdhZG1pbisxMTE3NjQ2NjkzNjI4NzZAZXhhbXBsZS5jb20iLCJhZGRyZXNzIjoiQWRtaW4gc3RyZWV0IDIsIEhlbHNpbmtpIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY0NzU3MjI5LCJleHAiOjE3NjQ4NDM2Mjl9.YYXIDfiSj3Cc8iOVDVf7xeqJjIVqQRBBKAF5Wl3SiFY';
+const token = import.meta.env.VITE_ADMIN_TOKEN;
 
 const useProducts = () => {
   const productUrl = 'http://127.0.0.1:3000/api/v1/products';
@@ -79,7 +78,6 @@ const useProducts = () => {
     });
   };
 
-
   const syncProductTags = async (
     productId,
     newTagIds = [],
@@ -150,7 +148,7 @@ const useProducts = () => {
       body: formData,
     };
 
-    console.log(options)
+    console.log(options);
 
     try {
       const url = `${productUrl}/${productId}`;
@@ -295,6 +293,38 @@ const useDailyMeal = () => {
 };
 
 const useOrder = () => {
+  const ordersUrl = 'http://127.0.0.1:3000/api/v1/orders';
+
+  const getOrders = async () => {
+    const options = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const orders = await fetchData(ordersUrl, options);
+      console.log(orders);
+      if (orders) return orders;
+      else return false;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  };
+
+  const getOrderProducts = async (orderId) => {
+    const orderProductUrl = ordersUrl + `/${orderId}/products`;
+    try {
+      const orderProducts = await fetchData(orderProductUrl);
+      if (orderProducts) return orderProducts;
+      else return false;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  };
+
   const postOrder = async () => {
     try {
       /*const response = await fetchData('http://127.0.0.1:3000/api/v1/meals');
@@ -314,7 +344,7 @@ const useOrder = () => {
       console.log('ERROR', error);
     }
   };
-  return {postOrder};
+  return {postOrder, getOrders, getOrderProducts};
 };
 
 const useAuthentication = () => {
