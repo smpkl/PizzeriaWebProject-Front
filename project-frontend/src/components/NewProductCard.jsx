@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import useForm from '../hooks/formHooks';
 import {useProducts, useTags, useCategories} from '../hooks/apiHooks';
-import {useNavigate} from 'react-router';
 
 const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
   const styles = {
@@ -36,11 +35,16 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
       display: 'grid',
       gridTemplateColumns: 'auto auto auto',
       marginTop: '6px',
+      width: '100%',
     },
     tagsRowCheckbox: {
       display: 'none',
     },
     tagsRowLabel: {
+      border: '2px solid #000',
+      borderRadius: '15px',
+      padding: '4px',
+      margin: '2px', 
       width: '20px',
       height: 'auto',
     },
@@ -64,6 +68,11 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
     },
     button: {
       margin: '0.1rem',
+      padding: '4px 10px',
+      borderRadius: '6px',
+      border: '2px solid #000',
+      backgroundColor: '#e0e0e0',
+      cursor: 'pointer',
     },
   };
 
@@ -73,7 +82,6 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
   const {postProduct, postProductTag, putProduct} = useProducts();
   const {tags} = useTags();
   const {categories} = useCategories();
-  const navigate = useNavigate();
 
   const initValues = {
     name: item?.name ?? '',
@@ -83,7 +91,7 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
     description: item?.description ?? '',
   };
 
-  const doPost = async (inputs, checkbox, image) => {
+  const doPost = async (inputs, checkbox) => {
     try {
       const product = await postProduct(inputs, checkbox, image);
       const producId = product.result.productId;
