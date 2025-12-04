@@ -1,7 +1,14 @@
 import {useOrderContext} from '../hooks/contextHooks';
+import {useState} from 'react';
+import ItemDialog from './ItemDialog';
 
 const MenuItem = ({item}) => {
   const {handleProductAdd} = useOrderContext();
+  const [showItemDialog, setShowItemDialog] = useState();
+
+  const handleShowItemDetails = () => {
+    setShowItemDialog(true);
+  };
 
   return (
     <>
@@ -39,8 +46,18 @@ const MenuItem = ({item}) => {
               : 'No tags yet'}
           </p>
           <p>{item.price} €</p>
-          <button onClick={() => handleProductAdd(item)}>Add to order</button>
+          <div>
+            <button onClick={() => handleProductAdd(item)}>Add to order</button>
+            <button onClick={() => handleShowItemDetails()}>See details</button>
+          </div>
         </div>
+        {showItemDialog && (
+          <ItemDialog
+            item={item}
+            meal={{id: ''}}
+            onClose={() => setShowItemDialog(false)}
+          />
+        )}
       </div>
     </>
   );

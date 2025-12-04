@@ -16,6 +16,10 @@ a {
   text-decoration: none;
 }
 
+.products-in-meal:hover {
+  color: green;
+}
+
 .active {
   background-color: greenyellow;
 }

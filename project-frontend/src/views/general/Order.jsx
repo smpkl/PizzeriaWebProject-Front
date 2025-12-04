@@ -8,6 +8,7 @@ import {useEffect, useState} from 'react';
 
 const Order = () => {
   const [error, setError] = useState('');
+  const [itemCount, setItemCount] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -42,7 +43,13 @@ const Order = () => {
     handleMealDelete,
     handleClear,
   } = useOrderContext();
-  //console.log(orderMeals, orderProducts);
+
+  useEffect(() => {
+    let count = 0;
+    if (orderProducts) orderProducts.forEach((p) => (count += p.quantity));
+    if (orderMeals) orderMeals.forEach((m) => (count += m.quantity));
+    setItemCount(count);
+  }, [orderProducts, orderMeals]);
 
   return (
     <>
@@ -114,7 +121,10 @@ const Order = () => {
                     </div>
                   </div>
                 ))}
-                <p>TOTAL: {orderPrice.toFixed(2)}€</p>
+                <p>Items: {itemCount}</p>
+                <p style={{fontSize: '18px'}}>
+                  TOTAL: {orderPrice.toFixed(2)}€
+                </p>
                 <div>
                   <button
                     onClick={() => handleClear()}

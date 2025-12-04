@@ -79,7 +79,6 @@ const useProducts = () => {
     });
   };
 
-
   const syncProductTags = async (
     productId,
     newTagIds = [],
@@ -150,7 +149,7 @@ const useProducts = () => {
       body: formData,
     };
 
-    console.log(options)
+    console.log(options);
 
     try {
       const url = `${productUrl}/${productId}`;
@@ -274,9 +273,34 @@ const useCategories = () => {
 const useMeals = () => {
   const getMeals = async () => {
     try {
+      const weekday = [
+        'sunday',
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+      ];
+
+      const d = new Date();
+      let day = weekday[d.getDay()];
+
       const response = await fetchData('http://127.0.0.1:3000/api/v1/meals');
       const meals = response.meals;
-      //console.log(response);
+
+      const dailymealResponse = await fetchData(
+        `http://127.0.0.1:3000/api/v1/dailymeals/${day}`,
+      );
+      const dailymeal = dailymealResponse.dailymeal;
+
+      meals.forEach((m) => {
+        if (m.id === dailymeal.id) {
+          m.oldPrice = m.price;
+          m.price = (Number(m.price) * 0.85).toFixed(2);
+        }
+      });
+
       const mealsWithProducts = await Promise.all(
         meals.map(async (item) => {
           const productsResponse = await fetchData(
@@ -299,15 +323,30 @@ const useDailyMeal = () => {
 
   useEffect(() => {
     try {
+      const weekday = [
+        'sunday',
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+      ];
+
+      const d = new Date();
+      let day = weekday[d.getDay()];
+
       const getDailyMeal = async () => {
         const response = await fetchData(
-          'http://127.0.0.1:3000/api/v1/dailymeals/monday',
+          `http://127.0.0.1:3000/api/v1/dailymeals/${day}`,
         );
         const dailymeal = response.dailymeal;
         const productsResponse = await fetchData(
           `http://127.0.0.1:3000/api/v1/meals/${dailymeal.id}/products`,
         );
         //console.log(productsResponse);
+        dailymeal.oldPrice = dailymeal.price;
+        dailymeal.price = (Number(dailymeal.price) * 0.85).toFixed(2);
         dailymeal.products = productsResponse.products;
         setDailyMeal(response.dailymeal);
       };
