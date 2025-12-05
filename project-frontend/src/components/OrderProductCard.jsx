@@ -1,15 +1,15 @@
 import React from 'react';
 
 const OrderProductCard = ({product}) => {
-  const containerStyle = {display: 'flex'};
-  const productStyle = {borderBottom: '1px solid #ccc', marginLeft: '0.5rem'};
+  const productStyle = {borderBottom: '1px solid #ccc'};
+  const paragraphStyle = {padding: '0', margin: '0.1rem'}
   return (
     <tr>
-      <td>
-        <p style={productStyle}>{product.name}</p>
+      <td style={productStyle}>
+        <p style={paragraphStyle}>{product.name}</p>
       </td>
-      <td>
-        <p style={productStyle}>{product.quantity} pcs</p>
+      <td style={productStyle}>
+        <p style={paragraphStyle}>{product.quantity} pcs</p>
       </td>
     </tr>
   );

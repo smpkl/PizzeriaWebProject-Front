@@ -8,7 +8,7 @@ const OrderCard = ({order, setUpdateList, updateList}) => {
   const {putOrder} = useOrder();
   const style = {
     border: '1px solid grey',
-    margin: '0.5rem',
+    margin: '0',
     padding: '0.2rem',
   };
 
@@ -19,17 +19,24 @@ const OrderCard = ({order, setUpdateList, updateList}) => {
     },
     products: {
       ...style,
-      flex: '1 1 50%',
+      margin: '0.1rem',
+      flex: '1 1 40%',
       textAlign: 'left',
     },
     customer: {
       ...style,
-      flex: '1 1 50%',
+      flex: '1 1 60%',
       textAlign: 'left',
+    },
+    table: {},
+    td: {padding: '2px 4px', border: '1px solid black'},
+    p: {
+      padding: '0',
+      margin: '0.1rem',
     },
     contentRow: {
       display: 'flex',
-      gap: '1rem',
+      gap: '0.3rem',
       alignItems: 'flex-start',
     },
     buttonsRow: {
@@ -46,6 +53,9 @@ const OrderCard = ({order, setUpdateList, updateList}) => {
       cursor: 'pointer',
     },
   };
+
+  const formatDateTime = (isoString) =>
+    isoString.replace('T', ' ').slice(0, 16);
 
   const {
     id,
@@ -86,10 +96,10 @@ const OrderCard = ({order, setUpdateList, updateList}) => {
       <div style={styles.contentRow}>
         <div style={styles.products}>
           <h4>Products: </h4>
-          <table>
+          <table style={styles.table}>
             <thead>
               <tr>
-                <th>Product name:</th>
+                <th>Name:</th>
                 <th>Quantity</th>
               </tr>
             </thead>
@@ -105,15 +115,83 @@ const OrderCard = ({order, setUpdateList, updateList}) => {
         </div>
         <div style={styles.customer}>
           <h4>Customer ingormation:</h4>
-          <p>Customer name: {customer_name}</p>
-          <p>Customer Email: {customer_email}</p>
-          <p>Customer Phone: {customer_phone}</p>
-          <p>Customer address: {delivery_address}</p>
-          <p>Details: {details}</p>
-          <p>Price: {price} €</p>
-          <p>Time option: {time_option}</p>
-          <p>Date: {date_time}</p>
-          <p>Pizzeria address: {pizzeria_address}</p>
+          <table>
+            <tbody>
+              <tr>
+                <td style={styles.td}>
+                  <p style={styles.p}>name:</p>
+                </td>
+                <td style={styles.td}>
+                  <p style={styles.p}>{customer_name}</p>
+                </td>
+              </tr>
+              <tr>
+                <td style={styles.td}>
+                  <p style={styles.p}>Email:</p>
+                </td>
+                <td style={styles.td}>
+                  <p style={styles.p}>{customer_email}</p>
+                </td>
+              </tr>
+              <tr>
+                <td style={styles.td}>
+                  <p style={styles.p}>Phone:</p>
+                </td>
+                <td style={styles.td}>
+                  <p style={styles.p}>{customer_phone}</p>
+                </td>
+              </tr>
+              {order_type === 'delivery' && (
+              <tr>
+                <td style={styles.td}>
+                  <p style={styles.p}>Address:</p>
+                </td>
+                <td style={styles.td}>
+                  <p style={styles.p}>{delivery_address}</p>
+                </td>
+              </tr>)}
+              <tr>
+                <td style={styles.td}>
+                  <p style={styles.p}>Details:</p>
+                </td>
+                <td style={styles.td}>
+                  <p style={styles.p}>{details}</p>
+                </td>
+              </tr>
+              <tr>
+                <td style={styles.td}>
+                  <p style={styles.p}>Price:</p>
+                </td>
+                <td style={styles.td}>
+                  <p style={styles.p}>{price} €</p>
+                </td>
+              </tr>
+              <tr>
+                <td style={styles.td}>
+                  <p style={styles.p}>Time option:</p>
+                </td>
+                <td style={styles.td}>
+                  <p style={styles.p}>{time_option}</p>
+                </td>
+              </tr>
+              <tr>
+                <td style={styles.td}>
+                  <p style={styles.p}>Order time:</p>
+                </td>
+                <td style={styles.td}>
+                  <p style={styles.p}>{formatDateTime(date_time)}</p>
+                </td>
+              </tr>
+              <tr>
+                <td style={styles.td}>
+                  <p style={styles.p}>Pizzeria:</p>
+                </td>
+                <td style={styles.td}>
+                  <p style={styles.p}>{pizzeria_address}</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
       <div style={styles.buttonsRow}>
