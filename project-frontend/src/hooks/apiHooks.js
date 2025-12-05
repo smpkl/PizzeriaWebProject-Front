@@ -500,15 +500,14 @@ const useOrder = () => {
   };
 
   /**
-   * 
+   *
    * @param {*} orderId order which is wanted to upgrade
    * @param {*} body object of values that wanted to upgrade i.e. {"status": "cancelled"}
    * @returns true if passes, false if some failure
    */
 
   const putOrder = async (orderId, body) => {
-    
-    const putUrl = ordersUrl + `/${orderId}`
+    const putUrl = ordersUrl + `/${orderId}`;
     const options = {
       method: 'PUT',
       headers: {
