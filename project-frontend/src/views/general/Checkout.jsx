@@ -64,15 +64,14 @@ const CheckOut = () => {
                 <p>FROM:</p>
                 <p>{orderInfo.pizzeriaAddress}</p>
               </div>
-              {orderType ===
-                'delivery' && (
-                  <div style={{marginLeft: '10px'}}>
-                    <p>TO:</p>
-                    <p>
-                      {orderInfo.userAddress} {orderInfo.userAddress2}
-                    </p>
-                  </div>,
-                )}
+              {orderType === 'delivery' && (
+                <div style={{marginLeft: '10px'}}>
+                  <p>TO:</p>
+                  <p>
+                    {orderInfo.userAddress} {orderInfo.userAddress2}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
           <div style={{backgroundColor: 'gray'}}>
