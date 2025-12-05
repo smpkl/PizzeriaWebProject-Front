@@ -2,12 +2,16 @@ import React from 'react';
 
 const OrderProductCard = ({product}) => {
   const containerStyle = {display: 'flex'};
-  const productStyle = {borderBottom: '1px solid #ccc'};
+  const productStyle = {borderBottom: '1px solid #ccc', marginLeft: '0.5rem'};
   return (
-    <div style={containerStyle}>
-      <p style={productStyle}>{product.name}</p>
-      <p style={productStyle}>{product.count}</p>
-    </div>
+    <tr>
+      <td>
+        <p style={productStyle}>{product.name}</p>
+      </td>
+      <td>
+        <p style={productStyle}>{product.quantity} pcs</p>
+      </td>
+    </tr>
   );
 };
 
