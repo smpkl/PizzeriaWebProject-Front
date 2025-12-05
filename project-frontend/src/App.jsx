@@ -7,7 +7,7 @@ import Order from './views/general/Order';
 import CheckOut from './views/general/Checkout';
 import Profile from './views/general/Profile';
 import AdminOrders from './views/admin/AdminOrders';
-import AdminLayout from './components/AdminLayout';
+import AdminLayout from './components/admin/AdminLayout';
 import AdminProducts from './views/admin/AdminProducts';
 import {OrderProvider} from './contexts/OrderContext';
 import AdminLogin from './views/admin/AdminLogin';

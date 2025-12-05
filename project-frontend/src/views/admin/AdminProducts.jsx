@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import NewProductCard from '../../components/NewProductCard';
+import NewProductCard from '../../components/admin/NewProductCard';
 import {useProducts} from '../../hooks/apiHooks';
-import AdminProductViewCard from '../../components/AdminProductViewCard';
+import AdminProductViewCard from '../../components/admin/AdminProductViewCard';
 
 const AdminProducts = () => {
   const [addProduct, setAddProduct] = useState(false);

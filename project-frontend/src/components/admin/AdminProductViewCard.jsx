@@ -1,5 +1,5 @@
 import React from 'react';
-import {useCategories, useProducts} from '../hooks/apiHooks';
+import {useCategories, useProducts} from '../../hooks/apiHooks';
 
 const AdminProductViewCard = ({product, setShowModified, setModifyProduct, setDeleteAction, deleteAction}) => {
   const styles = {

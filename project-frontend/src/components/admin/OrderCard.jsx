@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import OrderProductCard from './OrderProductCard';
-import {useOrder} from '../hooks/apiHooks';
+import {useOrder} from '../../hooks/apiHooks';
 
 const OrderCard = ({order, setUpdateList, updateList}) => {
   const {getOrderProducts} = useOrder();

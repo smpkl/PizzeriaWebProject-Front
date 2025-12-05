@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import useForm from '../hooks/formHooks';
-import {useProducts, useTags, useCategories} from '../hooks/apiHooks';
+import useForm from '../../hooks/formHooks';
+import {useProducts, useTags, useCategories} from '../../hooks/apiHooks';
 
 const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
   const styles = {

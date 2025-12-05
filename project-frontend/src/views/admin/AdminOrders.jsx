@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import OrderCard from '../../components/OrderCard';
 import { useOrder } from '../../hooks/apiHooks';
-
+import OrderCard from '../../components/admin/OrderCard'
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
   const [updateList, setUpdateList] = useState(false);
