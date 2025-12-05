@@ -87,13 +87,20 @@ const OrderCard = ({order, setUpdateList, updateList}) => {
         <div style={styles.products}>
           <h4>Products: </h4>
           <table>
-            <tr>
-            <th>Product name:</th>
-            <th>Quantity</th>
-            </tr>
-          {orderProducts.map((product) => (
-            <OrderProductCard key={`${id}-${product.id}`} product={product} />
-          ))}
+            <thead>
+              <tr>
+                <th>Product name:</th>
+                <th>Quantity</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orderProducts.map((product) => (
+                <OrderProductCard
+                  key={`${id}-${product.id}`}
+                  product={product}
+                />
+              ))}
+            </tbody>
           </table>
         </div>
         <div style={styles.customer}>
