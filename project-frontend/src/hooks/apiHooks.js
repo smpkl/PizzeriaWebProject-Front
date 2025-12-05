@@ -4,7 +4,7 @@ import fetchData from '../utils/fetchData';
 const token = import.meta.env.VITE_ADMIN_TOKEN;
 
 const useProducts = () => {
-  const productUrl = 'http://127.0.0.1:3000/api/v1/products';
+  const productUrl = import.meta.env.PRODUCT_URL;
   const getProducts = async () => {
     try {
       const productData = await fetchData(
@@ -358,7 +358,7 @@ const useDailyMeal = () => {
 };
 
 const useOrder = () => {
-  const ordersUrl = 'http://127.0.0.1:3000/api/v1/orders';
+  const ordersUrl = import.meta.env.VITE_ORDER_URL;
 
   const getOrders = async () => {
     const options = {
@@ -498,7 +498,35 @@ const useOrder = () => {
       throw error;
     }
   };
-  return {postOrder, getOrders, getOrderProducts};
+
+  /**
+   * 
+   * @param {*} orderId order which is wanted to upgrade
+   * @param {*} body object of values that wanted to upgrade i.e. {"status": "cancelled"}
+   * @returns true if passes, false if some failure
+   */
+
+  const putOrder = async (orderId, body) => {
+    
+    const putUrl = ordersUrl + `/${orderId}`
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    };
+
+    try {
+      const updatedOrder = await fetchData(putUrl, options);
+      if (updatedOrder) return true;
+      else return false;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  };
+  return {postOrder, getOrders, getOrderProducts, putOrder};
 };
 
 const useAuthentication = () => {
