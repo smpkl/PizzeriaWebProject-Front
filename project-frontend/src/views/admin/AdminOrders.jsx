@@ -3,10 +3,8 @@ import OrderCard from '../../components/OrderCard';
 import { useOrder } from '../../hooks/apiHooks';
 
 const AdminOrders = () => {
-//mock dataa testaamista varten, tuossa muodossa pitäis saada tulee apista
-//const orders = mockOrderList;
-// import { mockOrderList } from '../../mock-data/ordersMockData';
   const [orders, setOrders] = useState([]);
+  const [updateList, setUpdateList] = useState(false);
 
   const {getOrders} = useOrder();
 
@@ -16,7 +14,7 @@ const AdminOrders = () => {
       setOrders(orderList.orders)
     }
     fetchOrders();
-  },[])
+  },[updateList])
 
   const styleContainer = {'display': 'flex', 'justifyContent': 'center'}
   const styleOrders = {'border': '5px solid black', 'margin': '1rem', 'padding': '0.5rem'}
@@ -27,7 +25,7 @@ const AdminOrders = () => {
         {orders
           .filter((order) => ['new', 'received'].includes(order.status))
           .map((order) => (
-            <OrderCard key={order.id} orderInfo={order} />
+            <OrderCard key={order.id} order={order} setUpdateList={setUpdateList} updateList={updateList} />
           ))}
       </div>
       <div style={styleOrders}>
@@ -35,7 +33,7 @@ const AdminOrders = () => {
         {orders
           .filter((order) => order.status === 'in_progress')
           .map((order) => (
-            <OrderCard key={order.id} orderInfo={order} />
+            <OrderCard key={order.id} order={order} setUpdateList={setUpdateList} updateList={updateList} />
           ))}
       </div>
     </div>
