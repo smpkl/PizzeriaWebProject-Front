@@ -125,39 +125,46 @@ const OrderCard = ({order, setUpdateList, updateList}) => {
                   <p style={styles.p}>{customer_name}</p>
                 </td>
               </tr>
-              <tr>
-                <td style={styles.td}>
-                  <p style={styles.p}>Email:</p>
-                </td>
-                <td style={styles.td}>
-                  <p style={styles.p}>{customer_email}</p>
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.td}>
-                  <p style={styles.p}>Phone:</p>
-                </td>
-                <td style={styles.td}>
-                  <p style={styles.p}>{customer_phone}</p>
-                </td>
-              </tr>
+              {customer_email && (
+                <tr>
+                  <td style={styles.td}>
+                    <p style={styles.p}>Email:</p>
+                  </td>
+                  <td style={styles.td}>
+                    <p style={styles.p}>{customer_email}</p>
+                  </td>
+                </tr>
+              )}
+              {customer_phone && (
+                <tr>
+                  <td style={styles.td}>
+                    <p style={styles.p}>Phone:</p>
+                  </td>
+                  <td style={styles.td}>
+                    <p style={styles.p}>{customer_phone}</p>
+                  </td>
+                </tr>
+              )}
               {order_type.toLowerCase() === 'delivery' && (
-              <tr>
-                <td style={styles.td}>
-                  <p style={styles.p}>Address:</p>
-                </td>
-                <td style={styles.td}>
-                  <p style={styles.p}>{delivery_address}</p>
-                </td>
-              </tr>)}
-              <tr>
-                <td style={styles.td}>
-                  <p style={styles.p}>Details:</p>
-                </td>
-                <td style={styles.td}>
-                  <p style={styles.p}>{details}</p>
-                </td>
-              </tr>
+                <tr>
+                  <td style={styles.td}>
+                    <p style={styles.p}>Address:</p>
+                  </td>
+                  <td style={styles.td}>
+                    <p style={styles.p}>{delivery_address}</p>
+                  </td>
+                </tr>
+              )}
+              {details && (
+                <tr>
+                  <td style={styles.td}>
+                    <p style={styles.p}>Details:</p>
+                  </td>
+                  <td style={styles.td}>
+                    <p style={styles.p}>{details}</p>
+                  </td>
+                </tr>
+              )}
               <tr>
                 <td style={styles.td}>
                   <p style={styles.p}>Price:</p>
