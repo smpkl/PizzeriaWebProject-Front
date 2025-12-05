@@ -141,7 +141,7 @@ const OrderCard = ({order, setUpdateList, updateList}) => {
                   <p style={styles.p}>{customer_phone}</p>
                 </td>
               </tr>
-              {order_type === 'delivery' && (
+              {order_type.toLowerCase() === 'delivery' && (
               <tr>
                 <td style={styles.td}>
                   <p style={styles.p}>Address:</p>
