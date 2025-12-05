@@ -1,11 +1,10 @@
 import {useState, useEffect} from 'react';
 import fetchData from '../utils/fetchData';
 
-const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJmaXJzdG5hbWUiOiJOZXcxIiwibGFzdG5hbWUiOiJBZG1pbjIzIiwiZW1haWwiOiJuZXdhZG1pbisxMTE3NjQ2NjkzNjI4NzZAZXhhbXBsZS5jb20iLCJhZGRyZXNzIjoiQWRtaW4gc3RyZWV0IDIsIEhlbHNpbmtpIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY0NzU3MjI5LCJleHAiOjE3NjQ4NDM2Mjl9.YYXIDfiSj3Cc8iOVDVf7xeqJjIVqQRBBKAF5Wl3SiFY';
+const token = import.meta.env.VITE_ADMIN_TOKEN;
 
 const useProducts = () => {
-  const productUrl = 'http://127.0.0.1:3000/api/v1/products';
+  const productUrl = import.meta.env.PRODUCT_URL;
   const getProducts = async () => {
     try {
       const productData = await fetchData(
@@ -359,6 +358,38 @@ const useDailyMeal = () => {
 };
 
 const useOrder = () => {
+  const ordersUrl = import.meta.env.VITE_ORDER_URL;
+
+  const getOrders = async () => {
+    const options = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const orders = await fetchData(ordersUrl, options);
+      console.log(orders);
+      if (orders) return orders;
+      else return false;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  };
+
+  const getOrderProducts = async (orderId) => {
+    const orderProductUrl = ordersUrl + `/${orderId}/products`;
+    try {
+      const orderProducts = await fetchData(orderProductUrl);
+      if (orderProducts) return orderProducts;
+      else return false;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  };
+
   const postOrder = async (
     orderInfo,
     orderType,
@@ -467,7 +498,35 @@ const useOrder = () => {
       throw error;
     }
   };
-  return {postOrder};
+
+  /**
+   * 
+   * @param {*} orderId order which is wanted to upgrade
+   * @param {*} body object of values that wanted to upgrade i.e. {"status": "cancelled"}
+   * @returns true if passes, false if some failure
+   */
+
+  const putOrder = async (orderId, body) => {
+    
+    const putUrl = ordersUrl + `/${orderId}`
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    };
+
+    try {
+      const updatedOrder = await fetchData(putUrl, options);
+      if (updatedOrder) return true;
+      else return false;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  };
+  return {postOrder, getOrders, getOrderProducts, putOrder};
 };
 
 const useAuthentication = () => {

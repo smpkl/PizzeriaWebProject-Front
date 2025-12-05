@@ -1,34 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import OrderCard from '../../components/OrderCard';
-import { mockOrderList } from '../../mock-data/ordersMockData';
+import { useOrder } from '../../hooks/apiHooks';
 
 const AdminOrders = () => {
-//mock dataa testaamista varten, tuossa muodossa pitäis saada tulee apista
-const orders = mockOrderList;
+  const [orders, setOrders] = useState([]);
+  const [updateList, setUpdateList] = useState(false);
 
-  //Laitan jo 2 kieli optiota joka hallitaa tod näk shared contextilla
-  const langEn = true;
-  const langFin = false;
+  const {getOrders} = useOrder();
+
+  useEffect( () => {
+    const fetchOrders = async () => {
+      const orderList = await getOrders();
+      setOrders(orderList.orders)
+    }
+    fetchOrders();
+  },[updateList])
+
   const styleContainer = {'display': 'flex', 'justifyContent': 'center'}
   const styleOrders = {'border': '5px solid black', 'margin': '1rem', 'padding': '0.5rem'}
   return (
     <div style={styleContainer}>
       <div style={styleOrders}>
-        {(langEn && <h2>New orders</h2>) ||
-          (langFin && <h2>Uudet tilaukset</h2>)}
+        <h2>New orders</h2>
         {orders
-          .filter((order) => order.status === 'new')
+          .filter((order) => ['new', 'received'].includes(order.status))
           .map((order) => (
-            <OrderCard key={order.id} orderInfo={order} />
+            <OrderCard key={order.id} order={order} setUpdateList={setUpdateList} updateList={updateList} />
           ))}
       </div>
       <div style={styleOrders}>
-        {(langEn && <h2>Active orders</h2>) ||
-          (langFin && <h2>Aktiiviset tilaukset</h2>)}
+        <h2>Active orders</h2>
         {orders
-          .filter((order) => order.status === 'pending')
+          .filter((order) => order.status === 'in_progress')
           .map((order) => (
-            <OrderCard key={order.id} orderInfo={order} />
+            <OrderCard key={order.id} order={order} setUpdateList={setUpdateList} updateList={updateList} />
           ))}
       </div>
     </div>

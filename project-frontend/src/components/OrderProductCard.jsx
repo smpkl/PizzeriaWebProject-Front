@@ -1,17 +1,17 @@
 import React from 'react';
 
-const OrderProductCard = ({product, orderType, deliveryAddress}) => {
-
-  const containerStyle = {'display': 'flex'}
-  const productStyle = {'borderBottom': '1px solid #ccc'};
+const OrderProductCard = ({product}) => {
+  const containerStyle = {display: 'flex'};
+  const productStyle = {borderBottom: '1px solid #ccc', marginLeft: '0.5rem'};
   return (
-    <div>
-      <div style={containerStyle}>
+    <tr>
+      <td>
         <p style={productStyle}>{product.name}</p>
-        <p style={productStyle}>{product.count}</p>
-      </div>
-      {orderType === 'delivery' && <p style={productStyle}>{deliveryAddress}</p>}
-    </div>
+      </td>
+      <td>
+        <p style={productStyle}>{product.quantity} pcs</p>
+      </td>
+    </tr>
   );
 };
 
