@@ -4,7 +4,7 @@ import fetchData from '../utils/fetchData';
 const token = import.meta.env.VITE_ADMIN_TOKEN;
 
 const useProducts = () => {
-  const productUrl = import.meta.env.PRODUCT_URL;
+  const productUrl = import.meta.env.VITE_PRODUCT_URL;
   const getProducts = async () => {
     try {
       const productData = await fetchData(

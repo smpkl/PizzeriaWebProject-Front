@@ -2,6 +2,8 @@ import {useState} from 'react';
 import ItemDialog from '../ItemDialog';
 
 const AdminMealCard = ({item, setModifyMeal, setShowModified}) => {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+  const imageUrl = baseUrl + 'uploads/';
   const [selectedProduct, setSelectedProduct] = useState();
   const products = item.products;
 
@@ -35,7 +37,7 @@ const AdminMealCard = ({item, setModifyMeal, setShowModified}) => {
           <img
             src={
               item.filename
-                ? `http://127.0.0.1:3000/api/v1/uploads/${item.filename}`
+                ? `${imageUrl}${item.filename}`
                 : 'https://placehold.co/120x120/green/white?text=PRODUCT'
             }
             alt="A menu item image"

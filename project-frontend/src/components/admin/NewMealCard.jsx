@@ -3,6 +3,8 @@ import useForm from '../../hooks/formHooks';
 import {useProducts} from '../../hooks/apiHooks';
 
 const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+  const imageUrl = baseUrl + 'uploads/';
   const styles = {
     card: {
       marginTop: '0.5rem',
@@ -100,7 +102,7 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
     }
 
     try {
-        //post asiat
+      //post asiat
     } catch (error) {
       console.log(error);
     }
@@ -115,8 +117,8 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
     }
 
     try {
-        console.log()
-        //put asiat
+      console.log();
+      //put asiat
     } catch (error) {
       console.log(error);
     }
@@ -143,7 +145,6 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
     fetchProducts();
   }, []);
 
-
   useEffect(() => {
     if (!modifyMeal?.products || !allProducts.length) return;
 
@@ -152,9 +153,7 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
     setOriginalProductIds(initialProductIds);
   }, [modifyMeal, allProducts]);
 
-  const selectedProducts = allProducts.filter((p) =>
-    checkbox.includes(p.id),
-  );
+  const selectedProducts = allProducts.filter((p) => checkbox.includes(p.id));
   const selectedTotalPrice = selectedProducts.reduce(
     (sum, p) => sum + Number(p.price),
     0,
