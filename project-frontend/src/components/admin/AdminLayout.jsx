@@ -37,6 +37,7 @@ const Layout = () => {
                 <option value="/admin/products">Products</option>
                 <option value="/admin/announcements">Announcements</option>
                 <option value="/admin/coupons">Coupons</option>
+                <option value="/admin/meals">Meals</option>
               </select>
             </li>
             {/* Odottaa että valmistuu ja linkitetää projektii */}

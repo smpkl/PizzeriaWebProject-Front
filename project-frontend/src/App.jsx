@@ -7,12 +7,13 @@ import Order from './views/general/Order';
 import CheckOut from './views/general/Checkout';
 import Profile from './views/general/Profile';
 import AdminOrders from './views/admin/AdminOrders';
-import AdminLayout from './components/AdminLayout';
+import AdminLayout from './components/admin/AdminLayout';
 import AdminProducts from './views/admin/AdminProducts';
 import {OrderProvider} from './contexts/OrderContext';
 import AdminLogin from './views/admin/AdminLogin';
 import AdminAnouncements from './views/admin/AdminAnnouncements';
 import AdminCoupons from './views/admin/AdminCoupons';
+import AdminMeals from './views/admin/AdminMeals'
 //import AdminFeedbacks from './views/admin/AdminFeedbacks';
 import AdminProfile from './views/admin/AdminProfile';
 
@@ -39,6 +40,7 @@ const App = () => {
                 element={<AdminAnouncements />}
               />
               <Route path="/admin/coupons" element={<AdminCoupons />} />
+              <Route path="/admin/meals" element={<AdminMeals />}/>
               {/* aktivoi kun exporttaa myös jtn: */}
               {/* <Route path="/admin/feedbacsk" element={<AdminFeedbacks />} /> */}
               <Route path="/admin/profile" element={<AdminProfile />} />

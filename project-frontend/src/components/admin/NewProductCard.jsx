@@ -1,15 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import useForm from '../hooks/formHooks';
-import {useProducts, useTags, useCategories} from '../hooks/apiHooks';
+import useForm from '../../hooks/formHooks';
+import {useProducts, useTags, useCategories} from '../../hooks/apiHooks';
 
 const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+  const imageUrl = baseUrl + 'uploads/'
   const styles = {
     card: {
       marginTop: '0.5rem',
       marginBottom: '0.5rem',
       border: '2px solid #000',
       borderRadius: '14px',
-      padding: '24px 28px',
+      padding: '0.2rem 0.2rem',
       maxWidth: '950px',
       margin: '0 auto',
       fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
@@ -20,11 +22,11 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
     grid: {
       display: 'grid',
       gridTemplateColumns: '1.1fr 1.3fr 0.9fr',
-      columnGap: '32px',
-      rowGap: '16px',
+      columnGap: '0.3rem',
+      rowGap: '0.1rem',
     },
     field: {
-      marginBottom: '16px',
+      marginBottom: '0.1rem',
     },
     textarea: {
       width: '100%',
@@ -34,8 +36,11 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
     tagsRow: {
       display: 'grid',
       gridTemplateColumns: 'auto auto auto',
-      marginTop: '6px',
+      marginTop: '0.1rem',
       width: '100%',
+    },
+    tagsRowDiv: {
+      margin: '0.1rem',
     },
     tagsRowCheckbox: {
       display: 'none',
@@ -43,16 +48,18 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
     tagsRowLabel: {
       border: '2px solid #000',
       borderRadius: '15px',
-      padding: '4px',
-      margin: '2px',
-      width: '20px',
+      padding: '0.2rem',
+      margin: '0.01rem',
+      width: '0.3rem',
       height: 'auto',
     },
     tagsRowLabelChecked: {
       backgroundColor: 'green',
+      fontWeight: 'bolder',
     },
     tagsRowLabelUnChecked: {
       backgroundColor: 'red',
+      fontWeight: 'bold',
     },
     imageWrapper: {
       marginTop: '22px',
@@ -97,7 +104,7 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
         ([key, value]) => value === '' || value === null || value === undefined,
       )
       .map(([key]) => key);
-      console.log(emptyFields)
+    console.log(emptyFields);
     if (emptyFields.length > 0) return {successfull: false, emptyFields};
     else return {successfull: true, emptyFields};
   };
@@ -114,7 +121,7 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
         console.log(error);
       }
     } else {
-      const missingFieldsToString = validation.emptyFields.join(', ')
+      const missingFieldsToString = validation.emptyFields.join(', ');
       window.alert(`Please fill ${missingFieldsToString}`);
     }
   };
@@ -192,7 +199,7 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
                   const isChecked = checkbox.includes(tag.id);
 
                   return (
-                    <div key={`tag-${tag.id}`}>
+                    <div key={`tag-${tag.id}`} style={styles.tagsRowDiv}>
                       <input
                         style={styles.tagsRowCheckbox}
                         type="checkbox"
@@ -279,10 +286,19 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
           {/* oikea sarake */}
           <div>
             <div style={styles.imageWrapper}>
-              <img
-                src={preview ?? 'https://placehold.co/100x100'}
-                alt="meals unique picture"
-              />
+              {item?.filename && !preview && (
+                <img
+                  src={imageUrl + item?.filename}
+                  alt="meals unique picture"
+                />
+              )}
+              {preview && <img src={preview} alt="meals unique picture" />}
+              {!preview && !item?.filename && (
+                <img
+                  src={'https://placehold.co/100x100'}
+                  alt="meals unique picture"
+                />
+              )}
             </div>
             <input
               id="productImage"
