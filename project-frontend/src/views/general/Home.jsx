@@ -18,6 +18,10 @@ import {
 const Home = () => {
   const navigate = useNavigate();
 
+  const [message, setMessage] = useState('');
+
+  const location = useLocation();
+
   const {announcements} = useAnnouncements();
   const {tags} = useTags();
   const {categories} = useCategories();
@@ -51,8 +55,6 @@ const Home = () => {
     loadData();
   }, []);
 
-  const location = useLocation();
-
   // Scroll the view to menu when user has clicked "Back to shopping" -button in Order-view:
   useEffect(() => {
     if (location.state?.scrollToMenu) {
@@ -66,8 +68,29 @@ const Home = () => {
     }
   }, [location, menuProducts, menuMeals]);
 
+  // Set a welcome message after user has logged in or a "user registered" message after user has successfully registered:
+  useEffect(() => {
+    if (location.state?.success) {
+      setMessage(location.state.success);
+      navigate(location.pathname, {replace: true, state: {}}); // Reset the state
+    }
+  }, [location.state]);
+
   return (
     <>
+      {message && (
+        <p
+          style={{
+            color: 'white',
+            fontWeight: 'bold',
+            fontSize: '18px',
+            backgroundColor: 'darkgoldenrod',
+            padding: '10px 0',
+          }}
+        >
+          {message}
+        </p>
+      )}
       <h1>PIZZERIA TBA</h1>
       <div id="main-page-img-container">
         <img

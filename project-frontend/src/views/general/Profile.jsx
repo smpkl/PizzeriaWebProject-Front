@@ -1,10 +1,10 @@
 import {useState} from 'react';
 import LoginForm from '../../components/LoginForm';
 import RegisterForm from '../../components/RegisterForm';
+import {useUserContext} from '../../hooks/contextHooks';
 
 const Profile = () => {
-  //const { user } = useUserContext();
-  const user = false;
+  const {user, handleLogout} = useUserContext();
   const [isLogin, setIsLogin] = useState(false);
   const [isForm, setIsForm] = useState(false);
 
@@ -14,6 +14,11 @@ const Profile = () => {
 
   return (
     <>
+      {user && (
+        <div style={{textAlign: 'right', width: '90%'}}>
+          <button onClick={handleLogout}>LOGOUT</button>
+        </div>
+      )}
       <h1>PROFILE</h1>
       {user && (
         <div>

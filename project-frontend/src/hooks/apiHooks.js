@@ -398,7 +398,6 @@ const useOrder = () => {
     orderPrice,
   ) => {
     try {
-      //console.log(orderInfo);
       const options = {
         method: 'POST',
         headers: {
@@ -422,7 +421,6 @@ const useOrder = () => {
         'http://127.0.0.1:3000/api/v1/orders',
         options,
       );
-      //console.log('postOrder', orderResponse);
 
       const orderId = orderResponse.order_id;
 
@@ -470,11 +468,7 @@ const useOrder = () => {
 
       const finalProducts = Object.values(mergedProducts);
 
-      //console.log('Merged: ', mergedProducts);
-      //console.log(finalProducts);
-
       finalProducts.forEach(async (p) => {
-        //console.log(p);
         const options2 = {
           method: 'POST',
           headers: {
@@ -529,7 +523,7 @@ const useOrder = () => {
 };
 
 const useAuthentication = () => {
-  const postLogin = async (inputs) => {
+  const postUserLogin = async (inputs) => {
     const fetchOptions = {
       method: 'POST',
       headers: {
@@ -537,21 +531,31 @@ const useAuthentication = () => {
       },
       body: JSON.stringify(inputs),
     };
-    const loginResult = await fetchData(url, fetchOptions);
+    const loginResult = await fetchData(
+      `http://127.0.0.1:3000/api/v1/auth/user/login`,
+      fetchOptions,
+    );
     return loginResult;
   };
-  return {postLogin};
+  return {postUserLogin};
 };
 
 const useUser = () => {
-  const getUserByToken = async (token) => {
-    const options = {
-      headers: {
-        Authorization: 'Bearer ' + token,
-      },
-    };
-    //const tokenResults = await fetchData(url, options);
-    //return tokenResults;
+  const getCurrentUser = async (token) => {
+    try {
+      const options = {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      };
+      const tokenResults = await fetchData(
+        `http://127.0.0.1:3000/api/v1/users/me`,
+        options,
+      );
+      return tokenResults;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const postUser = async (inputs) => {
@@ -561,16 +565,26 @@ const useUser = () => {
         headers: {
           'Content-type': 'application/json',
         },
-        body: JSON.stringify(inputs),
+        body: JSON.stringify({
+          first_name: inputs.firstname,
+          last_name: inputs.lastname,
+          email: inputs.email,
+          address: inputs.address,
+          password: inputs.password,
+          role: 'user',
+        }),
       };
-      //const registerResults = await fetchData(url, options);
-      //return registerResults;
+      const registerResults = await fetchData(
+        `http://127.0.0.1:3000/api/v1/users`,
+        options,
+      );
+      return registerResults;
     } catch (error) {
       console.log('ERROR: ', error);
     }
   };
 
-  return {getUserByToken, postUser};
+  return {getCurrentUser, postUser};
 };
 
 export {

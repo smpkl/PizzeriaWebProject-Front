@@ -1,10 +1,10 @@
 import useForm from '../hooks/formHooks';
 import {useState} from 'react';
-//import {useUserContext} from '../hooks/contextHooks';
+import {useUserContext} from '../hooks/contextHooks';
 
 const LoginForm = ({goBack}) => {
   const [error, setError] = useState();
-  //const {handleLogin} = useUserContext();
+  const {handleLogin} = useUserContext();
 
   const initValues = {
     email: '',
@@ -13,8 +13,8 @@ const LoginForm = ({goBack}) => {
 
   const doLogin = async (formData) => {
     try {
-      //await handleLogin(formData);
-      console.log(formData);
+      const loginResponse = await handleLogin(formData);
+      console.log(loginResponse);
     } catch (error) {
       console.log('Login error: ' + error);
       setError(error.message);
@@ -25,6 +25,7 @@ const LoginForm = ({goBack}) => {
 
   return (
     <>
+      <h2>LOGIN</h2>
       {error && <p style={{color: 'darkred'}}>Could not login: {error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
@@ -46,7 +47,7 @@ const LoginForm = ({goBack}) => {
             id="loginpassword"
             onChange={handleInputChange}
             autoComplete="current-password"
-            placeholder="Type your email"
+            placeholder="Type your password"
           />
         </div>
         <button type="submit">Login</button>

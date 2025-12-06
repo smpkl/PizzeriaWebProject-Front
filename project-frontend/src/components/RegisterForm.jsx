@@ -21,7 +21,12 @@ const RegisterForm = ({goBack}) => {
       const userInfo = await postUser(formData);
       setError('');
       console.log(userInfo);
-      navigate('/');
+      navigate('/', {
+        state: {
+          success: `New user registered! 
+          Login by selecting "Login" from the navigation menu.`,
+        },
+      });
     } catch (error) {
       console.log('Register error: ', error);
       setError(error.message);
@@ -32,6 +37,7 @@ const RegisterForm = ({goBack}) => {
 
   return (
     <>
+      <h2>REGISTER</h2>
       {error && <p style={{color: 'darkred'}}>Could not register: {error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
