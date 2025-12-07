@@ -103,13 +103,13 @@ const Home = () => {
         <OrderTypeButtons />
       </div>
       <div id="announcements">
-        {announcements.map((item) => (
+        {announcements?.map((item) => (
           <Announcement key={item.id} announcement={item} />
         ))}
       </div>
       <div id="meal-of-the-day" style={{backgroundColor: 'goldenrod'}}>
         <h2>Meal of the Day</h2>
-        {dailyMeal && <MealItem key={dailyMeal.id} item={dailyMeal} />}
+        {dailyMeal && <MealItem key={dailyMeal?.id} item={dailyMeal} />}
       </div>
       <div id="menu-container">
         <h2>MENU</h2>
@@ -121,10 +121,10 @@ const Home = () => {
           updateMenu={updateMenu}
         />
         <div id="menu">
-          {menuProducts.map((item) => (
+          {menuProducts?.map((item) => (
             <MenuItem key={`product-${item.id}`} item={item} />
           ))}
-          {menuMeals.map((item) => (
+          {menuMeals?.map((item) => (
             <MealItem key={`meal-${item.id}`} item={item} />
           ))}
         </div>

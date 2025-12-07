@@ -1,12 +1,32 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import LoginForm from '../../components/LoginForm';
 import RegisterForm from '../../components/RegisterForm';
 import {useUserContext} from '../../hooks/contextHooks';
+import {useOrder} from '../../hooks/apiHooks';
 
 const Profile = () => {
   const {user, handleLogout} = useUserContext();
+  const {getOrdersByUserId} = useOrder();
   const [isLogin, setIsLogin] = useState(false);
   const [isForm, setIsForm] = useState(false);
+  const [orders, setOrders] = useState([]);
+
+  const getUserOrders = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const ordersData = await getOrdersByUserId(user.user_id, token);
+      console.log(ordersData);
+      setOrders(ordersData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      getUserOrders();
+    }
+  }, [user]);
 
   const returnToSelectMenu = () => {
     setIsForm(false);
@@ -21,9 +41,251 @@ const Profile = () => {
       )}
       <h1>PROFILE</h1>
       {user && (
-        <div>
-          <h2>USER INFORMATION</h2>
-        </div>
+        <>
+          <h2
+            style={{
+              backgroundColor: 'grey',
+              padding: '15px 0',
+              borderTop: '2px solid black',
+            }}
+          >
+            MY INFORMATION
+          </h2>
+          <div style={{width: '90%', textAlign: 'left', margin: 'auto'}}>
+            <div
+              id="name-info"
+              style={{
+                display: 'flex',
+                justifyContent: 'left',
+                width: '80%',
+                margin: 'auto',
+                padding: '10px',
+                border: '1px solid lightgray',
+              }}
+            >
+              <div>
+                <p>
+                  <b>FIRSTNAME & LASTNAME: </b>
+                </p>
+                <p>
+                  {user.first_name} {user.last_name}
+                </p>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'right',
+                  width: '20%',
+                  marginLeft: 'auto',
+                }}
+              >
+                <button>Change</button>
+              </div>
+            </div>
+            <div
+              id="address-info"
+              style={{
+                display: 'flex',
+                justifyContent: 'left',
+                width: '80%',
+                margin: 'auto',
+                padding: '10px',
+                border: '1px solid lightgray',
+              }}
+            >
+              <div style={{textAlign: 'left'}}>
+                <p>
+                  <b>ADDRESS: </b>
+                </p>
+                <p>{user.address}</p>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'right',
+                  width: '20%',
+                  marginLeft: 'auto',
+                }}
+              >
+                <button>Change</button>
+              </div>
+            </div>
+            <div
+              id="phone-info"
+              style={{
+                display: 'flex',
+                justifyContent: 'left',
+                width: '80%',
+                margin: 'auto',
+                padding: '10px',
+                border: '1px solid lightgray',
+              }}
+            >
+              <div style={{textAlign: 'left'}}>
+                <p>
+                  <b>PHONENUMBER: </b>
+                </p>
+                <p>{user.phonenumber}</p>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'right',
+                  width: '20%',
+                  marginLeft: 'auto',
+                }}
+              >
+                <button>Change</button>
+              </div>
+            </div>
+            <div
+              id="email-info"
+              style={{
+                display: 'flex',
+                justifyContent: 'left',
+                width: '80%',
+                margin: 'auto',
+                padding: '10px',
+                border: '1px solid lightgray',
+              }}
+            >
+              <div style={{textAlign: 'left'}}>
+                <p>
+                  <b>EMAIL: </b>
+                </p>
+                <p>{user.email}</p>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'right',
+                  width: '20%',
+                  marginLeft: 'auto',
+                }}
+              >
+                <button>Change</button>
+              </div>
+            </div>
+            <div style={{margin: 'auto', width: '100%', textAlign: 'center'}}>
+              <button>Change password</button>
+            </div>
+          </div>
+          <h2
+            style={{
+              backgroundColor: 'grey',
+              padding: '15px 0',
+              borderTop: '2px solid black',
+            }}
+          >
+            MY ORDERS
+          </h2>
+          <div>
+            {!orders && <p>No orders yet</p>}
+            {orders && (
+              <div>
+                {orders.map((o) => {
+                  const dateAndTime = o.date_time.split('T');
+                  const time = dateAndTime[1].split(':');
+                  return (
+                    <div
+                      key={`user-order-${o.id}`}
+                      style={{border: '1px solid lightgray', margin: '5px 0'}}
+                    >
+                      <h3
+                        style={{
+                          width: '80%',
+                          textAlign: 'left',
+                          margin: 'auto',
+                          padding: '10px',
+                          backgroundColor: 'lightgray',
+                        }}
+                      >
+                        ORDER ID: {o.id}
+                      </h3>
+                      <div
+                        style={{display: 'flex', width: '80%', margin: 'auto'}}
+                      >
+                        <div style={{width: '50%', textAlign: 'left'}}>
+                          <p>
+                            <b>
+                              {dateAndTime[0]} {`${time[0]}:${time[1]}`}
+                            </b>
+                          </p>
+                        </div>
+                        <div style={{width: '50%', textAlign: 'right'}}>
+                          <p>
+                            {' '}
+                            <b>TOTAL: </b>
+                            {o.price}€
+                          </p>
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          width: '80%',
+                          margin: 'auto',
+                          textAlign: 'left',
+                        }}
+                      >
+                        <p>
+                          <b>ORDER TYPE: </b> {o.order_type}
+                        </p>
+                      </div>
+                      <div
+                        style={{
+                          width: '80%',
+                          margin: 'auto',
+                          textAlign: 'left',
+                        }}
+                      >
+                        <p>
+                          <b>PIZZERIA: </b> {o.pizzeria_address.split(' - ')[0]}
+                        </p>
+                        <p> {o.pizzeria_address.split(' - ')[1]}</p>
+                        {o.order_type === 'Delivery' && (
+                          <p>
+                            <b>DELIVERY ADDRESS: </b> {o.delivery_address}
+                          </p>
+                        )}
+                      </div>
+                      <div>
+                        <p>
+                          <b>ITEMS:</b>
+                        </p>
+                        <div>
+                          {o.products.map((p) => {
+                            return (
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                  width: '100%',
+                                }}
+                              >
+                                <div>
+                                  <p>
+                                    <b>{p.name}</b> x{p.quantity}
+                                  </p>
+                                </div>
+                                <div>
+                                  <p>{p.price}€ / pcs</p>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </>
       )}
       {!user && !isForm && (
         <div>

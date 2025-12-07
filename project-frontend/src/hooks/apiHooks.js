@@ -390,9 +390,37 @@ const useOrder = () => {
     }
   };
 
+  const getOrdersByUserId = async (userId, token) => {
+    //const userOrdersUrl = ordersUrl + `/user/${userId}`;
+    try {
+      const options = {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const orders = await fetchData(
+        `http://127.0.0.1:3000/api/v1/orders/user/${userId}`,
+        options,
+      );
+      const ordersWithProducts = await Promise.all(
+        orders.orders.map(async (order) => {
+          const productsResponse = await fetchData(
+            `http://127.0.0.1:3000/api/v1/orders/${order.id}/products`,
+          );
+          return {...order, products: productsResponse.products};
+        }),
+      );
+      return ordersWithProducts;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const postOrder = async (
     orderInfo,
     orderType,
+    orderUserId,
     orderProducts,
     orderMeals,
     orderPrice,
@@ -406,6 +434,7 @@ const useOrder = () => {
         body: JSON.stringify({
           status: 'received',
           orderType: orderType,
+          userId: orderUserId,
           timeOption: orderInfo.timeOption,
           dateTime: `${orderInfo.day} ${orderInfo.time}`,
           deliveryAddress: `${orderInfo.userAddress} ${orderInfo.userAddress2}`,
@@ -421,7 +450,6 @@ const useOrder = () => {
         'http://127.0.0.1:3000/api/v1/orders',
         options,
       );
-
       const orderId = orderResponse.order_id;
 
       // Collect all the products from the orderProducts and orderMeals to an object:
@@ -519,7 +547,7 @@ const useOrder = () => {
       return false;
     }
   };
-  return {postOrder, getOrders, getOrderProducts, putOrder};
+  return {postOrder, getOrders, getOrderProducts, getOrdersByUserId, putOrder};
 };
 
 const useAuthentication = () => {
@@ -569,6 +597,7 @@ const useUser = () => {
           first_name: inputs.firstname,
           last_name: inputs.lastname,
           email: inputs.email,
+          phonenumber: inputs.phonenumber,
           address: inputs.address,
           password: inputs.password,
           role: 'user',
@@ -581,6 +610,7 @@ const useUser = () => {
       return registerResults;
     } catch (error) {
       console.log('ERROR: ', error);
+      throw error;
     }
   };
 

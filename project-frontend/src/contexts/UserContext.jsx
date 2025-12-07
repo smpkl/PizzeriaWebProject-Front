@@ -18,7 +18,7 @@ const UserProvider = ({children}) => {
       setUser(userInfo.user);
       console.log(userInfo);
       localStorage.setItem('token', userInfo.token);
-      navigate('/', {state: {success: `Welcome ${userInfo.user.firstname}!`}});
+      navigate('/', {state: {success: `Welcome ${userInfo.user.first_name}!`}});
     } catch (e) {
       console.log(e.message);
       throw e;
@@ -27,7 +27,6 @@ const UserProvider = ({children}) => {
 
   const handleLogout = () => {
     try {
-      console.log('Loggin out...');
       localStorage.removeItem('token');
       setUser(null);
       navigate('/');

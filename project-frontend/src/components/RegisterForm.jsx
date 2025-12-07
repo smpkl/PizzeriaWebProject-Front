@@ -13,6 +13,7 @@ const RegisterForm = ({goBack}) => {
     lastname: '',
     password: '',
     email: '',
+    phonenumber: '',
     address: '',
   };
 
@@ -49,6 +50,7 @@ const RegisterForm = ({goBack}) => {
             onChange={handleInputChange}
             autoComplete="firstname"
             placeholder="Type firstname"
+            required
           />
         </div>
         <div>
@@ -60,6 +62,7 @@ const RegisterForm = ({goBack}) => {
             onChange={handleInputChange}
             autoComplete="lastname"
             placeholder="Type lastname"
+            required
           />
         </div>
         <div>
@@ -73,6 +76,19 @@ const RegisterForm = ({goBack}) => {
             onChange={handleInputChange}
             autoComplete="address"
             placeholder="Type streetname and -number, postal code and city"
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="registerphonenumber">Phonenumber:</label>
+          <input
+            name="phonenumber"
+            type="number"
+            id="registerphonenumber"
+            onChange={handleInputChange}
+            autoComplete="phonenumber"
+            placeholder="Type phonenumber"
+            required
           />
         </div>
         <div>
@@ -84,6 +100,7 @@ const RegisterForm = ({goBack}) => {
             onChange={handleInputChange}
             autoComplete="email"
             placeholder="Type email"
+            required
           />
         </div>
         <div>
@@ -95,6 +112,7 @@ const RegisterForm = ({goBack}) => {
             onChange={handleInputChange}
             autoComplete="current-password"
             placeholder="Type password"
+            required
           />
         </div>
         <button type="submit">Register</button>

@@ -11,20 +11,17 @@ const CheckOut = () => {
   const {
     orderInfo,
     orderType,
+    orderUserId,
     orderProducts,
     orderMeals,
     orderPrice,
-    isActiveOrder,
     resetOrderContext,
+    isActiveOrder,
   } = useOrderContext();
 
   useEffect(() => {
-    if (!isActiveOrder) {
-      resetOrderContext();
-      sessionStorage.clear();
-      localStorage.clear();
-      navigate('/');
-    }
+    setOrderId(null);
+    if (!isActiveOrder) navigate('/');
   }, []);
 
   const doCheckout = async (event) => {
@@ -33,6 +30,7 @@ const CheckOut = () => {
       const response = await postOrder(
         orderInfo,
         orderType,
+        orderUserId,
         orderProducts,
         orderMeals,
         orderPrice,
@@ -47,7 +45,7 @@ const CheckOut = () => {
 
   return (
     <>
-      {!orderId && (
+      {!orderId && isActiveOrder && (
         <div>
           <h1>CHECKOUT</h1>
           <p>Chech Your order details down below before checking out</p>
@@ -64,7 +62,7 @@ const CheckOut = () => {
                 <p>FROM:</p>
                 <p>{orderInfo.pizzeriaAddress}</p>
               </div>
-              {orderType === 'delivery' && (
+              {orderType === 'Delivery' && (
                 <div style={{marginLeft: '10px'}}>
                   <p>TO:</p>
                   <p>
