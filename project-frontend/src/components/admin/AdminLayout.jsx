@@ -5,7 +5,7 @@ import {useEffect} from 'react';
 const Layout = () => {
   const navigate = useNavigate();
 
-  const {admin, handleAdminAutoLogin} = useAdminContext();
+  const {admin, handleAdminAutoLogin, handleAdminLogout} = useAdminContext();
 
   useEffect(() => {
     handleAdminAutoLogin();
@@ -63,6 +63,7 @@ const Layout = () => {
                 </li>
                 <li>
                   <Link to="/admin/profile">Profile</Link>
+                  <p onClick={handleAdminLogout}>Logout</p>
                 </li>
               </>
             )}
