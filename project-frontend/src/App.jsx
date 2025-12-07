@@ -42,6 +42,7 @@ const App = () => {
                   element={<AdminAnouncements />}
                 />
                 <Route path="/admin/coupons" element={<AdminCoupons />} />
+                <Route path="/admin/meals" element={<AdminMeals />} />
                 {/* aktivoi kun exporttaa myös jtn: */}
                 {/* <Route path="/admin/feedbacsk" element={<AdminFeedbacks />} /> */}
                 <Route path="/admin/profile" element={<AdminProfile />} />
@@ -49,32 +50,6 @@ const App = () => {
             </Routes>
           </OrderProvider>
         </UserProvider>
-        <OrderProvider>
-          <Routes>
-            <Route element={<Layout />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/order" element={<Order />} />
-              <Route path="/checkout" element={<CheckOut />} />
-              <Route path="/about" element={<AboutUs />} />
-            </Route>
-            {/* Admin sivut, placeholder kunnes keksitää yhessä miten lopulta toteutetaa */}
-            <Route path="/admin/" element={<AdminLayout />}>
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin/orders" element={<AdminOrders />} />
-              <Route path="/admin/products" element={<AdminProducts />} />
-              <Route
-                path="/admin/announcements"
-                element={<AdminAnouncements />}
-              />
-              <Route path="/admin/coupons" element={<AdminCoupons />} />
-              <Route path="/admin/meals" element={<AdminMeals />} />
-              {/* aktivoi kun exporttaa myös jtn: */}
-              {/* <Route path="/admin/feedbacsk" element={<AdminFeedbacks />} /> */}
-              <Route path="/admin/profile" element={<AdminProfile />} />
-            </Route>
-          </Routes>
-        </OrderProvider>
       </BrowserRouter>
     </>
   );
