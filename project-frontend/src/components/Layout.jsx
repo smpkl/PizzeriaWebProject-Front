@@ -1,12 +1,17 @@
-// Jokaisessa näkymässä oleva runko (header ja footer)
-
 import {Outlet, Link} from 'react-router';
 import {useOrderContext} from '../hooks/contextHooks';
 import {useEffect, useState} from 'react';
+import {useUserContext} from '../hooks/contextHooks';
 
 const Layout = () => {
   const [itemCount, setItemCount] = useState();
   const {orderProducts, orderMeals} = useOrderContext();
+
+  const {handleAutoLogin, user} = useUserContext();
+
+  useEffect(() => {
+    handleAutoLogin();
+  }, []);
 
   useEffect(() => {
     let count = 0;
@@ -38,7 +43,7 @@ const Layout = () => {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/profile">Profile</Link>
+              <Link to="/profile">{user ? 'Profile' : 'Login'}</Link>
             </li>
             <li>
               <Link to="/order">

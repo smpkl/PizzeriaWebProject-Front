@@ -91,7 +91,7 @@ const MenuFilter = ({products, meals, tags, categories, updateMenu}) => {
             onClick={() => toggleCategory('meals')}
             className={activeCategory === 'meals' ? 'active' : ''}
           >
-            Ateriat
+            Meals
           </button>
         </div>
         <div id="menu-tags">

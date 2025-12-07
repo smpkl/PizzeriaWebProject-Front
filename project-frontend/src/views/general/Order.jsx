@@ -1,5 +1,5 @@
 import {useNavigate, useLocation} from 'react-router';
-import {useOrderContext} from '../../hooks/contextHooks';
+import {useOrderContext, useUserContext} from '../../hooks/contextHooks';
 import OrderTypeButtons from '../../components/OrderTypeButtons';
 import DeliveryForm from '../../components/DeliveryForm';
 import PickUpForm from '../../components/PickUpForm';
@@ -8,9 +8,31 @@ import {useEffect, useState} from 'react';
 
 const Order = () => {
   const [error, setError] = useState('');
+  const {user} = useUserContext();
   const [itemCount, setItemCount] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const {
+    orderProducts,
+    orderMeals,
+    orderPrice,
+    orderType,
+    orderUserId,
+    setOrderUserId,
+    handleProductAdd,
+    handleProductRemove,
+    handleProductDelete,
+    handleMealAdd,
+    handleMealRemove,
+    handleMealDelete,
+    handleClear,
+  } = useOrderContext();
+
+  useEffect(() => {
+    if (user) setOrderUserId(user.user_id);
+    else setOrderUserId(null);
+  }, [user]);
 
   // Check if location.state contains am error:
   useEffect(() => {
@@ -30,26 +52,14 @@ const Order = () => {
     if (elem) elem.scrollIntoView({behavior: 'smooth'});
   }, [error]);
 
-  const {
-    orderProducts,
-    orderMeals,
-    orderPrice,
-    orderType,
-    handleProductAdd,
-    handleProductRemove,
-    handleProductDelete,
-    handleMealAdd,
-    handleMealRemove,
-    handleMealDelete,
-    handleClear,
-  } = useOrderContext();
-
   useEffect(() => {
     let count = 0;
     if (orderProducts) orderProducts.forEach((p) => (count += p.quantity));
     if (orderMeals) orderMeals.forEach((m) => (count += m.quantity));
     setItemCount(count);
   }, [orderProducts, orderMeals]);
+
+  console.log(orderUserId);
 
   return (
     <>

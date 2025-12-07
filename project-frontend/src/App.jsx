@@ -13,14 +13,42 @@ import {OrderProvider} from './contexts/OrderContext';
 import AdminLogin from './views/admin/AdminLogin';
 import AdminAnouncements from './views/admin/AdminAnnouncements';
 import AdminCoupons from './views/admin/AdminCoupons';
-import AdminMeals from './views/admin/AdminMeals'
+import AdminMeals from './views/admin/AdminMeals';
 //import AdminFeedbacks from './views/admin/AdminFeedbacks';
 import AdminProfile from './views/admin/AdminProfile';
+import {UserProvider} from './contexts/UserContext';
 
 const App = () => {
   return (
     <>
       <BrowserRouter basename={import.meta.env.BASE_URL}>
+        <UserProvider>
+          <OrderProvider>
+            <Routes>
+              <Route element={<Layout />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/order" element={<Order />} />
+                <Route path="/checkout" element={<CheckOut />} />
+                <Route path="/about" element={<AboutUs />} />
+              </Route>
+              {/* Admin sivut, placeholder kunnes keksitää yhessä miten lopulta toteutetaa */}
+              <Route path="/admin/" element={<AdminLayout />}>
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin/orders" element={<AdminOrders />} />
+                <Route path="/admin/products" element={<AdminProducts />} />
+                <Route
+                  path="/admin/announcements"
+                  element={<AdminAnouncements />}
+                />
+                <Route path="/admin/coupons" element={<AdminCoupons />} />
+                {/* aktivoi kun exporttaa myös jtn: */}
+                {/* <Route path="/admin/feedbacsk" element={<AdminFeedbacks />} /> */}
+                <Route path="/admin/profile" element={<AdminProfile />} />
+              </Route>
+            </Routes>
+          </OrderProvider>
+        </UserProvider>
         <OrderProvider>
           <Routes>
             <Route element={<Layout />}>
@@ -40,7 +68,7 @@ const App = () => {
                 element={<AdminAnouncements />}
               />
               <Route path="/admin/coupons" element={<AdminCoupons />} />
-              <Route path="/admin/meals" element={<AdminMeals />}/>
+              <Route path="/admin/meals" element={<AdminMeals />} />
               {/* aktivoi kun exporttaa myös jtn: */}
               {/* <Route path="/admin/feedbacsk" element={<AdminFeedbacks />} /> */}
               <Route path="/admin/profile" element={<AdminProfile />} />
