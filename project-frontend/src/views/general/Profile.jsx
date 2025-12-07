@@ -193,7 +193,13 @@ const Profile = () => {
                   return (
                     <div
                       key={`user-order-${o.id}`}
-                      style={{border: '1px solid lightgray', margin: '5px 0'}}
+                      style={{
+                        border: '1px solid lightgray',
+                        width: '95%',
+                        margin: '10px auto',
+                        padding: '10px 0',
+                        backgroundColor: 'ivory',
+                      }}
                     >
                       <h3
                         style={{
@@ -253,7 +259,13 @@ const Profile = () => {
                         )}
                       </div>
                       <div>
-                        <p>
+                        <p
+                          style={{
+                            textAlign: 'left',
+                            width: '80%',
+                            margin: '20px auto 5px auto',
+                          }}
+                        >
                           <b>ITEMS:</b>
                         </p>
                         <div>
@@ -263,21 +275,33 @@ const Profile = () => {
                                 style={{
                                   display: 'flex',
                                   justifyContent: 'center',
-                                  width: '100%',
+                                  width: '80%',
+                                  margin: 'auto',
                                 }}
                               >
-                                <div>
+                                <div style={{width: '50%', textAlign: 'left'}}>
                                   <p>
                                     <b>{p.name}</b> x{p.quantity}
                                   </p>
                                 </div>
-                                <div>
+                                <div style={{width: '50%', textAlign: 'right'}}>
                                   <p>{p.price}€ / pcs</p>
                                 </div>
                               </div>
                             );
                           })}
                         </div>
+                      </div>
+                      <div>
+                        <p
+                          style={{
+                            width: '80%',
+                            textAlign: 'left',
+                            margin: 'auto',
+                          }}
+                        >
+                          <b>STATUS: </b> {o.status}
+                        </p>
                       </div>
                     </div>
                   );
