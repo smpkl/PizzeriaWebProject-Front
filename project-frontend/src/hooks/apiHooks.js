@@ -507,11 +507,10 @@ const useOrder = () => {
             quantity: p.quantity,
           }),
         };
-        const orderProductsResponse = await fetchData(
+        await fetchData(
           `http://127.0.0.1:3000/api/v1/orders/${orderId}/products`,
           options2,
         );
-        //console.log(orderProductsResponse);
       });
 
       return orderId;
@@ -565,7 +564,23 @@ const useAuthentication = () => {
     );
     return loginResult;
   };
-  return {postUserLogin};
+
+  const postAdminLogin = async (inputs) => {
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(inputs),
+    };
+    const loginResult = await fetchData(
+      `http://127.0.0.1:3000/api/v1/auth/admin/login`,
+      fetchOptions,
+    );
+    return loginResult;
+  };
+
+  return {postUserLogin, postAdminLogin};
 };
 
 const useUser = () => {
@@ -600,7 +615,6 @@ const useUser = () => {
           phonenumber: inputs.phonenumber,
           address: inputs.address,
           password: inputs.password,
-          role: 'user',
         }),
       };
       const registerResults = await fetchData(
@@ -617,6 +631,54 @@ const useUser = () => {
   return {getCurrentUser, postUser};
 };
 
+const useAdmin = () => {
+  const getCurrentAdmin = async (token) => {
+    try {
+      const options = {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      };
+      const tokenResults = await fetchData(
+        `http://127.0.0.1:3000/api/v1/users/me`,
+        options,
+      );
+      return tokenResults;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const postAdmin = async (inputs) => {
+    try {
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          first_name: inputs.firstname,
+          last_name: inputs.lastname,
+          email: inputs.email,
+          phonenumber: inputs.phonenumber,
+          address: inputs.address,
+          password: inputs.password,
+        }),
+      };
+      const registerResults = await fetchData(
+        `http://127.0.0.1:3000/api/v1/users`,
+        options,
+      );
+      return registerResults;
+    } catch (error) {
+      console.log('ERROR: ', error);
+      throw error;
+    }
+  };
+
+  return {getCurrentAdmin, postAdmin};
+};
+
 export {
   useProducts,
   useAnnouncements,
@@ -627,5 +689,6 @@ export {
   useMeals,
   useAuthentication,
   useUser,
+  useAdmin,
   useOrder,
 };

@@ -1,11 +1,9 @@
 // Adminsivun tiedotteidenhallinta
 
-import React from 'react'
+import React from 'react';
 
 const AdminAnnouncements = () => {
-  return (
-    <div>AdminAnnouncements</div>
-  )
-}
+  return <div>AdminAnnouncements</div>;
+};
 
-export default AdminAnnouncements
+export default AdminAnnouncements;

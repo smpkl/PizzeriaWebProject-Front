@@ -1,10 +1,16 @@
-// Adminsivun profiili + profiilitietojen muokkaaminen + uuden adminin lisääminen?
-import React from 'react'
+import {useAdminContext} from '../../hooks/contextHooks';
 
 const AdminProfile = () => {
-  return (
-    <div>AdminProfile</div>
-  )
-}
+  const {handleAdminLogout} = useAdminContext();
 
-export default AdminProfile
+  return (
+    <div>
+      <div>
+        <button onClick={handleAdminLogout}>Logout</button>
+      </div>
+      <h2>ADMIN PROFILE</h2>
+    </div>
+  );
+};
+
+export default AdminProfile;
