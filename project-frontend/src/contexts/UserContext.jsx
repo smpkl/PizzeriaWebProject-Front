@@ -16,7 +16,6 @@ const UserProvider = ({children}) => {
     try {
       const userInfo = await postUserLogin(credentials);
       setUser(userInfo.user);
-      console.log(userInfo);
       localStorage.setItem('token', userInfo.token);
       navigate('/', {state: {success: `Welcome ${userInfo.user.first_name}!`}});
     } catch (e) {

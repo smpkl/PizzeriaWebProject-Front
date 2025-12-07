@@ -59,8 +59,6 @@ const Order = () => {
     setItemCount(count);
   }, [orderProducts, orderMeals]);
 
-  console.log(orderUserId);
-
   return (
     <>
       <h1>ORDER</h1>

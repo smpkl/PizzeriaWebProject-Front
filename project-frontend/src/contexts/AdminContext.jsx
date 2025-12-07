@@ -16,7 +16,6 @@ const AdminProvider = ({children}) => {
     try {
       const adminInfo = await postAdminLogin(credentials);
       setAdmin(adminInfo.user);
-      console.log(adminInfo);
       localStorage.setItem('adminToken', adminInfo.token);
       navigate('/admin/orders', {
         state: {success: `Welcome ${adminInfo.user.first_name}!`},
@@ -42,7 +41,6 @@ const AdminProvider = ({children}) => {
     try {
       if (token) {
         const userResponse = await getCurrentAdmin(token);
-        console.log(userResponse);
         setAdmin(userResponse.user);
         navigate(location.pathname);
       }

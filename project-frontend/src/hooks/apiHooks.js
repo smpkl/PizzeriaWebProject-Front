@@ -651,10 +651,12 @@ const useAdmin = () => {
 
   const postAdmin = async (inputs) => {
     try {
+      const adminToken = localStorage.getItem('adminToken');
       const options = {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
+          Authorization: 'Bearer ' + adminToken,
         },
         body: JSON.stringify({
           first_name: inputs.firstname,
@@ -666,7 +668,7 @@ const useAdmin = () => {
         }),
       };
       const registerResults = await fetchData(
-        `http://127.0.0.1:3000/api/v1/users`,
+        `http://127.0.0.1:3000/api/v1/users/admin`,
         options,
       );
       return registerResults;
