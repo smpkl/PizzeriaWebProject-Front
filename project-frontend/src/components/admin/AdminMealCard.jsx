@@ -1,11 +1,13 @@
 import {useState} from 'react';
 import ItemDialog from '../ItemDialog';
+import { useMeals } from '../../hooks/apiHooks';
 
-const AdminMealCard = ({item, setModifyMeal, setShowModified}) => {
+const AdminMealCard = ({item, setModifyMeal, setShowModified, deleteAction, setDeleteAction}) => {
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
   const imageUrl = baseUrl + 'uploads/';
   const [selectedProduct, setSelectedProduct] = useState();
   const products = item.products;
+  const { deleteMeal } = useMeals();
 
   const handleShowItemDetails = (product) => {
     setSelectedProduct(product);
@@ -15,7 +17,15 @@ const AdminMealCard = ({item, setModifyMeal, setShowModified}) => {
     setSelectedProduct(null);
   };
 
-  //const handleModifyMeal = async();
+  const handleDelete = async (evt) => {
+    evt.preventDefault();
+
+    const ok = await deleteMeal(item.id);
+
+    if (ok && setDeleteAction) {
+      setDeleteAction(!deleteAction);
+    }
+  };
 
   return (
     <>
@@ -86,6 +96,13 @@ const AdminMealCard = ({item, setModifyMeal, setShowModified}) => {
               }}
             >
               Modify
+            </button>
+                        <button
+              onClick={(evt) => {
+                handleDelete(evt);
+              }}
+            >
+              Delete
             </button>
           </div>
         </div>

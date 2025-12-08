@@ -104,7 +104,6 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
         ([key, value]) => value === '' || value === null || value === undefined,
       )
       .map(([key]) => key);
-    console.log(emptyFields);
     if (emptyFields.length > 0) return {successfull: false, emptyFields};
     else return {successfull: true, emptyFields};
   };

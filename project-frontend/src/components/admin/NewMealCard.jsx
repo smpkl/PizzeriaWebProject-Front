@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import useForm from '../../hooks/formHooks';
-import {useProducts} from '../../hooks/apiHooks';
+import {useMeals, useProducts} from '../../hooks/apiHooks';
 
 const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -46,6 +46,14 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
       display: 'flex',
       flexDirection: 'column',
     },
+    imageWrapper: {
+      marginTop: '22px',
+      maxWidth: '250px',
+      maxHeight: '250px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '10px',
+    },
     buttonsRow: {
       marginTop: '20px',
       display: 'flex',
@@ -65,10 +73,12 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
   };
 
   const {getProducts} = useProducts();
-  //const {} = useMeals();
+  const {postMeal, putMeal, syncMealProducts} = useMeals();
 
   const [allProducts, setAllProducts] = useState([]);
   const [originalProductIds, setOriginalProductIds] = useState([]);
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
 
   const initValues = {
     name: modifyMeal?.name ?? '',
@@ -78,7 +88,7 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
   const validateMeal = (inputs, selectedProductIds) => {
     const emptyFields = Object.entries(inputs)
       .filter(
-        ([, value]) => value === '' || value === null || value === undefined,
+        ([key, value]) => value === '' || value === null || value === undefined,
       )
       .map(([key]) => key);
 
@@ -97,12 +107,21 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
     const validation = validateMeal(inputs, selectedProductIds);
     if (!validation.successfull) {
       const missing = validation.emptyFields.join(', ');
-      window.alert(`Please fill/choose: ${missing}`);
+      window.alert(`Please fill: ${missing}`);
       return;
     }
-
+    let successPost;
     try {
-      //post asiat
+      const mealId = await postMeal(inputs, image);
+      if (!mealId) return;
+
+      successPost = await syncMealProducts(mealId, selectedProductIds, []);
+      if (successPost) {
+        if (setAddMeal) {
+          setAddMeal(!addMeal);
+        }
+      }
+      if (!successPost) window.alert('Service might be down, please try again later');
     } catch (error) {
       console.log(error);
     }
@@ -117,8 +136,19 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
     }
 
     try {
-      console.log();
-      //put asiat
+      let successPut, successProductSync;
+      successPut = await putMeal(modifyMeal.id, inputs, image);
+      if (successPut) {
+        successProductSync = await syncMealProducts(
+          modifyMeal.id,
+          selectedProductIds,
+          originalProductIds,
+        );
+      }
+      if (successPut && successProductSync) {
+        if (setShowModified) setShowModified(false);
+      }
+      window.alert('Service might be down, please try again later');
     } catch (error) {
       console.log(error);
     }
@@ -145,6 +175,7 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
     fetchProducts();
   }, []);
 
+  //checkbox is used to store meals productId
   useEffect(() => {
     if (!modifyMeal?.products || !allProducts.length) return;
 
@@ -165,11 +196,11 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
         style={styles.form}
         onSubmit={(evt) => {
           evt.preventDefault();
-          handleSubmit(evt, checkbox); // välitetään myös productId:t
+          handleSubmit(evt, checkbox);
         }}
       >
         <div style={styles.grid}>
-          {/* vasen sarake: mealin perusinfot */}
+          {/* vasen sarake: mealin perusinfot ja kuva */}
           <div>
             <div style={styles.field}>
               <label htmlFor="mealName">Meal name: </label>
@@ -214,6 +245,30 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
                 <span>No products selected yet</span>
               )}
             </div>
+            <div style={styles.imageWrapper}>
+              {modifyMeal?.filename && !preview && (
+                <img
+                  src={imageUrl + modifyMeal?.filename}
+                  alt="meals unique picture"
+                />
+              )}
+              {preview && <img src={preview} alt="meals unique picture" />}
+              {!preview && !modifyMeal?.filename && (
+                <img
+                  src={'https://placehold.co/100x100'}
+                  alt="meals unique picture"
+                />
+              )}
+            </div>
+            <input
+              id="productImage"
+              type="file"
+              placeholder="change image"
+              onChange={(e) => {
+                setImage(e.target.files[0]);
+                setPreview(URL.createObjectURL(e.target.files[0]));
+              }}
+            />
           </div>
 
           {/* oikea sarake: tuotteiden valinta */}
