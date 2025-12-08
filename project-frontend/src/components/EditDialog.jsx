@@ -1,21 +1,22 @@
 import {useState} from 'react';
 import useForm from '../hooks/formHooks';
 import {useUser} from '../hooks/apiHooks';
-import {useUserContext} from '../hooks/contextHooks';
+import {useAdminContext, useUserContext} from '../hooks/contextHooks';
 
-const EditDialog = ({close, type}) => {
+const EditDialog = ({close, type, userType}) => {
   const {user} = useUserContext();
+  const {admin} = useAdminContext();
   const [error, setError] = useState();
   const [message, setMessage] = useState('');
   const {putUser} = useUser();
 
   const initValues = {
-    firstname: user.first_name,
-    lastname: user.last_name,
+    firstname: userType === 'admin' ? admin.first_name : user.first_name,
+    lastname: userType === 'admin' ? admin.last_name : user.last_name,
     password: '',
-    email: user.email,
-    phonenumber: user.phonenumber,
-    address: user.address,
+    email: userType === 'admin' ? admin.email : user.email,
+    phonenumber: userType === 'admin' ? admin.phonenumber : user.phonenumber,
+    address: userType === 'admin' ? admin.address : user.address,
   };
 
   const inputContainer = {
@@ -29,8 +30,12 @@ const EditDialog = ({close, type}) => {
 
   const doUserUpdate = async (formData) => {
     try {
-      const token = localStorage.getItem('token');
-      const userInfo = await putUser(formData, token, user.user_id);
+      const token =
+        userType === 'admin'
+          ? localStorage.getItem('adminToken')
+          : localStorage.getItem('token');
+      const userId = userType === 'admin' ? admin.user_id : user.user_id;
+      const userInfo = await putUser(formData, token, userId);
       setError('');
       console.log(userInfo);
       setMessage('User information updated');

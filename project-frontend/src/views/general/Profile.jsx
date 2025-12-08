@@ -359,7 +359,9 @@ const Profile = () => {
       {!user && isForm && !isLogin && (
         <RegisterForm goBack={returnToSelectMenu} />
       )}
-      {isEdit && <EditDialog close={closeEditDialog} type={isEdit} />}
+      {isEdit && (
+        <EditDialog close={closeEditDialog} type={isEdit} userType={'user'} />
+      )}
     </>
   );
 };
