@@ -758,7 +758,7 @@ const useUser = () => {
           }),
         };
         const updateResults = await fetchData(
-          `http://127.0.0.1:3000/api/v1/users/${userId}`,
+          `${baseUrl}users/${userId}`,
           options,
         );
         return updateResults;
@@ -775,7 +775,7 @@ const useUser = () => {
           }),
         };
         const updateResults2 = await fetchData(
-          `http://127.0.0.1:3000/api/v1/users/${userId}`,
+          `${baseUrl}users/${userId}`,
           options2,
         );
         return updateResults2;
