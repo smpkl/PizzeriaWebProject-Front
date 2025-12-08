@@ -46,6 +46,14 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
       display: 'flex',
       flexDirection: 'column',
     },
+    imageWrapper: {
+      marginTop: '22px',
+      maxWidth: '250px',
+      maxHeight: '250px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '10px',
+    },
     buttonsRow: {
       marginTop: '20px',
       display: 'flex',
@@ -65,11 +73,12 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
   };
 
   const {getProducts} = useProducts();
-  const {postMeal, putMeal, syncMealProducts} =
-    useMeals();
+  const {postMeal, putMeal, syncMealProducts} = useMeals();
 
   const [allProducts, setAllProducts] = useState([]);
   const [originalProductIds, setOriginalProductIds] = useState([]);
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
 
   const initValues = {
     name: modifyMeal?.name ?? '',
@@ -101,15 +110,18 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
       window.alert(`Please fill: ${missing}`);
       return;
     }
-
+    let successPost;
     try {
-      const mealId = await postMeal(inputs);
+      const mealId = await postMeal(inputs, image);
       if (!mealId) return;
 
-      await syncMealProducts(mealId, selectedProductIds, []);
-      if (setAddMeal) {
-        setAddMeal(!addMeal);
+      successPost = await syncMealProducts(mealId, selectedProductIds, []);
+      if (successPost) {
+        if (setAddMeal) {
+          setAddMeal(!addMeal);
+        }
       }
+      if (!successPost) window.alert('Service might be down, please try again later');
     } catch (error) {
       console.log(error);
     }
@@ -124,9 +136,19 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
     }
 
     try {
-      await putMeal(modifyMeal.id, inputs);
-      await syncMealProducts(modifyMeal.id, selectedProductIds, originalProductIds);
-      if (setShowModified) setShowModified(false);
+      let successPut, successProductSync;
+      successPut = await putMeal(modifyMeal.id, inputs, image);
+      if (successPut) {
+        successProductSync = await syncMealProducts(
+          modifyMeal.id,
+          selectedProductIds,
+          originalProductIds,
+        );
+      }
+      if (successPut && successProductSync) {
+        if (setShowModified) setShowModified(false);
+      }
+      window.alert('Service might be down, please try again later');
     } catch (error) {
       console.log(error);
     }
@@ -178,7 +200,7 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
         }}
       >
         <div style={styles.grid}>
-          {/* vasen sarake: mealin perusinfot */}
+          {/* vasen sarake: mealin perusinfot ja kuva */}
           <div>
             <div style={styles.field}>
               <label htmlFor="mealName">Meal name: </label>
@@ -223,6 +245,30 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
                 <span>No products selected yet</span>
               )}
             </div>
+            <div style={styles.imageWrapper}>
+              {modifyMeal?.filename && !preview && (
+                <img
+                  src={imageUrl + modifyMeal?.filename}
+                  alt="meals unique picture"
+                />
+              )}
+              {preview && <img src={preview} alt="meals unique picture" />}
+              {!preview && !modifyMeal?.filename && (
+                <img
+                  src={'https://placehold.co/100x100'}
+                  alt="meals unique picture"
+                />
+              )}
+            </div>
+            <input
+              id="productImage"
+              type="file"
+              placeholder="change image"
+              onChange={(e) => {
+                setImage(e.target.files[0]);
+                setPreview(URL.createObjectURL(e.target.files[0]));
+              }}
+            />
           </div>
 
           {/* oikea sarake: tuotteiden valinta */}

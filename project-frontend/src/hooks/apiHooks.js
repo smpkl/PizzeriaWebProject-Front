@@ -687,7 +687,7 @@ const useAuthentication = () => {
       body: JSON.stringify(inputs),
     };
     const loginResult = await fetchData(
-      `${userUrl}/login`,
+      `${userUrl}auth/login`,
       fetchOptions,
     );
     return loginResult;
@@ -702,7 +702,7 @@ const useAuthentication = () => {
       body: JSON.stringify(inputs),
     };
     const loginResult = await fetchData(
-      `${baseUrl}admin/login`,
+      `${baseUrl}auth/admin/login`,
       fetchOptions,
     );
     return loginResult;

@@ -9,11 +9,13 @@ const AdminMeals = () => {
   const [showModified, setShowModified] = useState(false);
   const [addMeal, setAddMeal] = useState(false);
   const [modifyMeal, setModifyMeal] = useState({});
+  const [deleteAction, setDeleteAction] = useState(false);
   const {getMeals} = useMeals();
 
   const handleAddMeal = () => {
     setModifyMeal(null);
-    setShowModified(!showModified);
+    setShowModified(false);
+    setAddMeal(true);
   };
 
   useEffect(() => {
@@ -23,10 +25,10 @@ const AdminMeals = () => {
     };
 
     loadData();
-  }, [modifyMeal]);
+  }, [modifyMeal, addMeal, showModified, deleteAction]);
   return (
     <div>
-      {!showModified && (
+      {(!showModified && !addMeal) && (
         <>
           <button onClick={handleAddMeal}>Add new meal</button>
           {menuMeals.map((item) => (
@@ -35,11 +37,13 @@ const AdminMeals = () => {
               item={item}
               setModifyMeal={setModifyMeal}
               setShowModified={setShowModified}
+              deleteAction={deleteAction}
+              setDeleteAction={setDeleteAction}
             />
           ))}
         </>
       )}
-      {showModified && (
+      {addMeal && (
         <NewMealCard
           addMeal={addMeal}
           setAddMeal={setAddMeal}
