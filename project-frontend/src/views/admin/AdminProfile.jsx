@@ -1,10 +1,12 @@
 import {useAdminContext} from '../../hooks/contextHooks';
 import {useState} from 'react';
 import AdminRegisterForm from '../../components/admin/AdminRegisterForm';
+import EditDialog from '../../components/EditDialog';
 
 const AdminProfile = () => {
   const {admin} = useAdminContext();
   const [isAdminRegister, setIsAdminRegister] = useState(false);
+  const [isEdit, setIsEdit] = useState('');
 
   const showAdminRegisterForm = () => {
     setIsAdminRegister(true);
@@ -12,6 +14,14 @@ const AdminProfile = () => {
 
   const closeAdminRegister = () => {
     setIsAdminRegister(false);
+  };
+
+  const closeEditDialog = () => {
+    setIsEdit('');
+  };
+
+  const openEditDialog = (type) => {
+    setIsEdit(type);
   };
 
   const profileContentBox = {
@@ -53,7 +63,7 @@ const AdminProfile = () => {
                 </p>
               </div>
               <div style={contentBoxRightColumn}>
-                <button>Change</button>
+                <button onClick={() => openEditDialog('name')}>Change</button>
               </div>
             </div>
             <div style={profileContentBox}>
@@ -64,7 +74,7 @@ const AdminProfile = () => {
                 <p>{admin.email}</p>
               </div>
               <div style={contentBoxRightColumn}>
-                <button>Change</button>
+                <button onClick={() => openEditDialog('email')}>Change</button>
               </div>
             </div>
             <div style={profileContentBox}>
@@ -75,7 +85,9 @@ const AdminProfile = () => {
                 <p>{admin.phonenumber}</p>
               </div>
               <div style={contentBoxRightColumn}>
-                <button>Change</button>
+                <button onClick={() => openEditDialog('phonenumber')}>
+                  Change
+                </button>
               </div>
             </div>
             <div style={profileContentBox}>
@@ -86,11 +98,15 @@ const AdminProfile = () => {
                 <p>{admin.address}</p>
               </div>
               <div style={contentBoxRightColumn}>
-                <button>Change</button>
+                <button onClick={() => openEditDialog('address')}>
+                  Change
+                </button>
               </div>
             </div>
             <div style={{padding: '20px 0'}}>
-              <button>Change password</button>
+              <button onClick={() => openEditDialog('password')}>
+                Change password
+              </button>
             </div>
             <div style={{padding: '20px 0'}}>
               <h3>CREATE A NEW ADMIN ACCOUNT</h3>
@@ -103,6 +119,9 @@ const AdminProfile = () => {
       </div>
       {isAdminRegister && (
         <AdminRegisterForm closeDialog={closeAdminRegister} />
+      )}
+      {isEdit && (
+        <EditDialog close={closeEditDialog} type={isEdit} userType={'admin'} />
       )}
     </>
   );

@@ -12,8 +12,8 @@ import AdminMain from './views/admin/AdminMain';
 import AdminProducts from './views/admin/AdminProducts';
 import {OrderProvider} from './contexts/OrderContext';
 import AdminLogin from './views/admin/AdminLogin';
-import AdminAnouncements from './views/admin/AdminAnnouncements';
-import AdminCoupons from './views/admin/AdminCoupons';
+//import AdminAnouncements from './views/admin/AdminAnnouncements';
+//import AdminCoupons from './views/admin/AdminCoupons';
 import AdminMeals from './views/admin/AdminMeals';
 //import AdminFeedbacks from './views/admin/AdminFeedbacks';
 import AdminProfile from './views/admin/AdminProfile';
@@ -41,11 +41,11 @@ const App = () => {
                   <Route path="/admin/login" element={<AdminLogin />} />
                   <Route path="/admin/orders" element={<AdminOrders />} />
                   <Route path="/admin/products" element={<AdminProducts />} />
-                  <Route
+                  {/*<Route
                     path="/admin/announcements"
                     element={<AdminAnouncements />}
-                  />
-                  <Route path="/admin/coupons" element={<AdminCoupons />} />
+                  /> */}
+                  {/*<Route path="/admin/coupons" element={<AdminCoupons />} /> */}
                   <Route path="/admin/meals" element={<AdminMeals />} />
                   {/* aktivoi kun exporttaa myös jtn: */}
                   {/* <Route path="/admin/feedbacsk" element={<AdminFeedbacks />} /> */}
