@@ -1,7 +1,7 @@
 // Adminsivun tiedotteidenhallinta
 
 import React, { useEffect, useMemo, useState } from "react";
-import axios from "axios";
+//import axios from "axios";
 
 const API_BASE =
   (import.meta && import.meta.env && import.meta.env.VITE_API_BASE_URL) ||
