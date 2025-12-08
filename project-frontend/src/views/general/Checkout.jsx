@@ -146,7 +146,7 @@ const CheckOut = () => {
                     <img
                       src={
                         p.product.filename
-                          ? `http://127.0.0.1:3000/api/v1/uploads/${p.product.filename}`
+                          ? `${import.meta.env.VITE_API_BASE_URL}uploads/${p.product.filename}`
                           : 'https://placehold.co/120x120/green/white?text=PRODUCT'
                       }
                       alt={`Product ${p.product.name}`}
@@ -177,7 +177,7 @@ const CheckOut = () => {
                     <img
                       src={
                         m.meal.filename
-                          ? `http://127.0.0.1:3000/api/v1/uploads/${m.meal.filename}`
+                          ? `${import.meta.env.VITE_API_BASE_URL}uploads/${m.meal.filename}`
                           : 'https://placehold.co/120x120/green/white?text=PRODUCT'
                       }
                       alt={`Product ${m.meal.name}`}

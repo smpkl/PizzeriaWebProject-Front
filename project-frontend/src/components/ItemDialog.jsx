@@ -37,7 +37,7 @@ const ItemDialog = ({item, meal, onClose}) => {
               <img
                 src={
                   item.filename
-                    ? `http://127.0.0.1:3000/api/v1/uploads/${item.filename}`
+                    ? `${import.meta.env.VITE_API_BASE_URL}uploads/${item.filename}`
                     : 'https://placehold.co/120x120/green/white?text=PRODUCT'
                 }
                 alt="A menu item image"

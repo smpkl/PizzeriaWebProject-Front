@@ -1,7 +1,13 @@
 import React from 'react';
 import {useCategories, useProducts} from '../../hooks/apiHooks';
 
-const AdminProductViewCard = ({product, setShowModified, setModifyProduct, setDeleteAction, deleteAction}) => {
+const AdminProductViewCard = ({
+  product,
+  setShowModified,
+  setModifyProduct,
+  setDeleteAction,
+  deleteAction,
+}) => {
   const styles = {
     card: {
       border: '2px solid #000',
@@ -104,7 +110,7 @@ const AdminProductViewCard = ({product, setShowModified, setModifyProduct, setDe
   const categoryName =
     categories.find((c) => c.id === product.category)?.name || '';
 
-  const baseImageUrl = 'http://127.0.0.1:3000/api/v1/uploads/';
+  const baseImageUrl = `${import.meta.env.VITE_API_BASE_URL}uploads/`;
   const imageSrc = product.filename
     ? baseImageUrl + product.filename
     : 'https://placehold.co/250x250';
