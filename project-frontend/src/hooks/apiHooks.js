@@ -637,7 +637,56 @@ const useUser = () => {
     }
   };
 
-  return {getCurrentUser, postUser};
+  const putUser = async (inputs, token, userId) => {
+    try {
+      console.log(inputs.password);
+      // Backend validations do not accept fields with empty values (missing fields are fine) so update requests are done like this:
+      // If the update is not for password (all the other info can be gotten from user in frontend):
+      if (!inputs.password) {
+        const options = {
+          method: 'PUT',
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
+          body: JSON.stringify({
+            first_name: inputs.firstname,
+            last_name: inputs.lastname,
+            email: inputs.email,
+            phonenumber: inputs.phonenumber,
+            address: inputs.address,
+          }),
+        };
+        const updateResults = await fetchData(
+          `http://127.0.0.1:3000/api/v1/users/${userId}`,
+          options,
+        );
+        return updateResults;
+        // If the update is for password (password info is not included in frontend user):
+      } else {
+        const options2 = {
+          method: 'PUT',
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
+          body: JSON.stringify({
+            password: inputs.password,
+          }),
+        };
+        const updateResults2 = await fetchData(
+          `http://127.0.0.1:3000/api/v1/users/${userId}`,
+          options2,
+        );
+        return updateResults2;
+      }
+    } catch (error) {
+      console.log('ERROR: ', error);
+      throw error;
+    }
+  };
+
+  return {getCurrentUser, postUser, putUser};
 };
 
 const useAdmin = () => {
