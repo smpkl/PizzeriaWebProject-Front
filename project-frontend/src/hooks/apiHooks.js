@@ -446,6 +446,7 @@ const useMeals = () => {
 
 const useDailyMeal = () => {
   const [dailyMeal, setDailyMeal] = useState(null);
+  const dailyMealsUrl = baseUrl + 'dailymeals';
 
   useEffect(() => {
     try {
@@ -479,7 +480,31 @@ const useDailyMeal = () => {
       console.log('ERROR', error);
     }
   }, []);
-  return {dailyMeal};
+  
+
+  // Put method to update days meal
+  const setAMealDailyMeal = async (day, mealId) => {
+    const adminToken = localStorage.getItem('adminToken');
+    const options = {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({meal_id: mealId}),
+    };
+
+    try {
+      const response = await fetchData(`${dailyMealsUrl}/${day}`, options);
+      return !!response;
+    } catch (error) {
+      console.log('ERROR setting daily meal', error);
+      return false;
+    }
+  };
+
+
+  return {dailyMeal, setAMealDailyMeal};
 };
 
 const useOrder = () => {
