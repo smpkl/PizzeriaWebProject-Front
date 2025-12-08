@@ -92,6 +92,7 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
   const initValues = {
     name: modifyMeal?.name ?? '',
     price: modifyMeal?.price ?? '',
+    day_selector: modifyMeal?.dailyDay ?? '',
   };
 
   const validateMeal = (inputs, selectedProductIds) => {
@@ -332,15 +333,15 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
             <select
               name="day_selector"
               id="day_selector"
-              defaultValue={0}
+              value={inputs.day_selector ?? ''}
               onChange={handleInputChange}
             >
-              <option value={0} disabled>
+              <option value="" disabled>
                 select which days meal
               </option>
               <option value="monday">Monday</option>
-              <option value="thusday">Thusday</option>
-              <option value="wednessday">Wednessday</option>
+              <option value="tuesday">Tuesday</option>
+              <option value="wednesday">Wednesday</option>
               <option value="thursday">Thursday</option>
               <option value="friday">Friday</option>
               <option value="saturday">Saturday</option>
