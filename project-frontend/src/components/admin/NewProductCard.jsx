@@ -4,7 +4,7 @@ import {useProducts, useTags, useCategories} from '../../hooks/apiHooks';
 
 const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
-  const imageUrl = baseUrl + 'uploads/'
+  const imageUrl = baseUrl + 'uploads/';
   const styles = {
     card: {
       marginTop: '0.5rem',
@@ -12,7 +12,7 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
       border: '2px solid #000',
       borderRadius: '14px',
       padding: '0.2rem 0.2rem',
-      maxWidth: '950px',
+      maxWidth: '1000px',
       margin: '0 auto',
       fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
     },
@@ -25,11 +25,15 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
       columnGap: '0.3rem',
       rowGap: '0.1rem',
     },
+    column: {
+      minWidth: 0,
+    },
     field: {
       marginBottom: '0.1rem',
     },
     textarea: {
       width: '100%',
+      boxSizing: 'border-box',
       border: '2px solid #000',
       minHeight: '150px',
     },
@@ -63,15 +67,25 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
     },
     imageWrapper: {
       marginTop: '22px',
-      width: '250px',
-      height: '250px',
+      width: '100%',
+      maxWidth: '200px',
+      height: '200px',
       display: 'flex',
+      justifyCOntent: 'flex-end',
       flexDirection: 'column',
       gap: '10px',
     },
+    image: {
+      width: '100%',
+      height: '100%',
+      objectFit: 'contain',
+      display: 'block',
+    },
     buttons: {
-      paddingLeft: '50%',
-      paddingTop: '30%',
+      marginTop: '1rem',
+      display: 'flex',
+      gap: '0.5rem',
+      justifyContent: 'flex-end',
     },
     button: {
       margin: '0.1rem',
@@ -161,7 +175,7 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
       <form action="" style={styles.form}>
         <div style={styles.grid}>
           {/* vasemmalla olevat elementit */}
-          <div>
+          <div style={styles.column}>
             <div style={styles.field}>
               <label htmlFor="productsName">Product name: </label>
               <input
@@ -249,7 +263,7 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
           </div>
 
           {/*keskikohta */}
-          <div>
+          <div style={styles.column}>
             <div style={styles.field}>
               <label htmlFor="ingredients">Ingredients: </label>
               <textarea
@@ -283,19 +297,27 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
           </div>
 
           {/* oikea sarake */}
-          <div>
+          <div style={styles.column}>
             <div style={styles.imageWrapper}>
               {item?.filename && !preview && (
                 <img
                   src={imageUrl + item?.filename}
                   alt="meals unique picture"
+                  style={styles.image}
                 />
               )}
-              {preview && <img src={preview} alt="meals unique picture" />}
+              {preview && (
+                <img
+                  src={preview}
+                  alt="meals unique picture"
+                  style={styles.image}
+                />
+              )}
               {!preview && !item?.filename && (
                 <img
                   src={'https://placehold.co/100x100'}
                   alt="meals unique picture"
+                  style={styles.image}
                 />
               )}
             </div>

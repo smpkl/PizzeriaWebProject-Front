@@ -1,8 +1,6 @@
 import {useState, useEffect} from 'react';
 import fetchData from '../utils/fetchData';
 
-//const token = import.meta.env.VITE_ADMIN_TOKEN;
-//const adminToken = localStorage.getItem('admintoken'); <-- Ei toimi koska adminTokenia ei haeta uudestaan ensimmäisen kerrna jälkeen, eli ei ole oikea
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const useProducts = () => {
@@ -315,6 +313,7 @@ const useMeals = () => {
   };
 
   const postMeal = async (inputs, image) => {
+    const adminToken = localStorage.getItem('adminToken');
     const {name, price} = inputs;
 
     const formData = new FormData();
@@ -328,7 +327,7 @@ const useMeals = () => {
     const options = {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${adminToken}`,
       },
       body: formData,
     };
@@ -345,6 +344,7 @@ const useMeals = () => {
   };
 
   const putMeal = async (mealId, inputs, image) => {
+    const adminToken = localStorage.getItem('adminToken');
     const {name, price} = inputs;
 
     const formData = new FormData();
@@ -358,7 +358,7 @@ const useMeals = () => {
     const options = {
       method: 'PUT',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${adminToken}`,
       },
       body: formData,
     };
@@ -377,6 +377,7 @@ const useMeals = () => {
     newProductIds = [],
     originalProductIds = [],
   ) => {
+    const adminToken = localStorage.getItem('adminToken');
     const toAdd = newProductIds.filter(
       (id) => !originalProductIds.includes(id),
     );
@@ -388,7 +389,7 @@ const useMeals = () => {
       const options = {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${adminToken}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({product_id: productId}),
@@ -405,7 +406,7 @@ const useMeals = () => {
       const options = {
         method: 'DELETE',
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${adminToken}`,
         },
       };
 
@@ -420,10 +421,11 @@ const useMeals = () => {
   };
 
   const deleteMeal = async (mealId) => {
+    const adminToken = localStorage.getItem('adminToken');
     const options = {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${adminToken}`,
       },
     };
 
@@ -442,6 +444,7 @@ const useMeals = () => {
 
 const useDailyMeal = () => {
   const [dailyMeal, setDailyMeal] = useState(null);
+  const dailyMealsUrl = baseUrl + 'dailymeals';
 
   useEffect(() => {
     try {
@@ -475,7 +478,31 @@ const useDailyMeal = () => {
       console.log('ERROR', error);
     }
   }, []);
-  return {dailyMeal};
+  
+
+  // Put method to update days meal
+  const setAMealDailyMeal = async (day, mealId) => {
+    const adminToken = localStorage.getItem('adminToken');
+    const options = {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({meal_id: mealId}),
+    };
+
+    try {
+      const response = await fetchData(`${dailyMealsUrl}/${day}`, options);
+      return !!response;
+    } catch (error) {
+      console.log('ERROR setting daily meal', error);
+      return false;
+    }
+  };
+
+
+  return {dailyMeal, setAMealDailyMeal};
 };
 
 const useOrder = () => {
