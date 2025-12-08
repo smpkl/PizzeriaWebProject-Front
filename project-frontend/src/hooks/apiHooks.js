@@ -1,14 +1,16 @@
 import {useState, useEffect} from 'react';
 import fetchData from '../utils/fetchData';
 
-const token = import.meta.env.VITE_ADMIN_TOKEN;
+//filewide token value used as admintoken in put/post request in meals, tags, producst etc
+const token = localStorage.getItem("adminToken")
+const baseUrl = import.meta.env.VITE_API_BASE_URL
 
 const useProducts = () => {
-  const productUrl = import.meta.env.VITE_PRODUCT_URL;
+  const productUrl = baseUrl + 'products'
   const getProducts = async () => {
     try {
       const productData = await fetchData(
-        'http://127.0.0.1:3000/api/v1/products',
+        productUrl,
       );
       //console.log('API products: ', productData);
       return productData.products;
@@ -40,7 +42,6 @@ const useProducts = () => {
     };
 
     try {
-      console.log(productUrl);
       const postProductData = await fetchData(productUrl, options);
       if (postProductData) {
         return postProductData;
@@ -190,13 +191,14 @@ const useProducts = () => {
 };
 
 const useAnnouncements = () => {
+  const announcementsUrl = baseUrl + 'announcements/'
   const [announcements, setAnnouncements] = useState([]);
 
   useEffect(() => {
     try {
       const getAnnouncements = async () => {
         const response = await fetchData(
-          'http://127.0.0.1:3000/api/v1/announcements',
+          announcementsUrl,
         );
         //console.log(response.results);
         setAnnouncements(response.results);
@@ -215,8 +217,8 @@ const usePizzerias = () => {
   useEffect(() => {
     try {
       const getPizzerias = async () => {
-        const response = await fetchData(
-          'http://127.0.0.1:3000/api/v1/locations',
+        // vanha url = 'http://127.0.0.1:3000/api/v1/locations'
+        const response = await fetchData(baseUrl + 'locations',
         );
         //console.log(response);
         setPizzerias(response.locations);
@@ -230,12 +232,13 @@ const usePizzerias = () => {
 };
 
 const useTags = () => {
+  const tagsUrl = baseUrl + 'tags'
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
     try {
       const getTags = async () => {
-        const response = await fetchData('http://127.0.0.1:3000/api/v1/tags');
+        const response = await fetchData(tagsUrl);
         //console.log('Response: ', response);
         setTags(response.tags);
       };
@@ -248,13 +251,14 @@ const useTags = () => {
 };
 
 const useCategories = () => {
+  const categoriesUrl = baseUrl + 'categories'
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     try {
       const getCategories = async () => {
         const response = await fetchData(
-          'http://127.0.0.1:3000/api/v1/categories',
+          categoriesUrl,
         );
         //console.log('Response: ', response);
         setCategories(response.categories);
@@ -268,7 +272,7 @@ const useCategories = () => {
 };
 
 const useMeals = () => {
-  const mealsUrl = import.meta.env.VITE_API_BASE_URL + 'meals';
+  const mealsUrl = baseUrl + 'meals';
   const getMeals = async () => {
     try {
       const weekday = [
@@ -284,11 +288,11 @@ const useMeals = () => {
       const d = new Date();
       let day = weekday[d.getDay()];
 
-      const response = await fetchData('http://127.0.0.1:3000/api/v1/meals');
+      const response = await fetchData(mealsUrl);
       const meals = response.meals;
 
       const dailymealResponse = await fetchData(
-        `http://127.0.0.1:3000/api/v1/dailymeals/${day}`,
+        `${baseUrl}dailymeals/${day}`,
       );
       const dailymeal = dailymealResponse.dailymeal;
 
@@ -302,7 +306,7 @@ const useMeals = () => {
       const mealsWithProducts = await Promise.all(
         meals.map(async (item) => {
           const productsResponse = await fetchData(
-            `http://127.0.0.1:3000/api/v1/meals/${item.id}/products`,
+            `${mealsUrl}/${item.id}/products`,
           );
           return {...item, products: productsResponse.products};
         }),
@@ -461,11 +465,11 @@ const useDailyMeal = () => {
 
       const getDailyMeal = async () => {
         const response = await fetchData(
-          `http://127.0.0.1:3000/api/v1/dailymeals/${day}`,
+          `${baseUrl}dailymeals/${day}`,
         );
         const dailymeal = response.dailymeal;
         const productsResponse = await fetchData(
-          `http://127.0.0.1:3000/api/v1/meals/${dailymeal.id}/products`,
+          `${baseUrl}meals/${dailymeal.id}/products`,
         );
         //console.log(productsResponse);
         dailymeal.oldPrice = dailymeal.price;
@@ -482,7 +486,7 @@ const useDailyMeal = () => {
 };
 
 const useOrder = () => {
-  const ordersUrl = import.meta.env.VITE_ORDER_URL;
+  const ordersUrl = baseUrl + 'orders'
 
   const getOrders = async () => {
     const options = {
@@ -523,13 +527,13 @@ const useOrder = () => {
         },
       };
       const orders = await fetchData(
-        `http://127.0.0.1:3000/api/v1/orders/user/${userId}`,
+        `${ordersUrl}/user/${userId}`,
         options,
       );
       const ordersWithProducts = await Promise.all(
         orders.orders.map(async (order) => {
           const productsResponse = await fetchData(
-            `http://127.0.0.1:3000/api/v1/orders/${order.id}/products`,
+            `${ordersUrl}/${order.id}/products`,
           );
           return {...order, products: productsResponse.products};
         }),
@@ -570,7 +574,7 @@ const useOrder = () => {
         }),
       };
       const orderResponse = await fetchData(
-        'http://127.0.0.1:3000/api/v1/orders',
+        ordersUrl,
         options,
       );
       const orderId = orderResponse.order_id;
@@ -631,7 +635,7 @@ const useOrder = () => {
           }),
         };
         await fetchData(
-          `http://127.0.0.1:3000/api/v1/orders/${orderId}/products`,
+          `${ordersUrl}/${orderId}/products`,
           options2,
         );
       });
@@ -673,6 +677,7 @@ const useOrder = () => {
 };
 
 const useAuthentication = () => {
+  const userUrl = baseUrl + 'users'
   const postUserLogin = async (inputs) => {
     const fetchOptions = {
       method: 'POST',
@@ -682,7 +687,7 @@ const useAuthentication = () => {
       body: JSON.stringify(inputs),
     };
     const loginResult = await fetchData(
-      `http://127.0.0.1:3000/api/v1/auth/user/login`,
+      `${userUrl}/login`,
       fetchOptions,
     );
     return loginResult;
@@ -697,7 +702,7 @@ const useAuthentication = () => {
       body: JSON.stringify(inputs),
     };
     const loginResult = await fetchData(
-      `http://127.0.0.1:3000/api/v1/auth/admin/login`,
+      `${baseUrl}admin/login`,
       fetchOptions,
     );
     return loginResult;
@@ -715,7 +720,7 @@ const useUser = () => {
         },
       };
       const tokenResults = await fetchData(
-        `http://127.0.0.1:3000/api/v1/users/me`,
+        `${baseUrl}users/me`,
         options,
       );
       return tokenResults;
@@ -741,7 +746,7 @@ const useUser = () => {
         }),
       };
       const registerResults = await fetchData(
-        `http://127.0.0.1:3000/api/v1/users`,
+        `${baseUrl}users`,
         options,
       );
       return registerResults;
@@ -763,7 +768,7 @@ const useAdmin = () => {
         },
       };
       const tokenResults = await fetchData(
-        `http://127.0.0.1:3000/api/v1/users/me`,
+        `${baseUrl}users/me`,
         options,
       );
       return tokenResults;
@@ -791,7 +796,7 @@ const useAdmin = () => {
         }),
       };
       const registerResults = await fetchData(
-        `http://127.0.0.1:3000/api/v1/users/admin`,
+        `${baseUrl}users/admin`,
         options,
       );
       return registerResults;
