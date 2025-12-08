@@ -1,7 +1,8 @@
 import {useState, useEffect} from 'react';
 import fetchData from '../utils/fetchData';
 
-const token = import.meta.env.VITE_ADMIN_TOKEN;
+//const token = import.meta.env.VITE_ADMIN_TOKEN;
+//const adminToken = localStorage.getItem('admintoken'); <-- Ei toimi koska adminTokenia ei haeta uudestaan ensimmäisen kerrna jälkeen, eli ei ole oikea
 
 const useProducts = () => {
   const productUrl = import.meta.env.VITE_PRODUCT_URL;
@@ -19,6 +20,7 @@ const useProducts = () => {
 
   const postProduct = async (inputs, checkbox, image) => {
     const {price, name, category, ingredients, description} = inputs;
+    const adminToken = localStorage.getItem('adminToken');
 
     const formData = new FormData();
     formData.append('name', name);
@@ -34,7 +36,7 @@ const useProducts = () => {
     const options = {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${adminToken}`,
       },
       body: formData,
     };
@@ -54,6 +56,8 @@ const useProducts = () => {
   };
 
   const postProductTag = async (tags, productId) => {
+    const adminToken = localStorage.getItem('adminToken');
+
     tags.forEach(async (element) => {
       const postBody = {
         tag_id: element,
@@ -62,7 +66,7 @@ const useProducts = () => {
       const options = {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${adminToken}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(postBody),
@@ -83,6 +87,8 @@ const useProducts = () => {
     newTagIds = [],
     originalTagIds = [],
   ) => {
+    const adminToken = localStorage.getItem('adminToken');
+
     const toAdd = newTagIds.filter((id) => !originalTagIds.includes(id));
     const toRemove = originalTagIds.filter((id) => !newTagIds.includes(id));
 
@@ -91,7 +97,7 @@ const useProducts = () => {
       const options = {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${adminToken}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
@@ -107,7 +113,7 @@ const useProducts = () => {
       const options = {
         method: 'DELETE',
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${adminToken}`,
         },
       };
       try {
@@ -128,6 +134,7 @@ const useProducts = () => {
     image = null,
   ) => {
     const {price, name, category, ingredients, description} = inputs;
+    const adminToken = localStorage.getItem('adminToken');
 
     const formData = new FormData();
     formData.append('name', name);
@@ -143,7 +150,7 @@ const useProducts = () => {
     const options = {
       method: 'PUT',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${adminToken}`,
       },
       body: formData,
     };
@@ -167,10 +174,11 @@ const useProducts = () => {
   };
 
   const deleteProduct = async (productId) => {
+    const adminToken = localStorage.getItem('adminToken');
     const options = {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${adminToken}`,
       },
     };
 
@@ -359,12 +367,13 @@ const useDailyMeal = () => {
 
 const useOrder = () => {
   const ordersUrl = import.meta.env.VITE_ORDER_URL;
+  const adminToken = localStorage.getItem('adminToken');
 
   const getOrders = async () => {
     const options = {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${adminToken}`,
       },
     };
     try {
@@ -632,11 +641,12 @@ const useUser = () => {
 };
 
 const useAdmin = () => {
-  const getCurrentAdmin = async (token) => {
+  const getCurrentAdmin = async () => {
     try {
+      const adminToken = localStorage.getItem('adminToken');
       const options = {
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: 'Bearer ' + adminToken,
         },
       };
       const tokenResults = await fetchData(

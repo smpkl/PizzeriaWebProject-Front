@@ -1,63 +1,66 @@
 // Adminsivun kuponkienhallinta
 
-import React, { useEffect, useMemo, useState } from "react";
-import axios from "axios";
+/*
+
+import React, {useEffect, useMemo, useState} from 'react';
+//import axios from "axios";
 
 const API_BASE =
   (import.meta && import.meta.env && import.meta.env.VITE_API_BASE_URL) ||
   process.env.REACT_APP_API_BASE_URL ||
-  "http://localhost:8080/api";
+  'http://localhost:8080/api';
 
 const COUPONS_URL = `${API_BASE}/coupons`;
 
-/** Helpers: timestamp ↔️ input[type="date"] */
+/** Helpers: timestamp ↔️ input[type="date"] 
 const toDateInputValue = (ts) => {
-  if (!ts) return "";
+  if (!ts) return '';
   try {
     const d = new Date(ts);
     return new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()))
       .toISOString()
       .slice(0, 10);
   } catch {
-    return "";
+    return '';
   }
 };
 const fromDateInputValue = (yyyyMMdd) => {
   if (!yyyyMMdd) return null;
-  const [y, m, d] = yyyyMMdd.split("-").map(Number);
+  const [y, m, d] = yyyyMMdd.split('-').map(Number);
   return new Date(y, m - 1, d).toISOString();
 };
 
 const getAuthHeaders = () => {
   const token =
-    localStorage.getItem("token") ||
-    localStorage.getItem("jwt") ||
-    localStorage.getItem("authToken");
-  return token ? { Authorization: `Bearer ${token}` } : {};
+    localStorage.getItem('token') ||
+    localStorage.getItem('jwt') ||
+    localStorage.getItem('authToken');
+  return token ? {Authorization: `Bearer ${token}`} : {};
 };
 
 const emptyCoupon = () => ({
-  coupon: "",
+  coupon: '',
   discount_percentage: 0,
-  start_date: "",
-  end_date: "",
+  start_date: '',
+  end_date: '',
   _dirty: true,
 });
 
-/** Basic validation */
+/** Basic validation 
 const validateCoupon = (c) => {
   const errors = {};
   if (!c.coupon || c.coupon.trim().length === 0) {
-    errors.coupon = "Kuponki-koodi on pakollinen";
+    errors.coupon = 'Kuponki-koodi on pakollinen';
   }
   const pct = Number(c.discount_percentage);
   if (Number.isNaN(pct) || pct < 0 || pct > 100) {
-    errors.discount_percentage = "Alennusprosentti 0–100";
+    errors.discount_percentage = 'Alennusprosentti 0–100';
   }
   if (c.start_date && c.end_date) {
     const s = new Date(c.start_date);
     const e = new Date(c.end_date);
-    if (s > e) errors.date_range = "Alkamispäivä ei voi olla päättymispäivän jälkeen";
+    if (s > e)
+      errors.date_range = 'Alkamispäivä ei voi olla päättymispäivän jälkeen';
   }
   return errors;
 };
@@ -67,20 +70,20 @@ export default function AdminCoupons() {
   const [loading, setLoading] = useState(true);
   const [savingId, setSavingId] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
-  const [search, setSearch] = useState("");
-  const [error, setError] = useState("");
+  const [search, setSearch] = useState('');
+  const [error, setError] = useState('');
 
-  /** Load coupons from backend */
+  /** Load coupons from backend 
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
     axios
-      .get(COUPONS_URL, { headers: { ...getAuthHeaders() } })
+      .get(COUPONS_URL, {headers: {...getAuthHeaders()}})
       .then((res) => {
         const data = Array.isArray(res.data) ? res.data : res.data?.items || [];
         const mapped = data.map((c) => ({
           id: c.id,
-          coupon: c.coupon ?? "",
+          coupon: c.coupon ?? '',
           discount_percentage: c.discount_percentage ?? 0,
           start_date: toDateInputValue(c.start_date),
           end_date: toDateInputValue(c.end_date),
@@ -90,7 +93,7 @@ export default function AdminCoupons() {
       })
       .catch((err) => {
         console.error(err);
-        if (isMounted) setError("Kuponkien hakeminen epäonnistui.");
+        if (isMounted) setError('Kuponkien hakeminen epäonnistui.');
       })
       .finally(() => {
         if (isMounted) setLoading(false);
@@ -103,12 +106,12 @@ export default function AdminCoupons() {
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
     const items = coupons.slice().sort((a, b) => {
-      const ad = a.start_date || "";
-      const bd = b.start_date || "";
+      const ad = a.start_date || '';
+      const bd = b.start_date || '';
       return ad.localeCompare(bd);
     });
     if (!q) return items;
-    return items.filter((c) => (c.coupon || "").toLowerCase().includes(q));
+    return items.filter((c) => (c.coupon || '').toLowerCase().includes(q));
   }, [coupons, search]);
 
   const addCoupon = () => {
@@ -118,8 +121,8 @@ export default function AdminCoupons() {
   const updateField = (idx, field, value) => {
     setCoupons((prev) =>
       prev.map((c, i) =>
-        i === idx ? { ...c, [field]: value, _dirty: true } : c
-      )
+        i === idx ? {...c, [field]: value, _dirty: true} : c,
+      ),
     );
   };
 
@@ -127,10 +130,10 @@ export default function AdminCoupons() {
     const c = coupons[idx];
     const errors = validateCoupon(c);
     if (Object.keys(errors).length) {
-      setError(Object.values(errors).join(" • "));
+      setError(Object.values(errors).join(' • '));
       return;
     }
-    setError("");
+    setError('');
     setSavingId(c.id ?? `new-${idx}`);
 
     const payload = {
@@ -145,12 +148,12 @@ export default function AdminCoupons() {
       if (c.id == null) {
         // Create
         res = await axios.post(COUPONS_URL, payload, {
-          headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+          headers: {'Content-Type': 'application/json', ...getAuthHeaders()},
         });
       } else {
         // Update
         res = await axios.put(`${COUPONS_URL}/${c.id}`, payload, {
-          headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+          headers: {'Content-Type': 'application/json', ...getAuthHeaders()},
         });
       }
 
@@ -168,12 +171,12 @@ export default function AdminCoupons() {
                 end_date: toDateInputValue(saved.end_date) || it.end_date,
                 _dirty: false,
               }
-            : it
-        )
+            : it,
+        ),
       );
     } catch (e) {
       console.error(e);
-      setError("Tallennus epäonnistui.");
+      setError('Tallennus epäonnistui.');
     } finally {
       setSavingId(null);
     }
@@ -181,7 +184,7 @@ export default function AdminCoupons() {
 
   const deleteCoupon = async (idx) => {
     const c = coupons[idx];
-    const confirmMsg = `Poistetaanko kuponki "${c.coupon || "(uusi)"}"?`;
+    const confirmMsg = `Poistetaanko kuponki "${c.coupon || '(uusi)'}"?`;
     if (!window.confirm(confirmMsg)) return;
 
     const idToDelete = c.id;
@@ -190,13 +193,13 @@ export default function AdminCoupons() {
     try {
       if (idToDelete != null) {
         await axios.delete(`${COUPONS_URL}/${idToDelete}`, {
-          headers: { ...getAuthHeaders() },
+          headers: {...getAuthHeaders()},
         });
       }
       setCoupons((prev) => prev.filter((_, i) => i !== idx));
     } catch (e) {
       console.error(e);
-      setError("Poisto epäonnistui.");
+      setError('Poisto epäonnistui.');
     } finally {
       setDeletingId(null);
     }
@@ -204,7 +207,7 @@ export default function AdminCoupons() {
 
   return (
     <div className="admin-coupons-page">
-      {/* Header row */}
+      {/* Header row }
       <div className="admin-toolbar" style={styles.toolbar}>
         <h2 style={styles.title}>KUPONGIT</h2>
         <div style={styles.actions}>
@@ -242,7 +245,7 @@ export default function AdminCoupons() {
 
             return (
               <div key={c.id ?? `new-${idx}`} style={styles.card}>
-                {/* Name / code */}
+                {/* Name / code }
                 <div style={styles.row}>
                   <div style={styles.field}>
                     <label style={styles.label}>NIMI/KUPONKI:</label>
@@ -250,14 +253,14 @@ export default function AdminCoupons() {
                       type="text"
                       value={c.coupon}
                       onChange={(e) =>
-                        updateField(idx, "coupon", e.target.value)
+                        updateField(idx, 'coupon', e.target.value)
                       }
                       placeholder="Esim. JOULU25"
                       style={styles.input}
                     />
                   </div>
 
-                  {/* Discount */}
+                  {/* Discount }
                   <div style={styles.field}>
                     <label style={styles.label}>ALENNUS:</label>
                     <input
@@ -267,11 +270,7 @@ export default function AdminCoupons() {
                       step={1}
                       value={c.discount_percentage}
                       onChange={(e) =>
-                        updateField(
-                          idx,
-                          "discount_percentage",
-                          e.target.value
-                        )
+                        updateField(idx, 'discount_percentage', e.target.value)
                       }
                       placeholder="Alennusprosentti (0–100)"
                       style={styles.input}
@@ -279,15 +278,15 @@ export default function AdminCoupons() {
                   </div>
                 </div>
 
-                {/* Dates */}
+                {/* Dates }
                 <div style={styles.row}>
                   <div style={styles.field}>
                     <label style={styles.label}>ALKAMISPÄIVÄ:</label>
                     <input
                       type="date"
-                      value={c.start_date || ""}
+                      value={c.start_date || ''}
                       onChange={(e) =>
-                        updateField(idx, "start_date", e.target.value)
+                        updateField(idx, 'start_date', e.target.value)
                       }
                       style={styles.input}
                     />
@@ -296,23 +295,23 @@ export default function AdminCoupons() {
                     <label style={styles.label}>PÄÄTTYMISPÄIVÄ:</label>
                     <input
                       type="date"
-                      value={c.end_date || ""}
+                      value={c.end_date || ''}
                       onChange={(e) =>
-                        updateField(idx, "end_date", e.target.value)
+                        updateField(idx, 'end_date', e.target.value)
                       }
                       style={styles.input}
                     />
                   </div>
                 </div>
 
-                {/* Actions */}
+                {/* Actions }
                 <div style={styles.actionsRow}>
                   <button
                     onClick={() => deleteCoupon(idx)}
                     disabled={saving || deleting}
                     style={styles.deleteBtn}
                   >
-                    {deleting ? "Poistetaan…" : "Poista"}
+                    {deleting ? 'Poistetaan…' : 'Poista'}
                   </button>
                   <button
                     onClick={() => saveCoupon(idx)}
@@ -322,14 +321,14 @@ export default function AdminCoupons() {
                       opacity: invalid || !c._dirty ? 0.6 : 1,
                     }}
                   >
-                    {saving ? "Tallennetaan…" : "Tallenna"}
+                    {saving ? 'Tallennetaan…' : 'Tallenna'}
                   </button>
                 </div>
 
-                {/* Per-card validation note */}
+                {/* Per-card validation note }
                 {Object.keys(errors).length > 0 && (
                   <div style={styles.validationNote}>
-                    {Object.values(errors).join(" • ")}
+                    {Object.values(errors).join(' • ')}
                   </div>
                 )}
               </div>
@@ -341,47 +340,49 @@ export default function AdminCoupons() {
   );
 }
 
-/** Inline styles to match the wireframe feel quickly */
+/** Inline styles to match the wireframe feel quickly 
 const styles = {
   toolbar: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    background: "#3c3c3c",
-    color: "#fff",
-    padding: "12px 16px",
-    borderRadius: "6px",
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    background: '#3c3c3c',
+    color: '#fff',
+    padding: '12px 16px',
+    borderRadius: '6px',
     marginBottom: 16,
   },
-  title: { margin: 0, fontSize: 18, letterSpacing: 1 },
-  actions: { display: "flex", alignItems: "center", gap: 12 },
+  title: {margin: 0, fontSize: 18, letterSpacing: 1},
+  actions: {display: 'flex', alignItems: 'center', gap: 12},
   primaryBtn: {
-    background: "#2f7d32",
-    color: "#fff",
-    border: "none",
-    padding: "8px 12px",
+    background: '#2f7d32',
+    color: '#fff',
+    border: 'none',
+    padding: '8px 12px',
     borderRadius: 4,
-    cursor: "pointer",
+    cursor: 'pointer',
     fontWeight: 600,
   },
-  searchWrap: { display: "flex", alignItems: "center", gap: 8 },
-  searchLabel: { fontSize: 12, color: "#e0e0e0" },
+  searchWrap: {display: 'flex', alignItems: 'center', gap: 8},
+  searchLabel: {fontSize: 12, color: '#e0e0e0'},
   searchInput: {
-    padding: "6px 8px",
+    padding: '6px 8px',
     borderRadius: 4,
-    border: "1px solid #bbb",
+    border: '1px solid #bbb',
     width: 220,
-    background: "#fff",
-    color: "#222",
+    background: '#fff',
+    color: '#222',
   },
   error: {
-    background: "#ffe9e9",
-    color: "#8a0000",
-    border: "1px solid #ffb4b4",
-    padding: "8px 12px",
+    background: '#ffe9e9',
+    color: '#8a0000',
+    border: '1px solid #ffb4b4',
+    padding: '8px 12px',
     borderRadius: 6,
     marginBottom: 12,
   },
-  loading: { padding: 12, color: "#555" },
-  empty: { padding: 12, color: "#777" },
+  loading: {padding: 12, color: '#555'},
+  empty: {padding: 12, color: '#777'},
 };
+
+*/

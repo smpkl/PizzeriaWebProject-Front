@@ -272,6 +272,7 @@ const Profile = () => {
                           {o.products.map((p) => {
                             return (
                               <div
+                                key={`user-order-product-${p.id}`}
                                 style={{
                                   display: 'flex',
                                   justifyContent: 'center',
