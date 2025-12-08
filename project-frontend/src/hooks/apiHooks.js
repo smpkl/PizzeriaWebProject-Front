@@ -270,6 +270,7 @@ const useCategories = () => {
 };
 
 const useMeals = () => {
+  const mealsUrl = import.meta.env.VITE_API_BASE_URL + 'meals';
   const getMeals = async () => {
     try {
       const weekday = [
@@ -314,7 +315,126 @@ const useMeals = () => {
       console.log('ERROR', error);
     }
   };
-  return {getMeals};
+
+  const postMeal = async (inputs) => {
+    const {name, price} = inputs;
+
+    const options = {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name,
+        price: parseFloat(price),
+      }),
+    };
+
+    console.log("Url:", mealsUrl, "options:", options)
+
+    try {
+      const response = await fetchData(mealsUrl, options);
+      console.log(response)
+      const mealId =
+        response?.result?.mealId ?? response?.meal?.id ?? response?.id;
+      return mealId;
+    } catch (error) {
+      console.log('ERROR creating meal', error);
+      return false;
+    }
+  };
+
+  const putMeal = async (mealId, inputs) => {
+    const {name, price} = inputs;
+
+    const options = {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name,
+        price: parseFloat(price),
+      }),
+    };
+
+    try {
+      const response = await fetchData(`${mealsUrl}/${mealId}`, options);
+      return !!response;
+    } catch (error) {
+      console.log('ERROR updating meal', error);
+      return false;
+    }
+  };
+
+  const syncMealProducts = async (
+    mealId,
+    newProductIds = [],
+    originalProductIds = [],
+  ) => {
+    const toAdd = newProductIds.filter(
+      (id) => !originalProductIds.includes(id),
+    );
+    const toRemove = originalProductIds.filter(
+      (id) => !newProductIds.includes(id),
+    );
+
+    for (const productId of toAdd) {
+      const options = {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({product_id: productId}),
+      };
+
+      try {
+        await fetchData(`${mealsUrl}/${mealId}/products`, options);
+      } catch (error) {
+        console.log('ERROR adding meal product', error);
+      }
+    }
+
+    for (const productId of toRemove) {
+      const options = {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      try {
+        await fetchData(`${mealsUrl}/${mealId}/products/${productId}`, options);
+      } catch (error) {
+        console.log('ERROR removing meal product', error);
+      }
+    }
+
+    return {added: toAdd, removed: toRemove};
+  };
+
+  const deleteMeal = async (mealId) => {
+    const options = {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      const response = await fetchData(`${mealsUrl}/${mealId}`, options);
+      //returns true if truthy false if falsy. Like "double negative"
+      return !!response;
+    } catch (error) {
+      console.log('ERROR deleting meal', error);
+      return false;
+    }
+  };
+
+  return {getMeals, postMeal, putMeal, deleteMeal, syncMealProducts};
 };
 
 const useDailyMeal = () => {

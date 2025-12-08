@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import useForm from '../../hooks/formHooks';
-import {useProducts} from '../../hooks/apiHooks';
+import {useMeals, useProducts} from '../../hooks/apiHooks';
 
 const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -65,7 +65,8 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
   };
 
   const {getProducts} = useProducts();
-  //const {} = useMeals();
+  const {postMeal, putMeal, syncMealProducts} =
+    useMeals();
 
   const [allProducts, setAllProducts] = useState([]);
   const [originalProductIds, setOriginalProductIds] = useState([]);
@@ -78,7 +79,7 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
   const validateMeal = (inputs, selectedProductIds) => {
     const emptyFields = Object.entries(inputs)
       .filter(
-        ([, value]) => value === '' || value === null || value === undefined,
+        ([key, value]) => value === '' || value === null || value === undefined,
       )
       .map(([key]) => key);
 
@@ -97,12 +98,18 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
     const validation = validateMeal(inputs, selectedProductIds);
     if (!validation.successfull) {
       const missing = validation.emptyFields.join(', ');
-      window.alert(`Please fill/choose: ${missing}`);
+      window.alert(`Please fill: ${missing}`);
       return;
     }
 
     try {
-      //post asiat
+      const mealId = await postMeal(inputs);
+      if (!mealId) return;
+
+      await syncMealProducts(mealId, selectedProductIds, []);
+      if (setAddMeal) {
+        setAddMeal(!addMeal);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -117,8 +124,9 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
     }
 
     try {
-      console.log();
-      //put asiat
+      await putMeal(modifyMeal.id, inputs);
+      await syncMealProducts(modifyMeal.id, selectedProductIds, originalProductIds);
+      if (setShowModified) setShowModified(false);
     } catch (error) {
       console.log(error);
     }
@@ -145,6 +153,7 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
     fetchProducts();
   }, []);
 
+  //checkbox is used to store meals productId
   useEffect(() => {
     if (!modifyMeal?.products || !allProducts.length) return;
 
@@ -165,7 +174,7 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
         style={styles.form}
         onSubmit={(evt) => {
           evt.preventDefault();
-          handleSubmit(evt, checkbox); // välitetään myös productId:t
+          handleSubmit(evt, checkbox);
         }}
       >
         <div style={styles.grid}>

@@ -7,8 +7,14 @@ import NewMealCard from '../../components/admin/NewMealCard';
 const AdminMeals = () => {
   const [menuMeals, setMenuMeals] = useState([]);
   const [showModified, setShowModified] = useState(false);
+  const [addMeal, setAddMeal] = useState(false);
   const [modifyMeal, setModifyMeal] = useState({});
   const {getMeals} = useMeals();
+
+  const handleAddMeal = () => {
+    setModifyMeal(null);
+    setShowModified(!showModified);
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -20,15 +26,25 @@ const AdminMeals = () => {
   }, [modifyMeal]);
   return (
     <div>
-      {!showModified &&
-        menuMeals.map((item) => (
-          <AdminMealsCard
-            key={`meal-${item.id}`}
-            item={item}
-            setModifyMeal={setModifyMeal}
-            setShowModified={setShowModified}
-          />
-        ))}
+      {!showModified && (
+        <>
+          <button onClick={handleAddMeal}>Add new meal</button>
+          {menuMeals.map((item) => (
+            <AdminMealsCard
+              key={`meal-${item.id}`}
+              item={item}
+              setModifyMeal={setModifyMeal}
+              setShowModified={setShowModified}
+            />
+          ))}
+        </>
+      )}
+      {showModified && (
+        <NewMealCard
+          addMeal={addMeal}
+          setAddMeal={setAddMeal}
+        />
+      )}
       {showModified && (
         <NewMealCard
           modifyMeal={modifyMeal}
