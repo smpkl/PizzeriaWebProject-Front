@@ -28,9 +28,6 @@ const Layout = () => {
         </div>
         <nav>
           <ul style={{display: 'flex', margin: '0', padding: '0'}}>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
             {!admin && (
               <>
                 <li>

@@ -29,7 +29,6 @@ const AdminRegisterForm = ({closeDialog}) => {
     try {
       const userInfo = await postAdmin(formData);
       setError('');
-      console.log(userInfo);
       setMessage('New admin registered!');
     } catch (error) {
       console.log('Register error: ', error);

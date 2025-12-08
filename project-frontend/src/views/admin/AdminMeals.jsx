@@ -31,7 +31,7 @@ const AdminMeals = () => {
       {(!showModified && !addMeal) && (
         <>
           <button onClick={handleAddMeal}>Add new meal</button>
-          {menuMeals.map((item) => (
+          {menuMeals?.map((item) => (
             <AdminMealsCard
               key={`meal-${item.id}`}
               item={item}

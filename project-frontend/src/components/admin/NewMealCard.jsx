@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import useForm from '../../hooks/formHooks';
-import {useMeals, useProducts} from '../../hooks/apiHooks';
+import {useDailyMeal, useMeals, useProducts} from '../../hooks/apiHooks';
 
 const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -48,11 +48,19 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
     },
     imageWrapper: {
       marginTop: '22px',
-      maxWidth: '250px',
-      maxHeight: '250px',
+      width: '100%',
+      maxWidth: '200px',
+      height: '200px',
       display: 'flex',
+      justifyCOntent: 'flex-end',
       flexDirection: 'column',
       gap: '10px',
+    },
+    image: {
+      width: '100%',
+      height: '100%',
+      objectFit: 'contain',
+      display: 'block',
     },
     buttonsRow: {
       marginTop: '20px',
@@ -74,6 +82,7 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
 
   const {getProducts} = useProducts();
   const {postMeal, putMeal, syncMealProducts} = useMeals();
+  const {setAMealDailyMeal} = useDailyMeal();
 
   const [allProducts, setAllProducts] = useState([]);
   const [originalProductIds, setOriginalProductIds] = useState([]);
@@ -83,6 +92,7 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
   const initValues = {
     name: modifyMeal?.name ?? '',
     price: modifyMeal?.price ?? '',
+    day_selector: modifyMeal?.dailyDay ?? '',
   };
 
   const validateMeal = (inputs, selectedProductIds) => {
@@ -117,11 +127,17 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
 
       successPost = await syncMealProducts(mealId, selectedProductIds, []);
       if (successPost) {
+        if (inputs.day_selector) {
+          setAMealDailyMeal(inputs.day_selector, mealId);
+        }
+
         if (setAddMeal) {
           setAddMeal(!addMeal);
         }
       }
-      if (!successPost) window.alert('Service might be down, please try again later');
+      if (!successPost) {
+        window.alert('Service might be down, please try again later');
+      }
     } catch (error) {
       console.log(error);
     }
@@ -146,9 +162,11 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
         );
       }
       if (successPut && successProductSync) {
+        setAMealDailyMeal(inputs.day_selector, modifyMeal.id);
         if (setShowModified) setShowModified(false);
+      } else {
+        window.alert('Service might be down, please try again later');
       }
-      window.alert('Service might be down, please try again later');
     } catch (error) {
       console.log(error);
     }
@@ -250,13 +268,21 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
                 <img
                   src={imageUrl + modifyMeal?.filename}
                   alt="meals unique picture"
+                  style={styles.image}
                 />
               )}
-              {preview && <img src={preview} alt="meals unique picture" />}
+              {preview && (
+                <img
+                  src={preview}
+                  alt="meals unique picture"
+                  style={styles.image}
+                />
+              )}
               {!preview && !modifyMeal?.filename && (
                 <img
                   src={'https://placehold.co/100x100'}
                   alt="meals unique picture"
+                  style={styles.image}
                 />
               )}
             </div>
@@ -304,7 +330,23 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
                 })}
               </div>
             </div>
-
+            <select
+              name="day_selector"
+              id="day_selector"
+              value={inputs.day_selector ?? ''}
+              onChange={handleInputChange}
+            >
+              <option value="" disabled>
+                select which days meal
+              </option>
+              <option value="monday">Monday</option>
+              <option value="tuesday">Tuesday</option>
+              <option value="wednesday">Wednesday</option>
+              <option value="thursday">Thursday</option>
+              <option value="friday">Friday</option>
+              <option value="saturday">Saturday</option>
+              <option value="sunday">Sunday</option>
+            </select>
             <div style={styles.buttonsRow}>
               <button type="submit" style={styles.button}>
                 Save

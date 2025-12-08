@@ -14,7 +14,6 @@ const AdminLoginForm = () => {
   const doAdminLogin = async (formData) => {
     try {
       const loginResponse = await handleAdminLogin(formData);
-      console.log(loginResponse);
     } catch (error) {
       console.log('Login error: ' + error);
       setError(error.message);

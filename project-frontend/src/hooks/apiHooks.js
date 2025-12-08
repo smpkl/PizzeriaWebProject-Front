@@ -1,17 +1,13 @@
 import {useState, useEffect} from 'react';
 import fetchData from '../utils/fetchData';
 
-//filewide token value used as admintoken in put/post request in meals, tags, producst etc
-const token = localStorage.getItem("adminToken")
-const baseUrl = import.meta.env.VITE_API_BASE_URL
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const useProducts = () => {
-  const productUrl = baseUrl + 'products'
+  const productUrl = baseUrl + 'products';
   const getProducts = async () => {
     try {
-      const productData = await fetchData(
-        productUrl,
-      );
+      const productData = await fetchData(productUrl);
       //console.log('API products: ', productData);
       return productData.products;
     } catch (error) {
@@ -21,6 +17,7 @@ const useProducts = () => {
 
   const postProduct = async (inputs, checkbox, image) => {
     const {price, name, category, ingredients, description} = inputs;
+    const adminToken = localStorage.getItem('adminToken');
 
     const formData = new FormData();
     formData.append('name', name);
@@ -36,7 +33,7 @@ const useProducts = () => {
     const options = {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${adminToken}`,
       },
       body: formData,
     };
@@ -55,6 +52,8 @@ const useProducts = () => {
   };
 
   const postProductTag = async (tags, productId) => {
+    const adminToken = localStorage.getItem('adminToken');
+
     tags.forEach(async (element) => {
       const postBody = {
         tag_id: element,
@@ -63,7 +62,7 @@ const useProducts = () => {
       const options = {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${adminToken}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(postBody),
@@ -82,6 +81,8 @@ const useProducts = () => {
     newTagIds = [],
     originalTagIds = [],
   ) => {
+    const adminToken = localStorage.getItem('adminToken');
+
     const toAdd = newTagIds.filter((id) => !originalTagIds.includes(id));
     const toRemove = originalTagIds.filter((id) => !newTagIds.includes(id));
 
@@ -90,7 +91,7 @@ const useProducts = () => {
       const options = {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${adminToken}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
@@ -106,7 +107,7 @@ const useProducts = () => {
       const options = {
         method: 'DELETE',
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${adminToken}`,
         },
       };
       try {
@@ -127,6 +128,7 @@ const useProducts = () => {
     image = null,
   ) => {
     const {price, name, category, ingredients, description} = inputs;
+    const adminToken = localStorage.getItem('adminToken');
 
     const formData = new FormData();
     formData.append('name', name);
@@ -142,12 +144,10 @@ const useProducts = () => {
     const options = {
       method: 'PUT',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${adminToken}`,
       },
       body: formData,
     };
-
-    console.log(options);
 
     try {
       const url = `${productUrl}/${productId}`;
@@ -166,10 +166,11 @@ const useProducts = () => {
   };
 
   const deleteProduct = async (productId) => {
+    const adminToken = localStorage.getItem('adminToken');
     const options = {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${adminToken}`,
       },
     };
 
@@ -191,15 +192,13 @@ const useProducts = () => {
 };
 
 const useAnnouncements = () => {
-  const announcementsUrl = baseUrl + 'announcements/'
+  const announcementsUrl = baseUrl + 'announcements/';
   const [announcements, setAnnouncements] = useState([]);
 
   useEffect(() => {
     try {
       const getAnnouncements = async () => {
-        const response = await fetchData(
-          announcementsUrl,
-        );
+        const response = await fetchData(announcementsUrl);
         //console.log(response.results);
         setAnnouncements(response.results);
       };
@@ -218,8 +217,7 @@ const usePizzerias = () => {
     try {
       const getPizzerias = async () => {
         // vanha url = 'http://127.0.0.1:3000/api/v1/locations'
-        const response = await fetchData(baseUrl + 'locations',
-        );
+        const response = await fetchData(baseUrl + 'locations');
         //console.log(response);
         setPizzerias(response.locations);
       };
@@ -232,7 +230,7 @@ const usePizzerias = () => {
 };
 
 const useTags = () => {
-  const tagsUrl = baseUrl + 'tags'
+  const tagsUrl = baseUrl + 'tags';
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
@@ -251,15 +249,13 @@ const useTags = () => {
 };
 
 const useCategories = () => {
-  const categoriesUrl = baseUrl + 'categories'
+  const categoriesUrl = baseUrl + 'categories';
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     try {
       const getCategories = async () => {
-        const response = await fetchData(
-          categoriesUrl,
-        );
+        const response = await fetchData(categoriesUrl);
         //console.log('Response: ', response);
         setCategories(response.categories);
       };
@@ -291,15 +287,18 @@ const useMeals = () => {
       const response = await fetchData(mealsUrl);
       const meals = response.meals;
 
-      const dailymealResponse = await fetchData(
-        `${baseUrl}dailymeals/${day}`,
-      );
+      const dailymealResponse = await fetchData(`${baseUrl}dailymeals/${day}`);
       const dailymeal = dailymealResponse.dailymeal;
 
       meals.forEach((m) => {
         if (m.id === dailymeal.id) {
           m.oldPrice = m.price;
           m.price = (Number(m.price) * 0.85).toFixed(2);
+
+          m.dailyDay = day;
+          m.isDaily = true;
+        } else {
+          m.isDaily = false;
         }
       });
 
@@ -319,6 +318,7 @@ const useMeals = () => {
   };
 
   const postMeal = async (inputs, image) => {
+    const adminToken = localStorage.getItem('adminToken');
     const {name, price} = inputs;
 
     const formData = new FormData();
@@ -332,17 +332,16 @@ const useMeals = () => {
     const options = {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${adminToken}`,
       },
       body: formData,
     };
 
     try {
       const response = await fetchData(mealsUrl, options);
-      const mealId =
-        response?.result?.mealId
-        if (mealId) return mealId;
-        else return false;
+      const mealId = response?.result?.mealId;
+      if (mealId) return mealId;
+      else return false;
     } catch (error) {
       console.log('ERROR creating meal', error);
       return false;
@@ -350,6 +349,7 @@ const useMeals = () => {
   };
 
   const putMeal = async (mealId, inputs, image) => {
+    const adminToken = localStorage.getItem('adminToken');
     const {name, price} = inputs;
 
     const formData = new FormData();
@@ -363,7 +363,7 @@ const useMeals = () => {
     const options = {
       method: 'PUT',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${adminToken}`,
       },
       body: formData,
     };
@@ -382,6 +382,7 @@ const useMeals = () => {
     newProductIds = [],
     originalProductIds = [],
   ) => {
+    const adminToken = localStorage.getItem('adminToken');
     const toAdd = newProductIds.filter(
       (id) => !originalProductIds.includes(id),
     );
@@ -393,7 +394,7 @@ const useMeals = () => {
       const options = {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${adminToken}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({product_id: productId}),
@@ -410,7 +411,7 @@ const useMeals = () => {
       const options = {
         method: 'DELETE',
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${adminToken}`,
         },
       };
 
@@ -425,10 +426,11 @@ const useMeals = () => {
   };
 
   const deleteMeal = async (mealId) => {
+    const adminToken = localStorage.getItem('adminToken');
     const options = {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${adminToken}`,
       },
     };
 
@@ -447,6 +449,7 @@ const useMeals = () => {
 
 const useDailyMeal = () => {
   const [dailyMeal, setDailyMeal] = useState(null);
+  const dailyMealsUrl = baseUrl + 'dailymeals';
 
   useEffect(() => {
     try {
@@ -464,9 +467,7 @@ const useDailyMeal = () => {
       let day = weekday[d.getDay()];
 
       const getDailyMeal = async () => {
-        const response = await fetchData(
-          `${baseUrl}dailymeals/${day}`,
-        );
+        const response = await fetchData(`${baseUrl}dailymeals/${day}`);
         const dailymeal = response.dailymeal;
         const productsResponse = await fetchData(
           `${baseUrl}meals/${dailymeal.id}/products`,
@@ -482,17 +483,40 @@ const useDailyMeal = () => {
       console.log('ERROR', error);
     }
   }, []);
-  return {dailyMeal};
+
+  // Put method to update days meal
+  const setAMealDailyMeal = async (day, mealId) => {
+    const adminToken = localStorage.getItem('adminToken');
+    const options = {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({meal_id: mealId}),
+    };
+
+    try {
+      const response = await fetchData(`${dailyMealsUrl}/${day}`, options);
+      return !!response;
+    } catch (error) {
+      console.log('ERROR setting daily meal', error);
+      return false;
+    }
+  };
+
+  return {dailyMeal, setAMealDailyMeal};
 };
 
 const useOrder = () => {
-  const ordersUrl = baseUrl + 'orders'
+  const adminToken = localStorage.getItem('adminToken');
+  const ordersUrl = baseUrl + 'orders';
 
   const getOrders = async () => {
     const options = {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${adminToken}`,
       },
     };
     try {
@@ -526,10 +550,7 @@ const useOrder = () => {
           Authorization: `Bearer ${token}`,
         },
       };
-      const orders = await fetchData(
-        `${ordersUrl}/user/${userId}`,
-        options,
-      );
+      const orders = await fetchData(`${ordersUrl}/user/${userId}`, options);
       const ordersWithProducts = await Promise.all(
         orders.orders.map(async (order) => {
           const productsResponse = await fetchData(
@@ -573,10 +594,7 @@ const useOrder = () => {
           price: (orderPrice + Number(orderInfo.deliveryFee)).toFixed(2),
         }),
       };
-      const orderResponse = await fetchData(
-        ordersUrl,
-        options,
-      );
+      const orderResponse = await fetchData(ordersUrl, options);
       const orderId = orderResponse.order_id;
 
       // Collect all the products from the orderProducts and orderMeals to an object:
@@ -634,10 +652,7 @@ const useOrder = () => {
             quantity: p.quantity,
           }),
         };
-        await fetchData(
-          `${ordersUrl}/${orderId}/products`,
-          options2,
-        );
+        await fetchData(`${ordersUrl}/${orderId}/products`, options2);
       });
 
       return orderId;
@@ -677,7 +692,7 @@ const useOrder = () => {
 };
 
 const useAuthentication = () => {
-  const userUrl = baseUrl + 'users'
+  const userUrl = baseUrl + 'users';
   const postUserLogin = async (inputs) => {
     const fetchOptions = {
       method: 'POST',
@@ -687,7 +702,7 @@ const useAuthentication = () => {
       body: JSON.stringify(inputs),
     };
     const loginResult = await fetchData(
-      `${userUrl}auth/login`,
+      `${baseUrl}auth/user/login`,
       fetchOptions,
     );
     return loginResult;
@@ -719,10 +734,7 @@ const useUser = () => {
           Authorization: 'Bearer ' + token,
         },
       };
-      const tokenResults = await fetchData(
-        `${baseUrl}users/me`,
-        options,
-      );
+      const tokenResults = await fetchData(`${baseUrl}users/me`, options);
       return tokenResults;
     } catch (error) {
       console.log(error);
@@ -745,10 +757,7 @@ const useUser = () => {
           password: inputs.password,
         }),
       };
-      const registerResults = await fetchData(
-        `${baseUrl}users`,
-        options,
-      );
+      const registerResults = await fetchData(`${baseUrl}users`, options);
       return registerResults;
     } catch (error) {
       console.log('ERROR: ', error);
@@ -756,21 +765,67 @@ const useUser = () => {
     }
   };
 
-  return {getCurrentUser, postUser};
+  const putUser = async (inputs, token, userId) => {
+    try {
+      // Backend validations do not accept fields with empty values (missing fields are fine) so update requests are done like this:
+      // If the update is not for password (all the other info can be gotten from user in frontend):
+      if (!inputs.password) {
+        const options = {
+          method: 'PUT',
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
+          body: JSON.stringify({
+            first_name: inputs.firstname,
+            last_name: inputs.lastname,
+            email: inputs.email,
+            phonenumber: inputs.phonenumber,
+            address: inputs.address,
+          }),
+        };
+        const updateResults = await fetchData(
+          `${baseUrl}users/${userId}`,
+          options,
+        );
+        return updateResults;
+        // If the update is for password (password info is not included in frontend user):
+      } else {
+        const options2 = {
+          method: 'PUT',
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
+          body: JSON.stringify({
+            password: inputs.password,
+          }),
+        };
+        const updateResults2 = await fetchData(
+          `${baseUrl}users/${userId}`,
+          options2,
+        );
+        return updateResults2;
+      }
+    } catch (error) {
+      console.log('ERROR: ', error);
+      throw error;
+    }
+  };
+
+  return {getCurrentUser, postUser, putUser};
 };
 
 const useAdmin = () => {
-  const getCurrentAdmin = async (token) => {
+  const getCurrentAdmin = async () => {
     try {
+      const adminToken = localStorage.getItem('adminToken');
       const options = {
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: 'Bearer ' + adminToken,
         },
       };
-      const tokenResults = await fetchData(
-        `${baseUrl}users/me`,
-        options,
-      );
+      const tokenResults = await fetchData(`${baseUrl}users/me`, options);
       return tokenResults;
     } catch (error) {
       console.log(error);
@@ -795,10 +850,7 @@ const useAdmin = () => {
           password: inputs.password,
         }),
       };
-      const registerResults = await fetchData(
-        `${baseUrl}users/admin`,
-        options,
-      );
+      const registerResults = await fetchData(`${baseUrl}users/admin`, options);
       return registerResults;
     } catch (error) {
       console.log('ERROR: ', error);

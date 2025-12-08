@@ -3,23 +3,32 @@ import LoginForm from '../../components/LoginForm';
 import RegisterForm from '../../components/RegisterForm';
 import {useUserContext} from '../../hooks/contextHooks';
 import {useOrder} from '../../hooks/apiHooks';
+import EditDialog from '../../components/EditDialog';
 
 const Profile = () => {
   const {user, handleLogout} = useUserContext();
   const {getOrdersByUserId} = useOrder();
   const [isLogin, setIsLogin] = useState(false);
   const [isForm, setIsForm] = useState(false);
+  const [isEdit, setIsEdit] = useState('');
   const [orders, setOrders] = useState([]);
 
   const getUserOrders = async () => {
     try {
       const token = localStorage.getItem('token');
       const ordersData = await getOrdersByUserId(user.user_id, token);
-      console.log(ordersData);
       setOrders(ordersData);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const closeEditDialog = () => {
+    setIsEdit('');
+  };
+
+  const openEditDialog = (type) => {
+    setIsEdit(type);
   };
 
   useEffect(() => {
@@ -80,7 +89,7 @@ const Profile = () => {
                   marginLeft: 'auto',
                 }}
               >
-                <button>Change</button>
+                <button onClick={() => openEditDialog('name')}>Change</button>
               </div>
             </div>
             <div
@@ -109,7 +118,9 @@ const Profile = () => {
                   marginLeft: 'auto',
                 }}
               >
-                <button>Change</button>
+                <button onClick={() => openEditDialog('address')}>
+                  Change
+                </button>
               </div>
             </div>
             <div
@@ -138,7 +149,9 @@ const Profile = () => {
                   marginLeft: 'auto',
                 }}
               >
-                <button>Change</button>
+                <button onClick={() => openEditDialog('phonenumber')}>
+                  Change
+                </button>
               </div>
             </div>
             <div
@@ -167,11 +180,13 @@ const Profile = () => {
                   marginLeft: 'auto',
                 }}
               >
-                <button>Change</button>
+                <button onClick={() => openEditDialog('email')}>Change</button>
               </div>
             </div>
             <div style={{margin: 'auto', width: '100%', textAlign: 'center'}}>
-              <button>Change password</button>
+              <button onClick={() => openEditDialog('password')}>
+                Change password
+              </button>
             </div>
           </div>
           <h2
@@ -272,6 +287,7 @@ const Profile = () => {
                           {o.products.map((p) => {
                             return (
                               <div
+                                key={`user-order-product-${p.id}`}
                                 style={{
                                   display: 'flex',
                                   justifyContent: 'center',
@@ -341,6 +357,9 @@ const Profile = () => {
       {!user && isForm && isLogin && <LoginForm goBack={returnToSelectMenu} />}
       {!user && isForm && !isLogin && (
         <RegisterForm goBack={returnToSelectMenu} />
+      )}
+      {isEdit && (
+        <EditDialog close={closeEditDialog} type={isEdit} userType={'user'} />
       )}
     </>
   );

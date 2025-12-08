@@ -21,7 +21,7 @@ const RegisterForm = ({goBack}) => {
     try {
       const userInfo = await postUser(formData);
       setError('');
-      console.log(userInfo);
+      //console.log(userInfo);
       navigate('/', {
         state: {
           success: `New user registered! 
