@@ -17,7 +17,6 @@ const Profile = () => {
     try {
       const token = localStorage.getItem('token');
       const ordersData = await getOrdersByUserId(user.user_id, token);
-      console.log(ordersData);
       setOrders(ordersData);
     } catch (error) {
       console.log(error);

@@ -3,7 +3,6 @@ import {useOrderContext} from '../hooks/contextHooks';
 const ItemDialog = ({item, meal, onClose}) => {
   const {handleProductAdd, handleMealAdd} = useOrderContext();
 
-  console.log(meal);
   return (
     <>
       <dialog

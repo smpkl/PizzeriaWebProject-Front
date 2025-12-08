@@ -37,7 +37,6 @@ const EditDialog = ({close, type, userType}) => {
       const userId = userType === 'admin' ? admin.user_id : user.user_id;
       const userInfo = await putUser(formData, token, userId);
       setError('');
-      console.log(userInfo);
       setMessage('User information updated');
     } catch (error) {
       console.log('Update error: ', error);

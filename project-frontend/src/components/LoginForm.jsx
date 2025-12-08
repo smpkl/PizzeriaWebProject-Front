@@ -14,7 +14,6 @@ const LoginForm = ({goBack}) => {
   const doLogin = async (formData) => {
     try {
       const loginResponse = await handleLogin(formData);
-      console.log(loginResponse);
     } catch (error) {
       console.log('Login error: ' + error);
       setError(error.message);

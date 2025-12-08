@@ -151,8 +151,6 @@ const useProducts = () => {
       body: formData,
     };
 
-    console.log(options);
-
     try {
       const url = `${productUrl}/${productId}`;
       const putResult = await fetchData(url, options);
@@ -739,7 +737,6 @@ const useUser = () => {
 
   const putUser = async (inputs, token, userId) => {
     try {
-      console.log(inputs.password);
       // Backend validations do not accept fields with empty values (missing fields are fine) so update requests are done like this:
       // If the update is not for password (all the other info can be gotten from user in frontend):
       if (!inputs.password) {
