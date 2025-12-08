@@ -294,6 +294,11 @@ const useMeals = () => {
         if (m.id === dailymeal.id) {
           m.oldPrice = m.price;
           m.price = (Number(m.price) * 0.85).toFixed(2);
+
+          m.dailyDay = day;
+          m.isDaily = true;
+        } else {
+          m.isDaily = false;
         }
       });
 
@@ -478,7 +483,6 @@ const useDailyMeal = () => {
       console.log('ERROR', error);
     }
   }, []);
-  
 
   // Put method to update days meal
   const setAMealDailyMeal = async (day, mealId) => {
@@ -500,7 +504,6 @@ const useDailyMeal = () => {
       return false;
     }
   };
-
 
   return {dailyMeal, setAMealDailyMeal};
 };
