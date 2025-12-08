@@ -673,7 +673,10 @@ const useAuthentication = () => {
       },
       body: JSON.stringify(inputs),
     };
-    const loginResult = await fetchData(`${userUrl}auth/login`, fetchOptions);
+    const loginResult = await fetchData(
+      `${baseUrl}auth/user/login`,
+      fetchOptions,
+    );
     return loginResult;
   };
 
