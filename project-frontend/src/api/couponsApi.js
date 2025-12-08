@@ -1,5 +1,3 @@
-//--Work in ProgressEvent/test--
-
 import http from '../services/httpClient';
 
 // Adjust paths to match backend (e.g., /coupons or /coupon)
