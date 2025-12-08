@@ -1,11 +1,11 @@
-// Adminsivun sisäänkirjautuminen
-
-import React from 'react'
+import AdminLoginForm from '../../components/admin/AdminLoginForm';
 
 const AdminLogin = () => {
   return (
-    <div>AdminLogin</div>
-  )
-}
+    <div>
+      <AdminLoginForm />
+    </div>
+  );
+};
 
-export default AdminLogin
+export default AdminLogin;

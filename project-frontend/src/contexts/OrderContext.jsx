@@ -317,9 +317,11 @@ const OrderProvider = ({children}) => {
         orderPrice,
         orderType,
         orderInfo,
+        orderUserId,
         isActiveOrder,
         setIsActiveOrder,
         resetOrderContext,
+        setOrderUserId,
       }}
     >
       {children}

@@ -1,7 +1,15 @@
 import {Outlet, Link, useNavigate} from 'react-router';
+import {useAdminContext} from '../../hooks/contextHooks';
+import {useEffect} from 'react';
 
 const Layout = () => {
   const navigate = useNavigate();
+
+  const {admin, handleAdminAutoLogin, handleAdminLogout} = useAdminContext();
+
+  useEffect(() => {
+    handleAdminAutoLogin();
+  }, []);
 
   const handleAdminSelect = (evt) => {
     const path = evt.target.value;
@@ -23,30 +31,42 @@ const Layout = () => {
             <li>
               <Link to="/">Home</Link>
             </li>
-            <li>
-              <Link to="/admin/login">Log In</Link>
-            </li>
-            <li>
-              <Link to="/admin/orders">Orders</Link>
-            </li>
-            <li>
-              <select defaultValue="" onChange={handleAdminSelect}>
-                <option value="" disabled>
-                  Admin pages
-                </option>
-                <option value="/admin/products">Products</option>
-                <option value="/admin/announcements">Announcements</option>
-                <option value="/admin/coupons">Coupons</option>
-                <option value="/admin/meals">Meals</option>
-              </select>
-            </li>
-            {/* Odottaa että valmistuu ja linkitetää projektii */}
-            <li>
-              <Link to="/admin/feedbacks">Feedbacks</Link>
-            </li>
-            <li>
-              <Link to="/admin/profile">Profile</Link>
-            </li>
+            {!admin && (
+              <>
+                <li>
+                  <Link to="/admin">Info</Link>
+                </li>
+                <li>
+                  <Link to="/admin/login">Log In</Link>
+                </li>
+              </>
+            )}
+            {admin && (
+              <>
+                <li>
+                  <Link to="/admin/orders">Orders</Link>
+                </li>
+                <li>
+                  <select defaultValue="" onChange={handleAdminSelect}>
+                    <option value="" disabled>
+                      Admin pages
+                    </option>
+                    <option value="/admin/products">Products</option>
+                    <option value="/admin/announcements">Announcements</option>
+                    <option value="/admin/coupons">Coupons</option>
+                    <option value="/admin/meals">Meals</option>
+                  </select>
+                </li>
+                {/* Odottaa että valmistuu ja linkitetää projektii */}
+                <li>
+                  <Link to="/admin/feedbacks">Feedbacks</Link>
+                </li>
+                <li>
+                  <Link to="/admin/profile">Profile</Link>
+                  <p onClick={handleAdminLogout}>Logout</p>
+                </li>
+              </>
+            )}
           </ul>
         </nav>
       </header>

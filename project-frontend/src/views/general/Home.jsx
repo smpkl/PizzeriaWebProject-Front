@@ -18,6 +18,10 @@ import {
 const Home = () => {
   const navigate = useNavigate();
 
+  const [message, setMessage] = useState('');
+
+  const location = useLocation();
+
   const {announcements} = useAnnouncements();
   const {tags} = useTags();
   const {categories} = useCategories();
@@ -51,8 +55,6 @@ const Home = () => {
     loadData();
   }, []);
 
-  const location = useLocation();
-
   // Scroll the view to menu when user has clicked "Back to shopping" -button in Order-view:
   useEffect(() => {
     if (location.state?.scrollToMenu) {
@@ -66,8 +68,29 @@ const Home = () => {
     }
   }, [location, menuProducts, menuMeals]);
 
+  // Set a welcome message after user has logged in or a "user registered" message after user has successfully registered:
+  useEffect(() => {
+    if (location.state?.success) {
+      setMessage(location.state.success);
+      navigate(location.pathname, {replace: true, state: {}}); // Reset the state
+    }
+  }, [location.state]);
+
   return (
     <>
+      {message && (
+        <p
+          style={{
+            color: 'white',
+            fontWeight: 'bold',
+            fontSize: '18px',
+            backgroundColor: 'darkgoldenrod',
+            padding: '10px 0',
+          }}
+        >
+          {message}
+        </p>
+      )}
       <h1>PIZZERIA TBA</h1>
       <div id="main-page-img-container">
         <img
@@ -80,13 +103,13 @@ const Home = () => {
         <OrderTypeButtons />
       </div>
       <div id="announcements">
-        {announcements.map((item) => (
+        {announcements?.map((item) => (
           <Announcement key={item.id} announcement={item} />
         ))}
       </div>
       <div id="meal-of-the-day" style={{backgroundColor: 'goldenrod'}}>
         <h2>Meal of the Day</h2>
-        {dailyMeal && <MealItem key={dailyMeal.id} item={dailyMeal} />}
+        {dailyMeal && <MealItem key={dailyMeal?.id} item={dailyMeal} />}
       </div>
       <div id="menu-container">
         <h2>MENU</h2>
@@ -98,10 +121,10 @@ const Home = () => {
           updateMenu={updateMenu}
         />
         <div id="menu">
-          {menuProducts.map((item) => (
+          {menuProducts?.map((item) => (
             <MenuItem key={`product-${item.id}`} item={item} />
           ))}
-          {menuMeals.map((item) => (
+          {menuMeals?.map((item) => (
             <MealItem key={`meal-${item.id}`} item={item} />
           ))}
         </div>

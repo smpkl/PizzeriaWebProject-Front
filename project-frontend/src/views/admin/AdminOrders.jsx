@@ -1,41 +1,60 @@
-import React, { useEffect, useState } from 'react';
-import { useOrder } from '../../hooks/apiHooks';
-import OrderCard from '../../components/admin/OrderCard'
+import React, {useEffect, useState} from 'react';
+import {useOrder} from '../../hooks/apiHooks';
+import OrderCard from '../../components/admin/OrderCard';
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
   const [updateList, setUpdateList] = useState(false);
 
   const {getOrders} = useOrder();
 
-  useEffect( () => {
+  useEffect(() => {
     const fetchOrders = async () => {
       const orderList = await getOrders();
-      setOrders(orderList.orders)
-    }
+      setOrders(orderList.orders);
+    };
     fetchOrders();
-  },[updateList])
+  }, [updateList]);
 
-  const styleContainer = {'display': 'flex', 'justifyContent': 'center'}
-  const styleOrders = {'border': '5px solid black', 'margin': '1rem', 'padding': '0.5rem'}
+  const styleContainer = {display: 'flex', justifyContent: 'center'};
+  const styleOrders = {
+    border: '5px solid black',
+    margin: '1rem',
+    padding: '0.5rem',
+  };
   return (
-    <div style={styleContainer}>
-      <div style={styleOrders}>
-        <h2>New orders</h2>
-        {orders
-          .filter((order) => ['new', 'received'].includes(order.status))
-          .map((order) => (
-            <OrderCard key={order.id} order={order} setUpdateList={setUpdateList} updateList={updateList} />
-          ))}
-      </div>
-      <div style={styleOrders}>
-        <h2>Active orders</h2>
-        {orders
-          .filter((order) => order.status === 'in_progress')
-          .map((order) => (
-            <OrderCard key={order.id} order={order} setUpdateList={setUpdateList} updateList={updateList} />
-          ))}
-      </div>
-    </div>
+    <>
+      <h2>ALL ORDERS</h2>
+      {orders && (
+        <div style={styleContainer}>
+          <div style={styleOrders}>
+            <h2>New orders</h2>
+            {orders
+              .filter((order) => ['new', 'received'].includes(order.status))
+              .map((order) => (
+                <OrderCard
+                  key={order.id}
+                  order={order}
+                  setUpdateList={setUpdateList}
+                  updateList={updateList}
+                />
+              ))}
+          </div>
+          <div style={styleOrders}>
+            <h2>Active orders</h2>
+            {orders
+              .filter((order) => order.status === 'in_progress')
+              .map((order) => (
+                <OrderCard
+                  key={order.id}
+                  order={order}
+                  setUpdateList={setUpdateList}
+                  updateList={updateList}
+                />
+              ))}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
