@@ -10,7 +10,7 @@ const API_BASE =
 
 const COUPONS_URL = `${API_BASE}/coupons`;
 
-/** Helpers: timestamp ↔️ input[type="date"] 
+/** Helpers: timestamp ↔️ input[type="date"] */
 const toDateInputValue = (ts) => {
   if (!ts) return '';
   try {
@@ -44,7 +44,7 @@ const emptyCoupon = () => ({
   _dirty: true,
 });
 
-/** Basic validation 
+/** Basic validation */
 const validateCoupon = (c) => {
   const errors = {};
   if (!c.coupon || c.coupon.trim().length === 0) {
@@ -71,7 +71,7 @@ export default function AdminCoupons() {
   const [search, setSearch] = useState('');
   const [error, setError] = useState('');
 
-  /** Load coupons from backend 
+  /** Load coupons from backend */
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
@@ -205,7 +205,7 @@ export default function AdminCoupons() {
 
   return (
     <div className="admin-coupons-page">
-      {/* Header row }
+      {/* Header row */}
       <div className="admin-toolbar" style={styles.toolbar}>
         <h2 style={styles.title}>KUPONGIT</h2>
         <div style={styles.actions}>
@@ -243,7 +243,7 @@ export default function AdminCoupons() {
 
             return (
               <div key={c.id ?? `new-${idx}`} style={styles.card}>
-                {/* Name / code }
+                {/* Name / code */}
                 <div style={styles.row}>
                   <div style={styles.field}>
                     <label style={styles.label}>NIMI/KUPONKI:</label>
@@ -258,7 +258,7 @@ export default function AdminCoupons() {
                     />
                   </div>
 
-                  {/* Discount }
+                  {/* Discount */}
                   <div style={styles.field}>
                     <label style={styles.label}>ALENNUS:</label>
                     <input
@@ -276,7 +276,7 @@ export default function AdminCoupons() {
                   </div>
                 </div>
 
-                {/* Dates }
+                {/* Dates */}
                 <div style={styles.row}>
                   <div style={styles.field}>
                     <label style={styles.label}>ALKAMISPÄIVÄ:</label>
@@ -302,7 +302,7 @@ export default function AdminCoupons() {
                   </div>
                 </div>
 
-                {/* Actions }
+                {/* Actions */}
                 <div style={styles.actionsRow}>
                   <button
                     onClick={() => deleteCoupon(idx)}
@@ -323,7 +323,7 @@ export default function AdminCoupons() {
                   </button>
                 </div>
 
-                {/* Per-card validation note }
+                {/* Per-card validation note */}
                 {Object.keys(errors).length > 0 && (
                   <div style={styles.validationNote}>
                     {Object.values(errors).join(' • ')}
@@ -338,7 +338,7 @@ export default function AdminCoupons() {
   );
 }
 
-/** Inline styles to match the wireframe feel quickly 
+/** Inline styles to match the wireframe feel quickly */
 const styles = {
   toolbar: {
     display: 'flex',
@@ -382,5 +382,3 @@ const styles = {
   loading: {padding: 12, color: '#555'},
   empty: {padding: 12, color: '#777'},
 };
-
-*/
