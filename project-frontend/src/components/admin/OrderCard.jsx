@@ -85,7 +85,6 @@ const OrderCard = ({order, setUpdateList, updateList}) => {
   useEffect(() => {
     const fetchOrderProducts = async () => {
       const productList = await getOrderProducts(id);
-      console.log(productList);
       setOrderProducts(productList.products);
     };
     fetchOrderProducts();

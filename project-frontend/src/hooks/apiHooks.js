@@ -68,8 +68,6 @@ const useProducts = () => {
         body: JSON.stringify(postBody),
       };
 
-      console.log(options);
-
       try {
         await fetchData(productUrl + `/${productId}/tags`, options);
       } catch (error) {
@@ -316,48 +314,54 @@ const useMeals = () => {
     }
   };
 
-  const postMeal = async (inputs) => {
+  const postMeal = async (inputs, image) => {
     const {name, price} = inputs;
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('price', parseFloat(price));
+
+    if (image) {
+      formData.append('file', image);
+    }
 
     const options = {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        name,
-        price: parseFloat(price),
-      }),
+      body: formData,
     };
-
-    console.log("Url:", mealsUrl, "options:", options)
 
     try {
       const response = await fetchData(mealsUrl, options);
-      console.log(response)
       const mealId =
-        response?.result?.mealId ?? response?.meal?.id ?? response?.id;
-      return mealId;
+        response?.result?.mealId
+        if (mealId) return mealId;
+        else return false;
     } catch (error) {
       console.log('ERROR creating meal', error);
       return false;
     }
   };
 
-  const putMeal = async (mealId, inputs) => {
+  const putMeal = async (mealId, inputs, image) => {
     const {name, price} = inputs;
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('price', parseFloat(price));
+
+    if (image) {
+      formData.append('file', image);
+    }
 
     const options = {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        name,
-        price: parseFloat(price),
-      }),
+      body: formData,
     };
 
     try {
@@ -489,7 +493,6 @@ const useOrder = () => {
     };
     try {
       const orders = await fetchData(ordersUrl, options);
-      console.log(orders);
       if (orders) return orders;
       else return false;
     } catch (error) {
