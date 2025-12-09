@@ -1,6 +1,7 @@
 import {Outlet, Link, useNavigate} from 'react-router';
 import {useAdminContext} from '../../hooks/contextHooks';
 import {useEffect} from 'react';
+import '../../admincss/admin.css'
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -18,33 +19,37 @@ const Layout = () => {
     }
   };
   return (
-    <div>
-      <header style={{display: 'flex', backgroundColor: 'lightgray'}}>
-        <div style={{width: '30%'}}>
+    <div className="admin-root">
+      <header className="admin-header">
+        <div className="admin-header__logo">
           <img
             src="https://placehold.co/100x100/orange/white?text=LOGO"
             alt="Pizzeria Logo goes here"
           />
         </div>
-        <nav>
-          <ul style={{display: 'flex', margin: '0', padding: '0'}}>
+        <nav className="admin-nav">
+          <ul className="admin-nav__list">
             {!admin && (
               <>
-                <li>
+                <li className="admin-nav__item">
                   <Link to="/admin">Info</Link>
                 </li>
-                <li>
+                <li className="admin-nav__item">
                   <Link to="/admin/login">Log In</Link>
                 </li>
               </>
             )}
             {admin && (
               <>
-                <li>
+                <li className="admin-nav__item">
                   <Link to="/admin/orders">Orders</Link>
                 </li>
-                <li>
-                  <select defaultValue="" onChange={handleAdminSelect}>
+                <li className="admin-nav__item">
+                  <select
+                    defaultValue=""
+                    onChange={handleAdminSelect}
+                    className="admin-nav__select"
+                  >
                     <option value="" disabled>
                       Admin pages
                     </option>
@@ -54,13 +59,14 @@ const Layout = () => {
                     <option value="/admin/meals">Meals</option>
                   </select>
                 </li>
-                {/* Odottaa että valmistuu ja linkitetää projektii */}
-                <li>
+                <li className="admin-nav__item">
                   <Link to="/admin/feedbacks">Feedbacks</Link>
                 </li>
-                <li>
+                <li className="admin-nav__item">
                   <Link to="/admin/profile">Profile</Link>
-                  <p onClick={handleAdminLogout}>Logout</p>
+                  <p className="admin-nav__logout" onClick={handleAdminLogout}>
+                    Logout
+                  </p>
                 </li>
               </>
             )}

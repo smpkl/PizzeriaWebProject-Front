@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import NewProductCard from '../../components/admin/NewProductCard';
 import {useProducts} from '../../hooks/apiHooks';
 import AdminProductViewCard from '../../components/admin/AdminProductViewCard';
+import '../../admincss/admin.css';
 
 const AdminProducts = () => {
   const [addProduct, setAddProduct] = useState(false);
@@ -50,7 +51,7 @@ const AdminProducts = () => {
   return (
     <div>
       {!addProduct && (
-        <div>
+        <div className="admin-products__toolbar">
           <button onClick={handleAddProduct}>Add product</button>
           <label htmlFor="product">Search for a product: </label>
           <input

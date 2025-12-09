@@ -1,13 +1,20 @@
 import {useState} from 'react';
 import ItemDialog from '../ItemDialog';
-import { useMeals } from '../../hooks/apiHooks';
+import {useMeals} from '../../hooks/apiHooks';
+import '../../admincss/admin.css';
 
-const AdminMealCard = ({item, setModifyMeal, setShowModified, deleteAction, setDeleteAction}) => {
+const AdminMealCard = ({
+  item,
+  setModifyMeal,
+  setShowModified,
+  deleteAction,
+  setDeleteAction,
+}) => {
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
   const imageUrl = baseUrl + 'uploads/';
   const [selectedProduct, setSelectedProduct] = useState();
   const products = item.products;
-  const { deleteMeal } = useMeals();
+  const {deleteMeal} = useMeals();
 
   const handleShowItemDetails = (product) => {
     setSelectedProduct(product);
@@ -29,21 +36,8 @@ const AdminMealCard = ({item, setModifyMeal, setShowModified, deleteAction, setD
 
   return (
     <>
-      <div
-        className="meal-item-card"
-        id={`meal-${item.id}`}
-        style={{
-          display: 'flex',
-          width: '90%',
-          margin: '5px auto',
-          padding: '2%',
-          backgroundColor: 'lightgray',
-        }}
-      >
-        <div
-          className="meal-item-img-container"
-          style={{display: 'flex', justifyItems: 'center'}}
-        >
+      <div className="meal-item-card" id={`meal-${item.id}`}>
+        <div className="meal-item-img-container">
           <img
             src={
               item.filename
@@ -51,7 +45,6 @@ const AdminMealCard = ({item, setModifyMeal, setShowModified, deleteAction, setD
                 : 'https://placehold.co/120x120/green/white?text=PRODUCT'
             }
             alt="A menu item image"
-            style={{margin: 'auto'}}
           />
         </div>
         <div className="menu-item-info">
@@ -69,35 +62,25 @@ const AdminMealCard = ({item, setModifyMeal, setShowModified, deleteAction, setD
               </li>
             ))}
           </ul>
-          <div
-            style={{display: 'flex', justifyContent: 'right', width: '100%'}}
-          >
+
+          <div className="meal-item-price-row">
             {item.oldPrice && (
-              <p
-                style={{
-                  textDecorationLine: 'line-through',
-                  color: 'darkred',
-                  marginRight: '10px',
-                }}
-              >
-                {item.oldPrice}€
-              </p>
+              <p className="meal-item-old-price">{item.oldPrice}€</p>
             )}
-            <p>{item.price}€</p>
+            <p className="meal-item-price">{item.price}€</p>
           </div>
-          <div
-            style={{display: 'flex', justifyContent: 'right', width: '100%'}}
-          >
+
+          <div className="meal-item-buttons-row">
             <button
               onClick={(evt) => {
-                evt.preventDefault;
+                evt.preventDefault();
                 setModifyMeal(item);
                 setShowModified(true);
               }}
             >
               Modify
             </button>
-                        <button
+            <button
               onClick={(evt) => {
                 handleDelete(evt);
               }}
