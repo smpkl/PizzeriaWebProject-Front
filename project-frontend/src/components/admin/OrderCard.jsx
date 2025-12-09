@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import OrderProductCard from './OrderProductCard';
 import {useOrder} from '../../hooks/apiHooks';
+import '../../admincss/admin.css';
 
 const OrderCard = ({order, setUpdateList, updateList}) => {
   const {getOrderProducts} = useOrder();
@@ -10,48 +11,6 @@ const OrderCard = ({order, setUpdateList, updateList}) => {
     border: '1px solid grey',
     margin: '0',
     padding: '0.2rem',
-  };
-
-  const styles = {
-    card: {
-      ...style,
-      borderRadius: '10px',
-    },
-    products: {
-      ...style,
-      margin: '0.1rem',
-      flex: '1 1 40%',
-      textAlign: 'left',
-    },
-    customer: {
-      ...style,
-      flex: '1 1 60%',
-      textAlign: 'left',
-    },
-    table: {},
-    td: {padding: '2px 4px', border: '1px solid black'},
-    p: {
-      padding: '0',
-      margin: '0.1rem',
-    },
-    contentRow: {
-      display: 'flex',
-      gap: '0.3rem',
-      alignItems: 'flex-start',
-    },
-    buttonsRow: {
-      marginTop: '0.5rem',
-      display: 'flex',
-      gap: '0.5rem',
-    },
-    button: {
-      margin: '0.1rem',
-      padding: '4px 10px',
-      borderRadius: '6px',
-      border: '1px solid #000',
-      backgroundColor: '#e0e0e0',
-      cursor: 'pointer',
-    },
   };
 
   const formatDateTime = (isoString) =>
@@ -90,12 +49,12 @@ const OrderCard = ({order, setUpdateList, updateList}) => {
     fetchOrderProducts();
   }, []);
   return (
-    <div style={styles.card}>
+    <div className="order-card">
       <h3>Orders information</h3>
-      <div style={styles.contentRow}>
-        <div style={styles.products}>
+      <div className="order-card__content-row">
+        <div className="order-card__products">
           <h4>Products: </h4>
-          <table style={styles.table}>
+          <table className="order-card__table">
             <thead>
               <tr>
                 <th>Name:</th>
@@ -103,7 +62,7 @@ const OrderCard = ({order, setUpdateList, updateList}) => {
               </tr>
             </thead>
             <tbody>
-              {orderProducts.map((product) => (
+              {orderProducts?.map((product) => (
                 <OrderProductCard
                   key={`${id}-${product.id}`}
                   product={product}
@@ -112,98 +71,100 @@ const OrderCard = ({order, setUpdateList, updateList}) => {
             </tbody>
           </table>
         </div>
-        <div style={styles.customer}>
-          <h4>Customer ingormation:</h4>
+        <div className="order-card__customer">
+          <h4>Customer information:</h4>
           <table>
             <tbody>
               <tr>
-                <td style={styles.td}>
-                  <p style={styles.p}>name:</p>
+                <td className="order-card__td">
+                  <p className="order-card__p">name:</p>
                 </td>
-                <td style={styles.td}>
-                  <p style={styles.p}>{customer_name}</p>
+                <td className="order-card__td">
+                  <p className="order-card__p">{customer_name}</p>
                 </td>
               </tr>
               {customer_email && (
                 <tr>
-                  <td style={styles.td}>
-                    <p style={styles.p}>Email:</p>
+                  <td className="order-card__td">
+                    <p className="order-card__p">Email:</p>
                   </td>
-                  <td style={styles.td}>
-                    <p style={styles.p}>{customer_email}</p>
+                  <td className="order-card__td">
+                    <p className="order-card__p">{customer_email}</p>
                   </td>
                 </tr>
               )}
               {customer_phone && (
                 <tr>
-                  <td style={styles.td}>
-                    <p style={styles.p}>Phone:</p>
+                  <td className="order-card__td">
+                    <p className="order-card__p">Phone:</p>
                   </td>
-                  <td style={styles.td}>
-                    <p style={styles.p}>{customer_phone}</p>
+                  <td className="order-card__td">
+                    <p className="order-card__p">{customer_phone}</p>
                   </td>
                 </tr>
               )}
               {order_type.toLowerCase() === 'delivery' && (
                 <tr>
-                  <td style={styles.td}>
-                    <p style={styles.p}>Address:</p>
+                  <td className="order-card__td">
+                    <p className="order-card__p">Address:</p>
                   </td>
-                  <td style={styles.td}>
-                    <p style={styles.p}>{delivery_address}</p>
+                  <td className="order-card__td">
+                    <p className="order-card__p">{delivery_address}</p>
                   </td>
                 </tr>
               )}
               {details && (
                 <tr>
-                  <td style={styles.td}>
-                    <p style={styles.p}>Details:</p>
+                  <td className="order-card__td">
+                    <p className="order-card__p">Details:</p>
                   </td>
-                  <td style={styles.td}>
-                    <p style={styles.p}>{details}</p>
+                  <td className="order-card__td">
+                    <p className="order-card__p">{details}</p>
                   </td>
                 </tr>
               )}
               <tr>
-                <td style={styles.td}>
-                  <p style={styles.p}>Price:</p>
+                <td className="order-card__td">
+                  <p className="order-card__p">Price:</p>
                 </td>
-                <td style={styles.td}>
-                  <p style={styles.p}>{price} €</p>
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.td}>
-                  <p style={styles.p}>Time option:</p>
-                </td>
-                <td style={styles.td}>
-                  <p style={styles.p}>{time_option}</p>
+                <td className="order-card__td">
+                  <p className="order-card__p">{price} €</p>
                 </td>
               </tr>
               <tr>
-                <td style={styles.td}>
-                  <p style={styles.p}>Order time:</p>
+                <td className="order-card__td">
+                  <p className="order-card__p">Time option:</p>
                 </td>
-                <td style={styles.td}>
-                  <p style={styles.p}>{formatDateTime(date_time)}</p>
+                <td className="order-card__td">
+                  <p className="order-card__p">{time_option}</p>
                 </td>
               </tr>
               <tr>
-                <td style={styles.td}>
-                  <p style={styles.p}>Pizzeria:</p>
+                <td className="order-card__td">
+                  <p className="order-card__p">Order time:</p>
                 </td>
-                <td style={styles.td}>
-                  <p style={styles.p}>{pizzeria_address}</p>
+                <td className="order-card__td">
+                  <p className="order-card__p">{formatDateTime(date_time)}</p>
+                </td>
+              </tr>
+              <tr>
+                <td className="order-card__td">
+                  <p className="order-card__p">Pizzeria:</p>
+                </td>
+                <td className="order-card__td">
+                  <p className="order-card__p">{pizzeria_address}</p>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-      <div style={styles.buttonsRow}>
+
+      <div className="order-card__buttons-row">
         {((status === 'new' || status === 'received') && (
           <>
             <button
+              className="order-card__button"
               onClick={(evt) => {
                 evt.preventDefault();
                 doPutOrder({status: 'in_progress'});
@@ -212,6 +173,7 @@ const OrderCard = ({order, setUpdateList, updateList}) => {
               Accept
             </button>
             <button
+              className="order-card__button"
               onClick={(evt) => {
                 evt.preventDefault();
                 doPutOrder({status: 'cancelled'});
@@ -223,6 +185,7 @@ const OrderCard = ({order, setUpdateList, updateList}) => {
         )) ||
           (status === 'in_progress' && (
             <button
+              className="order-card__button"
               onClick={(evt) => {
                 evt.preventDefault();
                 doPutOrder({status: 'completed'});

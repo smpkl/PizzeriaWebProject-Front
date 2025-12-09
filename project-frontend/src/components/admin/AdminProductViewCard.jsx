@@ -1,5 +1,6 @@
 import React from 'react';
 import {useCategories, useProducts} from '../../hooks/apiHooks';
+import '../../admincss/admin.css';
 
 const AdminProductViewCard = ({
   product,
@@ -8,102 +9,6 @@ const AdminProductViewCard = ({
   setDeleteAction,
   deleteAction,
 }) => {
-  const styles = {
-    card: {
-      border: '2px solid #000',
-      borderRadius: '14px',
-      padding: '24px 28px',
-      maxWidth: '950px',
-      margin: '0.5rem auto',
-      fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
-    },
-    form: {
-      width: '100%',
-    },
-    grid: {
-      display: 'grid',
-      gridTemplateColumns: '1.1fr 1.3fr 0.9fr',
-      columnGap: '32px',
-      rowGap: '16px',
-    },
-    field: {marginBottom: '16px'},
-    labelTitle: {
-      fontWeight: '700',
-      display: 'block',
-      marginBottom: '4px',
-    },
-    textBox: {
-      border: '2px solid #000',
-      padding: '6px 10px',
-      minHeight: '32px',
-      display: 'flex',
-      alignItems: 'center',
-    },
-    textareaBox: {
-      border: '2px solid #000',
-      padding: '6px 10px',
-      minHeight: '150px',
-      whiteSpace: 'pre-wrap',
-    },
-    tagsRow: {
-      display: 'flex',
-      gap: '10px',
-      marginTop: '6px',
-    },
-    tagBox: {
-      minWidth: '52px',
-      padding: '8px 12px',
-      border: '2px solid #000',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    imageWrapper: {
-      marginTop: '22px',
-      width: '250px',
-      height: '250px',
-      border: '2px solid #000',
-      backgroundColor: '#e0e0e0',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      overflow: 'hidden',
-    },
-    img: {
-      maxWidth: '100%',
-      maxHeight: '100%',
-      objectFit: 'cover',
-    },
-    visibleRow: {
-      marginTop: '24px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '12px',
-    },
-    visibleBox: {
-      width: '36px',
-      height: '36px',
-      border: '2px solid #000',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontSize: '20px',
-      userSelect: 'none',
-    },
-    buttons: {
-      marginTop: '40px',
-      display: 'flex',
-      justifyContent: 'flex-end',
-      gap: '10px',
-    },
-    button: {
-      padding: '6px 16px',
-      borderRadius: '6px',
-      border: '2px solid #000',
-      backgroundColor: '#e0e0e0',
-      cursor: 'pointer',
-    },
-  };
 
   const {deleteProduct} = useProducts();
   const {categories} = useCategories();
@@ -125,61 +30,83 @@ const AdminProductViewCard = ({
   };
 
   return (
-    <div style={styles.card}>
-      <div style={styles.form}>
-        <div style={styles.grid}>
+    <div className="admin-card">
+      <div>
+        <div className="admin-grid-3-wide-gap">
           {/* Vasen sarake */}
           <div>
-            <div style={styles.field}>
-              <span style={styles.labelTitle}>Product name:</span>
-              <div style={styles.textBox}>{product.name}</div>
+            <div className="admin-field">
+              <span className="admin-product-view-card__label-title">
+                Product name:
+              </span>
+              <div className="admin-product-view-card__text-box">
+                {product.name}
+              </div>
             </div>
 
-            <div style={styles.field}>
-              <span style={styles.labelTitle}>Price:</span>
-              <div style={styles.textBox}>{product.price} €</div>
+            <div className="admin-field">
+              <span className="admin-product-view-card__label-title">
+                Price:
+              </span>
+              <div className="admin-product-view-card__text-box">
+                {product.price} €
+              </div>
             </div>
 
-            <div style={styles.field}>
-              <span style={styles.labelTitle}>TAGS:</span>
-              <div style={styles.tagsRow}>
+            <div className="admin-field">
+              <span className="admin-product-view-card__label-title">
+                TAGS:
+              </span>
+              <div className="admin-product-view-card__tags-row">
                 {(product.tags || []).map((tag) => (
-                  <div key={tag} style={styles.tagBox}>
+                  <div key={tag} className="admin-product-view-card__tag-box">
                     {tag}
                   </div>
                 ))}
               </div>
             </div>
 
-            <div style={styles.field}>
-              <span style={styles.labelTitle}>Category:</span>
-              <div style={styles.textBox}>{categoryName || '-'}</div>
+            <div className="admin-field">
+              <span className="admin-product-view-card__label-title">
+                Category:
+              </span>
+              <div className="admin-product-view-card__text-box">
+                {categoryName || '-'}
+              </div>
             </div>
           </div>
 
-          {/* Keski sarake*/}
+          {/* Keski sarake */}
           <div>
-            <div style={styles.field}>
-              <span style={styles.labelTitle}>Ingredients:</span>
-              <div style={styles.textareaBox}>{product.ingredients || ''}</div>
+            <div className="admin-field">
+              <span className="admin-product-view-card__label-title">
+                Ingredients:
+              </span>
+              <div className="admin-product-view-card__textarea-box">
+                {product.ingredients || ''}
+              </div>
             </div>
-            <div style={styles.field}>
-              <span style={styles.labelTitle}>Description:</span>
-              <div style={styles.textareaBox}>{product.description || ''}</div>
+            <div className="admin-field">
+              <span className="admin-product-view-card__label-title">
+                Description:
+              </span>
+              <div className="admin-product-view-card__textarea-box">
+                {product.description || ''}
+              </div>
             </div>
           </div>
 
-          {/* Oikea sarake*/}
+          {/* Oikea sarake */}
           <div>
-            <span style={styles.labelTitle}>Image:</span>
-            <div style={styles.imageWrapper}>
-              <img src={imageSrc} alt={product.name} style={styles.img} />
+            <span className="admin-product-view-card__label-title">Image:</span>
+            <div className="admin-product-view-card__image-wrapper">
+              <img src={imageSrc} alt={product.name} />
             </div>
 
-            <div style={styles.buttons}>
+            <div className="admin-product-view-card__buttons">
               <button
                 type="button"
-                style={styles.button}
+                className="admin-button"
                 onClick={async (evt) => {
                   evt.preventDefault();
                   await doDelete();
@@ -189,7 +116,7 @@ const AdminProductViewCard = ({
               </button>
               <button
                 type="button"
-                style={styles.button}
+                className="admin-button"
                 onClick={(evt) => {
                   evt.preventDefault();
                   setModifyProduct(product);

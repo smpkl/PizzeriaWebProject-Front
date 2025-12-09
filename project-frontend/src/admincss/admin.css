@@ -1,0 +1,677 @@
+/* common/general settings */
+
+:root {
+  --admin-border-color: #000;
+  --admin-border-radius: 14px;
+  --admin-font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --admin-bg-light: #e0e0e0;
+  --admin-card-max-width: 1000px;
+}
+
+.admin-root {
+  font-family: var(--admin-font-family);
+}
+
+/* Admin Layout */
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  background-color: lightgray;
+  padding: 0.5rem 1rem;
+}
+
+.admin-header__logo {
+  width: 30%;
+}
+
+.admin-header__logo img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.admin-nav {
+  flex: 1;
+}
+
+.admin-nav__list {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  gap: 1rem;
+  align-items: center;
+}
+
+.admin-nav__item a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.admin-nav__select {
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  border: 1px solid var(--admin-border-color);
+}
+
+
+.admin-nav__logout {
+  cursor: pointer;
+  margin-left: 0.5rem;
+  text-decoration: underline;
+}
+
+/* AdminProducts */
+
+.admin-products__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem auto;
+  max-width: var(--admin-card-max-width);
+}
+
+.admin-products__toolbar button {
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 2px solid var(--admin-border-color);
+  background-color: var(--admin-bg-light);
+  cursor: pointer;
+}
+
+.admin-products__toolbar input[type="text"] {
+  flex: 1;
+  padding: 4px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--admin-border-color);
+}
+
+/* Yleinen korttipohja */
+
+.admin-card {
+  border: 2px solid var(--admin-border-color);
+  border-radius: var(--admin-border-radius);
+  padding: 24px 28px;
+  max-width: var(--admin-card-max-width);
+  margin: 0.5rem auto;
+  font-family: var(--admin-font-family);
+  background-color: #fff;
+}
+
+.admin-card--compact {
+  padding: 0.2rem 0.2rem;
+}
+
+/* Grid settings */
+.admin-grid-3 {
+  display: grid;
+  grid-template-columns: 1.1fr 1.3fr 0.9fr;
+  column-gap: 0.3rem;
+  row-gap: 0.1rem;
+}
+
+.admin-grid-3-wide-gap {
+  display: grid;
+  grid-template-columns: 1.1fr 1.3fr 0.9fr;
+  column-gap: 32px;
+  row-gap: 16px;
+}
+
+.admin-grid-2 {
+  display: grid;
+  grid-template-columns: 1.2fr 1.8fr;
+  column-gap: 32px;
+  row-gap: 16px;
+}
+
+.admin-column {
+  min-width: 0;
+}
+
+/* form general settings */
+.admin-field {
+  margin-bottom: 0.5rem;
+}
+
+.admin-label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.admin-input,
+.admin-select,
+.admin-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid var(--admin-border-color);
+  padding: 4px 6px;
+  font-family: inherit;
+}
+
+.admin-input[type="number"] {
+  max-width: 180px;
+}
+
+.admin-textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+/* NewProductCard */
+
+.new-product-card {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.new-product-card__tags-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 0.1rem;
+  width: 100%;
+  gap: 0.1rem;
+}
+
+.new-product-card__tags-row-item {
+  margin: 0.1rem;
+}
+
+.new-product-card__tags-checkbox {
+  display: none;
+}
+
+.tag-label {
+  border: 2px solid var(--admin-border-color);
+  border-radius: 15px;
+  padding: 0.2rem;
+  margin: 0.01rem;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+}
+
+.tag-label--checked {
+  background-color: green;
+  font-weight: bolder;
+  color: #fff;
+}
+
+.tag-label--unchecked {
+  background-color: red;
+  font-weight: bold;
+  color: #fff;
+}
+
+.admin-image-wrapper {
+  margin-top: 22px;
+  width: 100%;
+  max-width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.admin-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.admin-buttons-row {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.admin-button {
+  margin: 0.1rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 2px solid var(--admin-border-color);
+  background-color: var(--admin-bg-light);
+  cursor: pointer;
+}
+
+/* AdminProductViewCard */
+
+.admin-product-view-card__label-title {
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.admin-product-view-card__text-box {
+  border: 2px solid var(--admin-border-color);
+  padding: 6px 10px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.admin-product-view-card__textarea-box {
+  border: 2px solid var(--admin-border-color);
+  padding: 6px 10px;
+  min-height: 150px;
+  white-space: pre-wrap;
+}
+
+.admin-product-view-card__tags-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.admin-product-view-card__tag-box {
+  min-width: 52px;
+  padding: 8px 12px;
+  border: 2px solid var(--admin-border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-product-view-card__image-wrapper {
+  margin-top: 22px;
+  width: 250px;
+  height: 250px;
+  border: 2px solid var(--admin-border-color);
+  background-color: var(--admin-bg-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.admin-product-view-card__image-wrapper img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.admin-product-view-card__buttons {
+  margin-top: 40px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* NewMealCard */
+
+.new-meal-card {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.new-meal-card__products-list {
+  max-height: 260px;
+  overflow-y: auto;
+  border: 1px solid var(--admin-border-color);
+  border-radius: 10px;
+  padding: 0.1rem 0.15rem;
+}
+
+.new-meal-card__product-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--admin-border-color);
+}
+
+.new-meal-card__product-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.new-meal-card__product-description {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.new-meal-card__selected-summary {
+  margin-top: 12px;
+  font-size: 0.9rem;
+}
+
+.new-meal-card__day-select {
+  margin-top: 0.5rem;
+  padding: 4px 6px;
+  border-radius: 4px;
+  border: 2px solid var(--admin-border-color);
+  max-width: 240px;
+}
+
+/* AdminMeals & AdminMealCard */
+
+.admin-meals__toolbar {
+  margin: 0.5rem auto;
+  max-width: var(--admin-card-max-width);
+  display: flex;
+  justify-content: flex-start;
+}
+
+.admin-meals__toolbar button {
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 2px solid var(--admin-border-color);
+  background-color: var(--admin-bg-light);
+  cursor: pointer;
+}
+
+.meal-item-card {
+  display: flex;
+  width: 90%;
+  margin: 5px auto;
+  padding: 2%;
+  background-color: lightgray;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.meal-item-img-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+}
+
+.meal-item-img-container img {
+  max-width: 120px;
+  max-height: 120px;
+  object-fit: cover;
+}
+
+.menu-item-info {
+  flex: 1;
+}
+
+.meal-products-ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.5rem 0;
+}
+
+.products-in-meal {
+  cursor: pointer;
+  padding: 2px 0;
+}
+
+.products-in-meal:hover {
+  text-decoration: underline;
+}
+
+.meal-item-price-row {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.meal-item-old-price {
+  text-decoration: line-through;
+  color: darkred;
+  margin-right: 10px;
+}
+
+.meal-item-price {
+  font-weight: 600;
+}
+
+.meal-item-buttons-row {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.meal-item-buttons-row button {
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 2px solid var(--admin-border-color);
+  background-color: var(--admin-bg-light);
+  cursor: pointer;
+}
+
+/* AdminOrders & OrderCard */
+
+.admin-orders__container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.admin-orders__column {
+  border: 5px solid var(--admin-border-color);
+  margin: 1rem;
+  padding: 0.5rem;
+  min-width: 280px;
+  max-width: 480px;
+}
+
+/* OrderCard */
+.order-card {
+  border: 1px solid grey;
+  border-radius: 10px;
+  margin: 0;
+  padding: 0.2rem;
+  font-family: var(--admin-font-family);
+}
+
+.order-card__content-row {
+  display: flex;
+  gap: 0.3rem;
+  align-items: flex-start;
+}
+
+.order-card__products,
+.order-card__customer {
+  border: 1px solid grey;
+  margin: 0.1rem;
+  padding: 0.2rem;
+  text-align: left;
+}
+
+.order-card__products {
+  flex: 1 1 40%;
+}
+
+.order-card__customer {
+  flex: 1 1 60%;
+}
+
+.order-card__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.order-card__td {
+  padding: 2px 4px;
+  border: 1px solid #000;
+}
+
+.order-card__p {
+  padding: 0;
+  margin: 0.1rem;
+}
+
+.order-card__buttons-row {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.order-card__button {
+  margin: 0.1rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid #000;
+  background-color: var(--admin-bg-light);
+  cursor: pointer;
+}
+
+/* OrderProductCard */
+
+.order-product-row td {
+  border-bottom: 1px solid #ccc;
+}
+
+.order-product-row p {
+  padding: 0;
+  margin: 0.1rem;
+}
+
+/* misc stuff such as text and margings */
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mt-1 {
+  margin-top: 0.25rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+/* Responsivity settings */
+
+@media (max-width: 1024px) {
+  .admin-card {
+    max-width: 100%;
+    margin: 0.5rem 1rem;
+  }
+
+  .admin-products__toolbar {
+    max-width: 100%;
+    margin: 0.5rem 1rem;
+  }
+
+  .admin-meals__toolbar {
+    max-width: 100%;
+    margin: 0.5rem 1rem;
+  }
+
+  .admin-orders__container {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .admin-header__logo {
+    width: 60%;
+  }
+
+  .admin-nav__list {
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
+  }
+
+  .admin-card {
+    padding: 16px 18px;
+    margin: 0.5rem 0.75rem;
+  }
+
+  .admin-grid-3,
+  .admin-grid-3-wide-gap,
+  .admin-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-products__toolbar,
+  .admin-meals__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-products__toolbar input[type="text"] {
+    width: 100%;
+  }
+
+  .meal-item-card {
+    flex-direction: column;
+  }
+
+  .meal-item-img-container {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .meal-item-price-row,
+  .meal-item-buttons-row {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .admin-orders__container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-orders__column {
+    margin: 0.5rem 0.75rem;
+    min-width: auto;
+    max-width: 100%;
+  }
+
+  .order-card__content-row {
+    flex-direction: column;
+  }
+
+  .order-card__products,
+  .order-card__customer {
+    width: 100%;
+  }
+
+  .admin-image-wrapper,
+  .admin-product-view-card__image-wrapper {
+    max-width: 180px;
+    max-height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-header__logo {
+    width: 80%;
+  }
+
+  .admin-button,
+  .order-card__button,
+  .meal-item-buttons-row button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .new-meal-card__products-list {
+    max-height: 220px;
+  }
+}

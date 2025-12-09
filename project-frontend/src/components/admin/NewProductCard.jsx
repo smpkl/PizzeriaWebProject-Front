@@ -1,101 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import useForm from '../../hooks/formHooks';
 import {useProducts, useTags, useCategories} from '../../hooks/apiHooks';
+import '../../admincss/admin.css';
 
 const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
   const imageUrl = baseUrl + 'uploads/';
-  const styles = {
-    card: {
-      marginTop: '0.5rem',
-      marginBottom: '0.5rem',
-      border: '2px solid #000',
-      borderRadius: '14px',
-      padding: '0.2rem 0.2rem',
-      maxWidth: '1000px',
-      margin: '0 auto',
-      fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
-    },
-    form: {
-      width: '100%',
-    },
-    grid: {
-      display: 'grid',
-      gridTemplateColumns: '1.1fr 1.3fr 0.9fr',
-      columnGap: '0.3rem',
-      rowGap: '0.1rem',
-    },
-    column: {
-      minWidth: 0,
-    },
-    field: {
-      marginBottom: '0.1rem',
-    },
-    textarea: {
-      width: '100%',
-      boxSizing: 'border-box',
-      border: '2px solid #000',
-      minHeight: '150px',
-    },
-    tagsRow: {
-      display: 'grid',
-      gridTemplateColumns: 'auto auto auto',
-      marginTop: '0.1rem',
-      width: '100%',
-    },
-    tagsRowDiv: {
-      margin: '0.1rem',
-    },
-    tagsRowCheckbox: {
-      display: 'none',
-    },
-    tagsRowLabel: {
-      border: '2px solid #000',
-      borderRadius: '15px',
-      padding: '0.2rem',
-      margin: '0.01rem',
-      width: '0.3rem',
-      height: 'auto',
-    },
-    tagsRowLabelChecked: {
-      backgroundColor: 'green',
-      fontWeight: 'bolder',
-    },
-    tagsRowLabelUnChecked: {
-      backgroundColor: 'red',
-      fontWeight: 'bold',
-    },
-    imageWrapper: {
-      marginTop: '22px',
-      width: '100%',
-      maxWidth: '200px',
-      height: '200px',
-      display: 'flex',
-      justifyCOntent: 'flex-end',
-      flexDirection: 'column',
-      gap: '10px',
-    },
-    image: {
-      width: '100%',
-      height: '100%',
-      objectFit: 'contain',
-      display: 'block',
-    },
-    buttons: {
-      marginTop: '1rem',
-      display: 'flex',
-      gap: '0.5rem',
-      justifyContent: 'flex-end',
-    },
-    button: {
-      margin: '0.1rem',
-      padding: '4px 10px',
-      borderRadius: '6px',
-      border: '2px solid #000',
-      backgroundColor: '#e0e0e0',
-      cursor: 'pointer',
-    },
-  };
 
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -171,68 +81,67 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
   }, [item, tags, setCheckbox]);
 
   return (
-    <div style={styles.card}>
-      <form action="" style={styles.form}>
-        <div style={styles.grid}>
-          {/* vasemmalla olevat elementit */}
-          <div style={styles.column}>
-            <div style={styles.field}>
-              <label htmlFor="productsName">Product name: </label>
+    <div className="admin-card admin-card--compact new-product-card">
+      <form>
+        <div className="admin-grid-3">
+          {/* vasen sarake */}
+          <div className="admin-column">
+            <div className="admin-field">
+              <label htmlFor="name">Product name: </label>
               <input
+                className="admin-input"
                 type="text"
                 name="name"
                 id="name"
                 placeholder="enter name"
                 value={inputs.name}
-                onChange={(evt) => {
-                  handleInputChange(evt);
-                }}
+                onChange={handleInputChange}
                 required
               />
             </div>
-            <div style={styles.field}>
+            <div className="admin-field">
               <label htmlFor="price">Price: </label>
               <input
+                className="admin-input"
                 type="number"
                 name="price"
                 id="price"
                 step={0.01}
                 value={inputs.price}
                 placeholder="0.00"
-                onChange={(evt) => {
-                  handleInputChange(evt);
-                }}
+                onChange={handleInputChange}
                 required
               />
             </div>
-            {/* Tag list comes from db directly, checkbox itself is invisible and change label to include image if wanted to */}
-            <div style={styles.field}>
-              <div style={styles.tagsRow}>
+
+            {/* Tag-lista */}
+            <div className="admin-field">
+              <div className="new-product-card__tags-row">
                 {tags.map((tag) => {
                   const isChecked = checkbox.includes(tag.id);
 
                   return (
-                    <div key={`tag-${tag.id}`} style={styles.tagsRowDiv}>
+                    <div
+                      key={`tag-${tag.id}`}
+                      className="new-product-card__tags-row-item"
+                    >
                       <input
-                        style={styles.tagsRowCheckbox}
+                        className="new-product-card__tags-checkbox"
                         type="checkbox"
                         name={tag.title}
                         id={tag.id}
                         value={tag.id}
                         checked={isChecked}
-                        onChange={(evt) => {
-                          handleCheckBox(evt);
-                        }}
+                        onChange={handleCheckBox}
                       />
                       <label
                         htmlFor={tag.id}
                         id={`tag-${tag.id}`}
-                        style={{
-                          ...styles.tagsRowLabel,
-                          ...(isChecked
-                            ? styles.tagsRowLabelChecked
-                            : styles.tagsRowLabelUnChecked),
-                        }}
+                        className={`tag-label ${
+                          isChecked
+                            ? 'tag-label--checked'
+                            : 'tag-label--unchecked'
+                        }`}
                       >
                         {tag.title}
                       </label>
@@ -241,8 +150,10 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
                 })}
               </div>
             </div>
+
             <label htmlFor="category">Category: </label>
             <select
+              className="admin-select"
               name="category"
               id="category"
               onChange={handleInputChange}
@@ -262,62 +173,50 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
             </select>
           </div>
 
-          {/*keskikohta */}
-          <div style={styles.column}>
-            <div style={styles.field}>
+          {/* keskisarake */}
+          <div className="admin-column">
+            <div className="admin-field">
               <label htmlFor="ingredients">Ingredients: </label>
               <textarea
+                className="admin-textarea"
                 name="ingredients"
                 id="ingredients"
                 cols={20}
                 rows={5}
-                style={styles.textarea}
                 value={inputs.ingredients}
-                onChange={(evt) => {
-                  handleInputChange(evt);
-                }}
+                onChange={handleInputChange}
                 required
               ></textarea>
             </div>
-            <div style={styles.field}>
+            <div className="admin-field">
               <label htmlFor="description">Description: </label>
               <textarea
+                className="admin-textarea"
                 name="description"
                 id="description"
                 cols={20}
                 rows={5}
-                style={styles.textarea}
                 value={inputs.description}
-                onChange={(evt) => {
-                  handleInputChange(evt);
-                }}
+                onChange={handleInputChange}
                 required
               ></textarea>
             </div>
           </div>
 
           {/* oikea sarake */}
-          <div style={styles.column}>
-            <div style={styles.imageWrapper}>
+          <div className="admin-column">
+            <div className="admin-image-wrapper">
               {item?.filename && !preview && (
                 <img
                   src={imageUrl + item?.filename}
                   alt="meals unique picture"
-                  style={styles.image}
                 />
               )}
-              {preview && (
-                <img
-                  src={preview}
-                  alt="meals unique picture"
-                  style={styles.image}
-                />
-              )}
+              {preview && <img src={preview} alt="meals unique picture" />}
               {!preview && !item?.filename && (
                 <img
                   src={'https://placehold.co/100x100'}
                   alt="meals unique picture"
-                  style={styles.image}
                 />
               )}
             </div>
@@ -330,9 +229,9 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
                 setPreview(URL.createObjectURL(e.target.files[0]));
               }}
             />
-            <div style={styles.buttons}>
+            <div className="admin-buttons-row">
               <button
-                style={styles.button}
+                className="admin-button"
                 onClick={(evt) => {
                   evt.preventDefault();
                   handleSubmit(evt);
@@ -341,7 +240,7 @@ const NewProductCard = ({addProduct, setAddProduct, item, setShowModified}) => {
                 Save
               </button>
               <button
-                style={styles.button}
+                className="admin-button"
                 onClick={(evt) => {
                   evt.preventDefault();
                   if (setAddProduct) {

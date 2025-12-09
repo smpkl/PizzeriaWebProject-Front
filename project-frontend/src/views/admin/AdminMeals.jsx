@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import AdminMealsCard from '../../components/admin/AdminMealCard';
 import {useMeals} from '../../hooks/apiHooks';
 import NewMealCard from '../../components/admin/NewMealCard';
+import '../../admincss/admin.css';
 
 const AdminMeals = () => {
   const [menuMeals, setMenuMeals] = useState([]);
@@ -28,9 +29,11 @@ const AdminMeals = () => {
   }, [modifyMeal, addMeal, showModified, deleteAction]);
   return (
     <div>
-      {(!showModified && !addMeal) && (
+      {!showModified && !addMeal && (
         <>
-          <button onClick={handleAddMeal}>Add new meal</button>
+          <div className="admin-meals__toolbar">
+            <button onClick={handleAddMeal}>Add new meal</button>
+          </div>
           {menuMeals?.map((item) => (
             <AdminMealsCard
               key={`meal-${item.id}`}
@@ -43,12 +46,7 @@ const AdminMeals = () => {
           ))}
         </>
       )}
-      {addMeal && (
-        <NewMealCard
-          addMeal={addMeal}
-          setAddMeal={setAddMeal}
-        />
-      )}
+      {addMeal && <NewMealCard addMeal={addMeal} setAddMeal={setAddMeal} />}
       {showModified && (
         <NewMealCard
           modifyMeal={modifyMeal}

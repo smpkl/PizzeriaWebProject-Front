@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useOrder} from '../../hooks/apiHooks';
 import OrderCard from '../../components/admin/OrderCard';
+import '../../admincss/admin.css';
+
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
   const [updateList, setUpdateList] = useState(false);
@@ -15,18 +17,12 @@ const AdminOrders = () => {
     fetchOrders();
   }, [updateList]);
 
-  const styleContainer = {display: 'flex', justifyContent: 'center'};
-  const styleOrders = {
-    border: '5px solid black',
-    margin: '1rem',
-    padding: '0.5rem',
-  };
   return (
     <>
       <h2>ALL ORDERS</h2>
       {orders && (
-        <div style={styleContainer}>
-          <div style={styleOrders}>
+        <div className="admin-orders__container">
+          <div className="admin-orders__column">
             <h2>New orders</h2>
             {orders
               .filter((order) => ['new', 'received'].includes(order.status))
@@ -39,7 +35,7 @@ const AdminOrders = () => {
                 />
               ))}
           </div>
-          <div style={styleOrders}>
+          <div className="admin-orders__column">
             <h2>Active orders</h2>
             {orders
               .filter((order) => order.status === 'in_progress')

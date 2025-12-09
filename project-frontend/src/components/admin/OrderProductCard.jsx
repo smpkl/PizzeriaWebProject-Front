@@ -1,15 +1,14 @@
 import React from 'react';
+import '../../admincss/admin.css';
 
 const OrderProductCard = ({product}) => {
-  const productStyle = {borderBottom: '1px solid #ccc'};
-  const paragraphStyle = {padding: '0', margin: '0.1rem'}
   return (
-    <tr>
-      <td style={productStyle}>
-        <p style={paragraphStyle}>{product.name}</p>
+    <tr className="order-product-row">
+      <td>
+        <p>{product.name}</p>
       </td>
-      <td style={productStyle}>
-        <p style={paragraphStyle}>{product.quantity} pcs</p>
+      <td>
+        <p>{product.quantity} pcs</p>
       </td>
     </tr>
   );
