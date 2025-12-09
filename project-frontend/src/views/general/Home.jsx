@@ -108,14 +108,7 @@ const Home = () => {
           <Announcement key={item.id} announcement={item} />
         ))}
       </div>
-      <div
-        id="meal-of-the-day"
-        style={{
-          backgroundColor: '#ecb640ff',
-          padding: '10px 0',
-          margin: '10px 0',
-        }}
-      >
+      <div id="meal-of-the-day">
         <h2 style={{margin: '5px', fontWeight: 'bold'}}>Meal of the Day</h2>
         {dailyMeal && <MealItem key={dailyMeal?.id} item={dailyMeal} />}
       </div>
@@ -133,10 +126,7 @@ const Home = () => {
           categories={categories}
           updateMenu={updateMenu}
         />
-        <div
-          id="menu"
-          style={{backgroundColor: 'white', padding: '10px 0', margin: '5px 0'}}
-        >
+        <div id="menu">
           {menuProducts?.map((item) => (
             <MenuItem key={`product-${item.id}`} item={item} />
           ))}

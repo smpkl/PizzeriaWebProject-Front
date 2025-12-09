@@ -36,7 +36,7 @@ const Layout = () => {
           top: '0',
         }}
       >
-        <div style={{margin: '2%'}}>
+        <div id="header-logo-container">
           <Link
             to="/"
             style={{
@@ -59,7 +59,6 @@ const Layout = () => {
             padding: '0',
             alignItems: 'center',
             justifyContent: 'right',
-            width: '75%',
           }}
         >
           <ul
@@ -75,32 +74,17 @@ const Layout = () => {
             <li>
               <Link to="/profile">
                 {user ? (
-                  <AiOutlineUser style={{fontSize: '35px'}} />
+                  <AiOutlineUser className="nav-icon" />
                 ) : (
-                  <AiOutlineLogin style={{fontSize: '35px'}} />
+                  <AiOutlineLogin className="nav-icon" />
                 )}
               </Link>
             </li>
             <li>
               <Link to="/order" style={{position: 'relative'}}>
-                <AiOutlineShopping style={{fontSize: '35px'}} />
+                <AiOutlineShopping className="nav-icon" />
                 {itemCount > 0 ? (
-                  <div
-                    style={{
-                      backgroundColor: '#ecb640ff',
-                      color: '#F5EEE6',
-                      width: '26px',
-                      height: '26px',
-                      borderRadius: '50%',
-                      position: 'absolute',
-                      top: '-18px',
-                      right: '-18px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '15px',
-                    }}
-                  >
+                  <div className="order-items-counter">
                     <p>{itemCount}</p>
                   </div>
                 ) : (
@@ -110,7 +94,7 @@ const Layout = () => {
             </li>
             <li>
               <Link to="/about">
-                <AiOutlineInfoCircle style={{fontSize: '35px'}} />
+                <AiOutlineInfoCircle className="nav-icon" />
               </Link>
             </li>
           </ul>

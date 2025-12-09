@@ -122,7 +122,6 @@ const MenuFilter = ({products, meals, tags, categories, updateMenu}) => {
               width: '80%',
               backgroundColor: '#f5eee6',
               padding: '5px',
-              fontSize: '16px',
               border: '1px solid #f5eee6',
               marginTop: '5px',
             }}

@@ -17,23 +17,8 @@ const MealItem = ({item}) => {
 
   return (
     <>
-      <div
-        className="meal-item-card"
-        id={`meal-${item.id}`}
-        style={{
-          display: 'flex',
-          width: '90%',
-          margin: '5px auto',
-          padding: '2%',
-          border: '1px solid #710009',
-          borderRadius: '4px',
-          backgroundColor: 'white',
-        }}
-      >
-        <div
-          className="meal-item-img-container"
-          style={{display: 'flex', justifyItems: 'left', width: '40%'}}
-        >
+      <div className="menu-item-card" id={`meal-${item.id}`}>
+        <div className="menu-item-img-container">
           <img
             src={
               item.filename
@@ -44,14 +29,7 @@ const MealItem = ({item}) => {
             style={{margin: 'auto', width: '150px'}}
           />
         </div>
-        <div
-          className="menu-item-info"
-          style={{
-            textAlign: 'center',
-            width: '60%',
-            padding: '0 5%',
-          }}
-        >
+        <div className="menu-item-info">
           <h3 style={{margin: '5px 0'}}>{item.name}</h3>
           <h4 style={{margin: '5px 0'}}>Products included in the meal:</h4>
           <p style={{margin: '5px 0'}}>Click product to see details</p>
@@ -86,17 +64,7 @@ const MealItem = ({item}) => {
           <div
             style={{display: 'flex', justifyContent: 'center', width: '100%'}}
           >
-            <button
-              onClick={() => handleMealAdd(item)}
-              style={{
-                padding: '8px',
-                borderRadius: '10px',
-                margin: '5px 1.5%',
-                border: '2px solid #710009',
-                backgroundColor: '#710009',
-                color: '#f5eee6',
-              }}
-            >
+            <button onClick={() => handleMealAdd(item)} className="add-button">
               Add to order
             </button>
           </div>

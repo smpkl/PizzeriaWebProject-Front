@@ -104,26 +104,10 @@ const Order = () => {
               >
                 SHOPPING CART
               </h2>
-              <div
-                style={{
-                  border: '1px solid black',
-                  justifyContent: 'right',
-                  alignItems: 'center',
-                  width: '100%',
-                  margin: 'auto',
-                  padding: '10px 0',
-                }}
-              >
+              <div id="shopping-cart">
                 {orderProducts.map((item) => (
                   <div
-                    style={{
-                      display: 'flex',
-                      width: '95%',
-                      justifyContent: 'right',
-                      alignItems: 'center',
-                      margin: '0 2.5%',
-                      fontSize: '18px',
-                    }}
+                    className="cart-item"
                     key={`order-product-` + item.product.id}
                   >
                     <p>
@@ -164,17 +148,7 @@ const Order = () => {
                   </div>
                 ))}
                 {orderMeals.map((item) => (
-                  <div
-                    style={{
-                      display: 'flex',
-                      width: '95%',
-                      justifyContent: 'right',
-                      alignItems: 'center',
-                      margin: '0 2.5%',
-                      fontSize: '18px',
-                    }}
-                    key={'order-meal-' + item.meal.id}
-                  >
+                  <div className="cart-item" key={'order-meal-' + item.meal.id}>
                     <p>
                       {item.meal.name} --- {item.meal.price}€
                     </p>

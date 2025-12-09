@@ -107,7 +107,7 @@ const DeliveryForm = () => {
   return (
     <>
       <div className="orderform-container">
-        <h3 style={{fontSize: '20px'}}>DELIVERY</h3>
+        <h3 style={{fontSize: '22px'}}>DELIVERY</h3>
         <form
           className="orderform"
           onSubmit={handleSubmit}

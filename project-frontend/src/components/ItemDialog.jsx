@@ -21,14 +21,7 @@ const ItemDialog = ({item, meal, onClose}) => {
           backdropFilter: 'blur(4px)',
         }}
       >
-        <div
-          style={{
-            width: '90%',
-            backgroundColor: 'white',
-            padding: '2%',
-            border: '2px solid #0c2720ff',
-          }}
-        >
+        <div className="item-dialog-div">
           <div style={{textAlign: 'right'}}>
             <button
               onClick={onClose}
@@ -54,7 +47,7 @@ const ItemDialog = ({item, meal, onClose}) => {
             <p style={{margin: '5px'}}>
               {item.tags && item.tags.length > 0
                 ? item.tags.map((t) => t).join(', ')
-                : 'No tags yet'}
+                : ''}
             </p>
             <div>
               <img
@@ -76,29 +69,14 @@ const ItemDialog = ({item, meal, onClose}) => {
             {meal.id && (
               <button
                 onClick={() => handleMealAdd(meal)}
-                style={{
-                  padding: '10px',
-                  borderRadius: '10px',
-                  margin: '5px 1.5%',
-                  border: '2px solid #710009',
-                  backgroundColor: '#710009',
-                  color: '#f5eee6',
-                }}
+                className="add-button"
               >
                 Add meal to cart
               </button>
             )}
             <button
               onClick={() => handleProductAdd(item)}
-              style={{
-                padding: '10px',
-                borderRadius: '10px',
-                margin: '5px 1.5%',
-                border: '2px solid #ecb640ff',
-                backgroundColor: '#ecb640ff',
-                color: '#0c2720ff',
-                fontWeight: 'bold',
-              }}
+              className="add-button"
             >
               Add product to cart
             </button>
