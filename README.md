@@ -65,8 +65,7 @@ Omistajat/admin:
 - Voi hallinnoida omia tietoja
 
 ### Mahdolliset lisäominaisuudet
--  
--  
+-  [Leaflet](https://leafletjs.com/) kartalla ravintolat
 
 ---
 
@@ -223,6 +222,7 @@ node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand
 
 ## 6. Demo/esitys diat ja muut linkit
 - [wireframe / mockup](https://www.figma.com/design/6friFu5guACEfN9zNmMO1j/Untitled?node-id=0-1&m=dev&t=XIEMncLJKdyQ6v4o-1
+    - Projektin avaamiseen tarvittava salasana: webdev-tba-ryhmäprojekti-pizzeria
 
 ---
 
@@ -237,3 +237,4 @@ node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand
     - Elias Rinne [MustBeViable](https://github.com/MustBeViable) 
     - Sampo Klaavo [smpkl](https://github.com/smpkl)
     - Jere Pyörökivi [Jere-4](https://github.com/Jere-4)
+
