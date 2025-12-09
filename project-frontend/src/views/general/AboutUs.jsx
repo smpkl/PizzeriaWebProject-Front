@@ -25,8 +25,8 @@ const AboutUs = () => {
 
   return (
     <>
-      <h1 style={{width: '90%'}}>ABOUT US</h1>
-      <div style={{width: '90%'}}>
+      <h1 style={{width: '90%', margin: 'auto'}}>ABOUT US</h1>
+      <div style={{width: '90%', margin: 'auto'}}>
         <p>
           At Pizzeria TBA, we’re here to redefine fast pizza without cutting
           corners. Our mission is simple: bold flavors, high-quality
@@ -61,9 +61,10 @@ const AboutUs = () => {
       <div
         style={{
           width: '100%',
-          backgroundColor: 'salmon',
+          backgroundColor: '#710009',
           margin: 'auto',
           padding: '20px 0',
+          color: '#f5eee6',
         }}
       >
         <h2 style={{width: '90%', margin: '10px auto'}}>OUR PIZZERIAS</h2>
@@ -72,7 +73,7 @@ const AboutUs = () => {
             height: '400px',
             width: '95%',
             margin: 'auto',
-            border: '5px outset lightsalmon',
+            border: '5px outset #8d0202ff',
           }}
         >
           <MapContainer
@@ -128,7 +129,16 @@ const AboutUs = () => {
           ))}
         </div>
       </div>
-      <div>FEEDBACK KOMPONENTTI TÄhÄN</div>
+      <div
+        style={{
+          backgroundColor: '#ecb640ff',
+          height: '10vh',
+          margin: '10px 0',
+          padding: '10px 0',
+        }}
+      >
+        FEEDBACK KOMPONENTTI TÄHÄN
+      </div>
     </>
   );
 };
