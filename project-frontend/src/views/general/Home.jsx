@@ -94,8 +94,9 @@ const Home = () => {
       <h1>PIZZERIA TBA</h1>
       <div id="main-page-img-container">
         <img
-          src="https://placehold.co/400x200/red/white?text=THIS+IS+A+PIZZA"
+          src={`${import.meta.env.VITE_PUBLIC_URL}tba_pizzeria_main.jpg`}
           alt="A very delicious pizza"
+          style={{width: '100%', height: 'auto'}}
         />
       </div>
       <div id="start-order-box">
@@ -107,12 +108,24 @@ const Home = () => {
           <Announcement key={item.id} announcement={item} />
         ))}
       </div>
-      <div id="meal-of-the-day" style={{backgroundColor: 'goldenrod'}}>
-        <h2>Meal of the Day</h2>
+      <div
+        id="meal-of-the-day"
+        style={{
+          backgroundColor: '#ecb640ff',
+          padding: '10px 0',
+          margin: '10px 0',
+        }}
+      >
+        <h2 style={{margin: '5px', fontWeight: 'bold'}}>Meal of the Day</h2>
         {dailyMeal && <MealItem key={dailyMeal?.id} item={dailyMeal} />}
       </div>
-      <div id="menu-container">
-        <h2>MENU</h2>
+      <div
+        id="menu-container"
+        style={{backgroundColor: '#710009', padding: '7px 0 0 0'}}
+      >
+        <h2 style={{color: '#F5EEE6', fontSize: '26px', margin: '5px'}}>
+          MENU
+        </h2>
         <MenuFilter
           products={originalProducts}
           meals={originalMeals}
@@ -120,7 +133,10 @@ const Home = () => {
           categories={categories}
           updateMenu={updateMenu}
         />
-        <div id="menu">
+        <div
+          id="menu"
+          style={{backgroundColor: 'white', padding: '10px 0', margin: '5px 0'}}
+        >
           {menuProducts?.map((item) => (
             <MenuItem key={`product-${item.id}`} item={item} />
           ))}

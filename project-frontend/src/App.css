@@ -1,3 +1,10 @@
+/* Colors
+#0c2720ff
+#ecb640ff
+#F5EEE6 linen (natural white)
+#710009 (dark) red 
+*/
+
 #root {
   max-width: 1280px;
   margin: 0;
@@ -12,22 +19,142 @@ ul > li {
   margin: 0 5%;
 }
 
-a {
+footer li a {
+  color: #f5eee6;
   text-decoration: none;
+  margin: 5px;
+}
+
+#nav-menu li {
+  width: auto;
+  white-space: nowrap;
+  font-size: 1.2rem;
+}
+
+#nav-menu a {
+  text-decoration: none;
+  color: #f5eee6;
 }
 
 .products-in-meal:hover {
   color: green;
 }
 
-.active {
-  background-color: greenyellow;
+.ordertype-btn-container {
+  margin: 5px 4%;
+}
+
+.ordertype-btn.active {
+  background-color: #f5eee6;
+  color: #710009;
+}
+.ordertype-btn {
+  color: #f5eee6;
+  background-color: #710009;
+  border: 2px solid #710009;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.filter-btn.active {
+  color: #710009;
+  font-weight: bold;
+  padding: 11px;
+  background-color: #f5eee6;
+}
+
+.filter-btn {
+  color: #f5eee6;
+  margin: 5px 0.7%;
+  padding: 10px;
+  width: 17.5%;
+  background-color: #710009;
+  border: 2px solid #f5eee6;
+  border-radius: 4px;
+}
+
+.tag-btn.active {
+  color: #710009;
+  font-weight: bold;
+  padding: 11px;
+  background-color: #f5eee6;
+}
+
+.tag-btn {
+  color: #f5eee6;
+  margin: 5px 0.7%;
+  padding: 10px;
+  width: 12%;
+  background-color: #710009;
+  border: 2px solid #f5eee6;
+  border-radius: 4px;
+}
+
+.orderform-container .text-input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #710009;
+  border-radius: 4px;
+  margin: 5px auto 10px auto;
+  width: 80%;
+}
+
+.orderform-label {
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .pizzeria-option:hover {
-  background-color: lightsalmon;
+  background-color: rgb(202, 141, 28);
 }
 
 .selected-pizzeria {
-  background-color: salmon;
+  background-color: #ecb640ff;
+}
+
+.order-time-container {
+  display: flex;
+  justify-content: center;
+}
+
+.order-time-container div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 10% 20px 10%;
+}
+
+.time-option-input {
+  width: 20px;
+  height: 20px;
+}
+
+.timedate-container {
+  padding: 10px 0;
+}
+
+.timedate-input {
+  padding: 10px;
+  margin-right: 2%;
+}
+
+#contact-information-container {
+  background-color: #0c2720ff;
+  display: flex;
+  flex-direction: column;
+  color: #f5eee6;
+  padding: 10px 0;
+}
+
+.checkout-btn {
+  margin: 5px auto;
+  padding: 11px;
+  background-color: #710009;
+  color: #f5eee6;
+  font-weight: bold;
+  font-size: 14px;
+  border: 1px solid #710009;
+  border-radius: 5px;
 }

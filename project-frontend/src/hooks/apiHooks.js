@@ -574,28 +574,53 @@ const useOrder = () => {
     orderPrice,
   ) => {
     try {
-      const options = {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          status: 'received',
-          orderType: orderType,
-          userId: orderUserId,
-          timeOption: orderInfo.timeOption,
-          dateTime: `${orderInfo.day} ${orderInfo.time}`,
-          deliveryAddress: `${orderInfo.userAddress} ${orderInfo.userAddress2}`,
-          pizzeriaAddress: orderInfo.pizzeriaAddress,
-          customerName: orderInfo.name,
-          customerPhone: orderInfo.phonenumber,
-          customerEmail: orderInfo.email,
-          details: orderInfo.details,
-          price: (orderPrice + Number(orderInfo.deliveryFee)).toFixed(2),
-        }),
-      };
-      const orderResponse = await fetchData(ordersUrl, options);
-      const orderId = orderResponse.order_id;
+      let orderId;
+      if (orderUserId) {
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            status: 'received',
+            orderType: orderType,
+            userId: orderUserId,
+            timeOption: orderInfo.timeOption,
+            dateTime: `${orderInfo.day} ${orderInfo.time}`,
+            deliveryAddress: `${orderInfo.userAddress} ${orderInfo.userAddress2}`,
+            pizzeriaAddress: orderInfo.pizzeriaAddress,
+            customerName: orderInfo.name,
+            customerPhone: orderInfo.phonenumber,
+            customerEmail: orderInfo.email,
+            details: orderInfo.details,
+            price: (orderPrice + Number(orderInfo.deliveryFee)).toFixed(2),
+          }),
+        };
+        const orderResponse = await fetchData(ordersUrl, options);
+        orderId = orderResponse.order_id;
+      } else {
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            status: 'received',
+            orderType: orderType,
+            timeOption: orderInfo.timeOption,
+            dateTime: `${orderInfo.day} ${orderInfo.time}`,
+            deliveryAddress: `${orderInfo.userAddress} ${orderInfo.userAddress2}`,
+            pizzeriaAddress: orderInfo.pizzeriaAddress,
+            customerName: orderInfo.name,
+            customerPhone: orderInfo.phonenumber,
+            customerEmail: orderInfo.email,
+            details: orderInfo.details,
+            price: (orderPrice + Number(orderInfo.deliveryFee)).toFixed(2),
+          }),
+        };
+        const orderResponse = await fetchData(ordersUrl, options);
+        orderId = orderResponse.order_id;
+      }
 
       // Collect all the products from the orderProducts and orderMeals to an object:
       const mergedProducts = {};

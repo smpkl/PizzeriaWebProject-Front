@@ -35,7 +35,7 @@ const AboutUs = () => {
         </p>
         <div>
           <img
-            src={`${import.meta.env.VITE_API_BASE_URL}pizzeria_about_us_img.jpg`}
+            src={`${import.meta.env.VITE_PUBLIC_URL}pizzeria_about_us_img.jpg`}
             alt="Pizzeria TBA, About us page image of a pizza"
             style={{width: '100%'}}
           />

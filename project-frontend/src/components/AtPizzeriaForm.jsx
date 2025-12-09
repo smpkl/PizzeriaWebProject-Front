@@ -50,8 +50,8 @@ const AtPizzeriaForm = () => {
 
   return (
     <>
-      <div style={{border: '1px solid black'}}>
-        <h3>AT PIZZERIA</h3>
+      <div className="orderform-container">
+        <h3 style={{fontSize: '20px'}}>AT PIZZERIA</h3>
         <form
           onSubmit={handleSubmit}
           id="atPizzeria-form"
@@ -69,20 +69,24 @@ const AtPizzeriaForm = () => {
               padding: '20px 0',
             }}
           >
-            <label htmlFor="atPizzeria-search-pizzeria">
+            <h4 style={{marginTop: '0'}}>CHOOSE A PIZZERIA:</h4>
+            <label
+              htmlFor="atPizzeria-search-pizzeria"
+              className="orderform-label"
+            >
               Search pizzeria:{' '}
             </label>
             <input
+              className="text-input"
               type="text"
               name="pizzeriaSearch"
               id="atPizzeria-search-pizzeria"
-              style={{margin: '20px auto'}}
               onChange={handleSearch}
               placeholder="Search for a pizzeria"
             ></input>
             <div
               style={{
-                height: '140px',
+                height: '160px',
                 overflow: 'scroll',
                 border: '2px solid black',
               }}
@@ -100,7 +104,7 @@ const AtPizzeriaForm = () => {
                 >
                   <label
                     htmlFor={'atPizzeria-pizzeria-' + l.name}
-                    style={{width: '100%'}}
+                    className="orderform-label"
                   >
                     <b>{l.name}</b>
                     <br />
@@ -120,74 +124,75 @@ const AtPizzeriaForm = () => {
               ))}
             </div>
           </div>
-          <div
-            id="atPizzeria-time-container"
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              border: '1px solid black',
-            }}
-          >
-            {' '}
-            <h4>ARRIVAL TIME*: </h4>
-            <label htmlFor="time-option1">PREORDER</label>
-            <input
-              type="radio"
-              name="timeOption"
-              id="time-option1"
-              value="preorder"
-              onChange={handleInputChange}
-              checked={orderInfo.timeOption === 'preorder'}
-              required
-            ></input>
-            <label htmlFor="time-option2">NOW</label>
-            <input
-              type="radio"
-              name="timeOption"
-              id="time-option2"
-              value="now"
-              onChange={handleInputChange}
-              checked={orderInfo.timeOption === 'now'}
-              required
-            ></input>
-            {orderInfo.timeOption === 'preorder' && (
-              <div>
-                <label htmlFor="day-input">DATE*: </label>
-                <input
-                  type="date"
-                  name="day"
-                  id="day-input"
-                  onChange={handleInputChange}
-                  value={orderInfo.day}
-                  required
-                ></input>
-                <label htmlFor="time-input">TIME*: </label>
-                <input
-                  type="time"
-                  name="time"
-                  id="time-input"
-                  onChange={handleInputChange}
-                  value={orderInfo.time}
-                  required
-                ></input>
-              </div>
-            )}
+          <h4>ARRIVAL TIME*: </h4>
+          <div className="order-time-container" id="pickup-time-container">
+            <div>
+              <label htmlFor="time-option1" className="orderform-label">
+                PREORDER
+              </label>
+              <input
+                className="time-option-input"
+                type="radio"
+                name="timeOption"
+                id="time-option1"
+                value="preorder"
+                onChange={handleInputChange}
+                checked={orderInfo.timeOption === 'preorder'}
+                required
+              ></input>
+            </div>
+            <div>
+              <label htmlFor="time-option2" className="orderform-label">
+                NOW
+              </label>
+              <input
+                className="time-option-input"
+                type="radio"
+                name="timeOption"
+                id="time-option2"
+                value="now"
+                onChange={handleInputChange}
+                checked={orderInfo.timeOption === 'now'}
+                required
+              ></input>
+            </div>
           </div>
-          <div
-            id="contact-information-container"
-            style={{
-              backgroundColor: 'gray',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
+          {orderInfo.timeOption === 'preorder' && (
+            <div className="timedate-container">
+              <label htmlFor="day-input" className="orderform-label">
+                DATE*:{' '}
+              </label>
+              <input
+                className="timedate-input"
+                type="date"
+                name="day"
+                id="day-input"
+                onChange={handleInputChange}
+                value={orderInfo.day}
+                required
+              ></input>
+              <label htmlFor="time-input" className="orderform-label">
+                TIME*:{' '}
+              </label>
+              <input
+                className="timedate-input"
+                type="time"
+                name="time"
+                id="time-input"
+                onChange={handleInputChange}
+                value={orderInfo.time}
+                required
+              ></input>
+            </div>
+          )}
+          <div id="contact-information-container">
             <h4>CONTACT INFORMATION: </h4>
             <label htmlFor="firstname-lastname">FIRSTNAME & LASTNAME*: </label>
             <input
+              className="text-input"
               type="text"
               name="name"
               id="firstname-lastname"
-              style={{margin: 'auto'}}
               placeholder="Firstname Lastname"
               onChange={handleInputChange}
               value={orderInfo.name}
@@ -195,10 +200,10 @@ const AtPizzeriaForm = () => {
             ></input>
             <label htmlFor="phonenumber">PHONENUMBER*: </label>
             <input
+              className="text-input"
               type="number"
               name="phonenumber"
               id="phonenumber"
-              style={{margin: 'auto'}}
               placeholder="e.g. 050 000 000 00"
               onChange={handleInputChange}
               value={orderInfo.phonenumber}
@@ -206,11 +211,11 @@ const AtPizzeriaForm = () => {
             ></input>
             <label htmlFor="email">EMAIL*: </label>
             <input
+              className="text-input"
               type="email"
               size="30"
               name="email"
               id="email"
-              style={{margin: 'auto'}}
               placeholder="Email address"
               onChange={handleInputChange}
               value={orderInfo.email}
@@ -222,19 +227,23 @@ const AtPizzeriaForm = () => {
             style={{display: 'flex', flexDirection: 'column'}}
           >
             <h4>ORDER DETAILS: </h4>
-            <label htmlFor="pickup-details">DETAILS: </label>
+            <label htmlFor="pickup-details" className="orderform-label">
+              DETAILS:{' '}
+            </label>
             <textarea
               rows="10"
-              cols="45"
+              cols="4"
               name="details"
               id="atPizzeria-details"
               placeholder="Type details for the pizzeria here"
-              style={{margin: 'auto'}}
+              style={{margin: 'auto', width: '90%'}}
               onChange={handleInputChange}
               value={orderInfo.details}
             ></textarea>
           </div>
-          <button type="submit">TO CHECKOUT</button>
+          <button type="submit" className="checkout-btn">
+            TO CHECKOUT
+          </button>
         </form>
         {error && <p style={{color: 'red', fontWeight: 'bold'}}>{error}</p>}
       </div>
