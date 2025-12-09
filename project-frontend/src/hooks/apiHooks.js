@@ -574,39 +574,53 @@ const useOrder = () => {
     orderPrice,
   ) => {
     try {
-
-      // Riikka: api ei tykkää jos menee userId vaikka sen laittais terniäreillä null, nii pitää lisätä se bodyy vaan jos
-      // käyttäjä o logged in
-
-      //base body without userId, api validator does not like to have userId at all if it is not integer
-      const body = {
-        status: 'received',
-        orderType: orderType,
-        timeOption: orderInfo.timeOption,
-        dateTime: `${orderInfo.day} ${orderInfo.time}`,
-        deliveryAddress: `${orderInfo.userAddress} ${orderInfo.userAddress2}`,
-        pizzeriaAddress: orderInfo.pizzeriaAddress,
-        customerName: orderInfo.name,
-        customerPhone: orderInfo.phonenumber,
-        customerEmail: orderInfo.email,
-        details: orderInfo.details,
-        price: (orderPrice + Number(orderInfo.deliveryFee)).toFixed(2),
-      };
-      
-      //adds user to the body if he is logged in
+      let orderId;
       if (orderUserId) {
-        body.userId = orderUserId;
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            status: 'received',
+            orderType: orderType,
+            userId: orderUserId,
+            timeOption: orderInfo.timeOption,
+            dateTime: `${orderInfo.day} ${orderInfo.time}`,
+            deliveryAddress: `${orderInfo.userAddress} ${orderInfo.userAddress2}`,
+            pizzeriaAddress: orderInfo.pizzeriaAddress,
+            customerName: orderInfo.name,
+            customerPhone: orderInfo.phonenumber,
+            customerEmail: orderInfo.email,
+            details: orderInfo.details,
+            price: (orderPrice + Number(orderInfo.deliveryFee)).toFixed(2),
+          }),
+        };
+        const orderResponse = await fetchData(ordersUrl, options);
+        orderId = orderResponse.order_id;
+      } else {
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            status: 'received',
+            orderType: orderType,
+            timeOption: orderInfo.timeOption,
+            dateTime: `${orderInfo.day} ${orderInfo.time}`,
+            deliveryAddress: `${orderInfo.userAddress} ${orderInfo.userAddress2}`,
+            pizzeriaAddress: orderInfo.pizzeriaAddress,
+            customerName: orderInfo.name,
+            customerPhone: orderInfo.phonenumber,
+            customerEmail: orderInfo.email,
+            details: orderInfo.details,
+            price: (orderPrice + Number(orderInfo.deliveryFee)).toFixed(2),
+          }),
+        };
+        const orderResponse = await fetchData(ordersUrl, options);
+        orderId = orderResponse.order_id;
       }
-      const options = {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify(body),
-      };
-
-      const orderResponse = await fetchData(ordersUrl, options);
-      const orderId = orderResponse.order_id;
 
       // Collect all the products from the orderProducts and orderMeals to an object:
       const mergedProducts = {};

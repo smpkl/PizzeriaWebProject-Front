@@ -19,15 +19,6 @@ const EditDialog = ({close, type, userType}) => {
     address: userType === 'admin' ? admin.address : user.address,
   };
 
-  const inputContainer = {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'left',
-    textAlign: 'left',
-    width: '40%',
-    margin: '20px auto',
-  };
-
   const doUserUpdate = async (formData) => {
     try {
       const token =
@@ -55,6 +46,8 @@ const EditDialog = ({close, type, userType}) => {
         open
         style={{
           margin: '0',
+          padding: '0',
+          border: 'none',
           position: 'fixed',
           inset: '0',
           width: '100%',
@@ -69,8 +62,8 @@ const EditDialog = ({close, type, userType}) => {
       >
         <div
           style={{
-            backgroundColor: 'whitesmoke',
-            width: '60%',
+            backgroundColor: '#f5eee6',
+            width: '90%',
             margin: 'auto',
             padding: '20px 10px',
           }}
@@ -80,12 +73,22 @@ const EditDialog = ({close, type, userType}) => {
           {error && (
             <p style={{color: 'darkred'}}>Could not register: {error}</p>
           )}
-          <form onSubmit={handleSubmit} style={{backgroundColor: 'whitesmoke'}}>
+          <form
+            className="edit-form"
+            onSubmit={handleSubmit}
+            style={{width: '90%', margin: 'auto'}}
+          >
             {type === 'name' && (
               <>
-                <div style={inputContainer}>
-                  <label htmlFor="useredit-firstname">Firstname:</label>
+                <div>
+                  <label
+                    htmlFor="useredit-firstname"
+                    className="edit-dialog-label"
+                  >
+                    Firstname:
+                  </label>
                   <input
+                    className="edit-dialog-input"
                     name="firstname"
                     type="text"
                     id="useredit-firstname"
@@ -95,9 +98,15 @@ const EditDialog = ({close, type, userType}) => {
                     required
                   />
                 </div>
-                <div style={inputContainer}>
-                  <label htmlFor="adminregister-lastname">Lastname:</label>
+                <div>
+                  <label
+                    htmlFor="adminregister-lastname"
+                    className="edit-dialog-label"
+                  >
+                    Lastname:
+                  </label>
                   <input
+                    className="edit-dialog-input"
                     name="lastname"
                     type="text"
                     id="useredit-lastname"
@@ -106,15 +115,16 @@ const EditDialog = ({close, type, userType}) => {
                     value={inputs.lastname}
                     required
                   />
-                </div>{' '}
+                </div>
               </>
             )}
             {type === 'address' && (
-              <div style={inputContainer}>
-                <label htmlFor="useredit-address">
+              <div>
+                <label htmlFor="useredit-address" className="edit-dialog-label">
                   Address (street name and number, postal code, city):
                 </label>
                 <input
+                  className="edit-dialog-input"
                   name="address"
                   type="text"
                   id="useredit-address"
@@ -126,9 +136,15 @@ const EditDialog = ({close, type, userType}) => {
               </div>
             )}
             {type === 'phonenumber' && (
-              <div style={inputContainer}>
-                <label htmlFor="useredit-phonenumber">Phonenumber:</label>
+              <div>
+                <label
+                  htmlFor="useredit-phonenumber"
+                  className="edit-dialog-label"
+                >
+                  Phonenumber:
+                </label>
                 <input
+                  className="edit-dialog-input"
                   name="phonenumber"
                   type="number"
                   id="useredit-phonenumber"
@@ -140,9 +156,12 @@ const EditDialog = ({close, type, userType}) => {
               </div>
             )}
             {type === 'email' && (
-              <div style={inputContainer}>
-                <label htmlFor="useredit-email">Email:</label>
+              <div>
+                <label htmlFor="useredit-email" className="edit-dialog-label">
+                  Email:
+                </label>
                 <input
+                  className="edit-dialog-input"
                   name="email"
                   type="text"
                   id="useredit-registernemail"
@@ -154,9 +173,15 @@ const EditDialog = ({close, type, userType}) => {
               </div>
             )}
             {type === 'password' && (
-              <div style={inputContainer}>
-                <label htmlFor="useredit-password">Password:</label>
+              <div>
+                <label
+                  htmlFor="useredit-password"
+                  className="edit-dialog-label"
+                >
+                  Password:
+                </label>
                 <input
+                  className="edit-dialog-input"
                   name="password"
                   type="password"
                   id="useredit-password"
@@ -167,11 +192,17 @@ const EditDialog = ({close, type, userType}) => {
                 />
               </div>
             )}
-            <button type="submit" style={{marginBottom: '20px'}}>
+            <button
+              type="submit"
+              style={{marginBottom: '20px'}}
+              className="login-and-register-button"
+            >
               Update
             </button>
           </form>
-          <button onClick={close}>Go Back</button>
+          <button onClick={close} className="change-btn">
+            Go Back
+          </button>
         </div>
       </dialog>
     </>

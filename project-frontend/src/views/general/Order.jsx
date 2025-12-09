@@ -13,6 +13,27 @@ const Order = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const addRemoveBtnStyle = {
+    width: '30px',
+    height: '30px',
+    textAlign: 'center',
+    borderRadius: '20%',
+    border: '1px solid #710009 ',
+    color: '#710009',
+    fontWeight: 'bold',
+  };
+
+  const deleteBtnStyle = {
+    width: '32px',
+    height: '32px',
+    textAlign: 'center',
+    borderRadius: '50%',
+    border: '2px solid #710009 ',
+    backgroundColor: '#710009',
+    color: '#F5EEE6 ',
+    fontWeight: 'bold',
+  };
+
   const {
     orderProducts,
     orderMeals,
@@ -73,29 +94,53 @@ const Order = () => {
             0 ||
             orderMeals.length > 0) && (
             <div>
-              <h2>SHOPPING CART</h2>
-              <div style={{border: '1px solid black'}}>
+              <h2
+                style={{
+                  backgroundColor: '#710009',
+                  color: '#F5EEE6',
+                  margin: '0',
+                  padding: '10px',
+                }}
+              >
+                SHOPPING CART
+              </h2>
+              <div id="shopping-cart">
                 {orderProducts.map((item) => (
                   <div
-                    style={{display: 'flex'}}
+                    className="cart-item"
                     key={`order-product-` + item.product.id}
                   >
                     <p>
                       {item.product.name} --- {item.product.price}€
                     </p>
                     <div
-                      style={{display: 'flex', gap: '5px', marginLeft: '10px'}}
+                      style={{
+                        display: 'flex',
+                        gap: '5px',
+                        marginLeft: '20px',
+                        marginRight: '2%',
+                        alignItems: 'center',
+                        fontSize: '25px',
+                      }}
                     >
-                      <button onClick={() => handleProductRemove(item.product)}>
+                      <button
+                        onClick={() => handleProductRemove(item.product)}
+                        style={addRemoveBtnStyle}
+                      >
                         -
                       </button>
-                      <p>{item.quantity}</p>
-                      <button onClick={() => handleProductAdd(item.product)}>
+                      <p style={{margin: '0', width: '30px'}}>
+                        {item.quantity}
+                      </p>
+                      <button
+                        onClick={() => handleProductAdd(item.product)}
+                        style={addRemoveBtnStyle}
+                      >
                         +
                       </button>
                       <button
                         onClick={() => handleProductDelete(item.product)}
-                        style={{backgroundColor: 'darkred'}}
+                        style={deleteBtnStyle}
                       >
                         X
                       </button>
@@ -103,46 +148,76 @@ const Order = () => {
                   </div>
                 ))}
                 {orderMeals.map((item) => (
-                  <div
-                    style={{display: 'flex'}}
-                    key={'order-meal-' + item.meal.id}
-                  >
+                  <div className="cart-item" key={'order-meal-' + item.meal.id}>
                     <p>
                       {item.meal.name} --- {item.meal.price}€
                     </p>
                     <div
-                      style={{display: 'flex', gap: '5px', marginLeft: '10px'}}
+                      style={{
+                        display: 'flex',
+                        gap: '5px',
+                        marginLeft: '20px',
+                        marginRight: '2%',
+                        alignItems: 'center',
+                        fontSize: '25px',
+                      }}
                     >
-                      <button onClick={() => handleMealRemove(item.meal)}>
+                      <button
+                        onClick={() => handleMealRemove(item.meal)}
+                        style={addRemoveBtnStyle}
+                      >
                         -
                       </button>
-                      <p>{item.quantity}</p>
-                      <button onClick={() => handleMealAdd(item.meal)}>
+                      <p style={{margin: '0', width: '30px'}}>
+                        {item.quantity}
+                      </p>
+                      <button
+                        onClick={() => handleMealAdd(item.meal)}
+                        style={addRemoveBtnStyle}
+                      >
                         +
                       </button>
                       <button
                         onClick={() => handleMealDelete(item.meal)}
-                        style={{backgroundColor: 'darkred'}}
+                        style={deleteBtnStyle}
                       >
                         X
                       </button>
                     </div>
                   </div>
                 ))}
-                <p>Items: {itemCount}</p>
-                <p style={{fontSize: '18px'}}>
+                <p style={{fontSize: '18px'}}>Items: {itemCount}</p>
+                <p style={{fontSize: '20px', fontWeight: 'bold'}}>
                   TOTAL: {orderPrice.toFixed(2)}€
                 </p>
-                <div>
+                <div style={{display: 'flex', flexDirection: 'column'}}>
                   <button
                     onClick={() => handleClear()}
-                    style={{margin: 'auto'}}
+                    style={{
+                      margin: '5px auto',
+                      padding: '8px',
+                      backgroundColor: '#ecb640ff',
+                      color: '#0c2720ff',
+                      fontWeight: 'bold',
+                      fontSize: '14px',
+                      border: '1px solid #ecb640ff',
+                      borderRadius: '5px',
+                    }}
                   >
                     Clear cart
                   </button>
                   <button
                     onClick={() => navigate('/', {state: {scrollToMenu: true}})}
-                    style={{margin: 'auto'}}
+                    style={{
+                      margin: '5px auto',
+                      padding: '10px',
+                      backgroundColor: '#0c2720ff',
+                      color: '#F5EEE6',
+                      fontWeight: 'bold',
+                      fontSize: '16px',
+                      border: '1px solid #0c2720ff',
+                      borderRadius: '5px',
+                    }}
                   >
                     Back to shopping
                   </button>
@@ -172,7 +247,16 @@ const Order = () => {
         }
         <button
           onClick={() => navigate('/', {state: {scrollToMenu: true}})}
-          style={{margin: 'auto'}}
+          style={{
+            margin: '5px auto',
+            padding: '10px',
+            backgroundColor: '#0c2720ff',
+            color: '#F5EEE6',
+            fontWeight: 'bold',
+            fontSize: '16px',
+            border: '1px solid #0c2720ff',
+            borderRadius: '5px',
+          }}
         >
           Back to shopping
         </button>

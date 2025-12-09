@@ -30,7 +30,7 @@ const CheckOut = () => {
       const response = await postOrder(
         orderInfo,
         orderType,
-        orderUserId,
+        orderUserId ?? null,
         orderProducts,
         orderMeals,
         orderPrice,
@@ -48,7 +48,10 @@ const CheckOut = () => {
       {!orderId && isActiveOrder && (
         <div>
           <h1>CHECKOUT</h1>
-          <p>Chech Your order details down below before checking out</p>
+          <p>
+            Check Your order details down below <br />
+            before checking out
+          </p>
           <div style={{textAlign: 'center'}}>
             <h2>ORDER TYPE: {orderType}</h2>
             <div
@@ -56,39 +59,45 @@ const CheckOut = () => {
                 display: 'flex',
                 margin: 'auto',
                 justifyContent: 'center',
+                flexDirection: 'column',
+                backgroundColor: '#ecb640ff',
               }}
             >
-              <div style={{marginRight: '10px'}}>
-                <p>FROM:</p>
+              <div style={{margin: 'auto'}}>
+                <p>
+                  <b>FROM:</b>
+                </p>
                 <p>{orderInfo.pizzeriaAddress}</p>
               </div>
               {orderType === 'Delivery' && (
                 <div style={{marginLeft: '10px'}}>
-                  <p>TO:</p>
+                  <p>
+                    <b>TO:</b>
+                  </p>
                   <p>
                     {orderInfo.userAddress} {orderInfo.userAddress2}
                   </p>
                 </div>
               )}
-            </div>
-          </div>
-          <div style={{backgroundColor: 'gray'}}>
-            {orderType === 'delivery' && <h2>DELIVERY TIME: </h2>}
-            {orderType === 'pick-up' && <h2>PICK UP TIME: </h2>}
-            {orderType === 'atPizzeria' && <h2>READY AT: </h2>}
-            <div
-              style={{
-                display: 'flex',
-                margin: 'auto',
-                justifyContent: 'center',
-              }}
-            >
-              <p style={{marginRight: '10px'}}>
-                <b>AT: </b> {orderInfo.time}
-              </p>
-              <p style={{marginLeft: '10px'}}>
-                <b>ON: </b> {orderInfo.day}
-              </p>
+              <div>
+                {orderType === 'delivery' && <h2>DELIVERY TIME: </h2>}
+                {orderType === 'pick-up' && <h2>PICK UP TIME: </h2>}
+                {orderType === 'atPizzeria' && <h2>READY AT: </h2>}
+                <div
+                  style={{
+                    display: 'flex',
+                    margin: 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <p style={{marginRight: '10px'}}>
+                    <b>AT: </b> {orderInfo.time}
+                  </p>
+                  <p style={{marginLeft: '10px'}}>
+                    <b>ON: </b> {orderInfo.day}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
           <div>
@@ -130,19 +139,37 @@ const CheckOut = () => {
             </div>
           )}
           <div>
-            <h2>ITEMS:</h2>
+            <h2
+              style={{
+                backgroundColor: '#710009',
+                margin: '10px 0',
+                padding: '15px 0',
+                color: '#F5EEE6',
+              }}
+            >
+              ITEMS:
+            </h2>
             <div>
               {orderProducts.map((p) => (
                 <div
                   key={`choP-${p.product.id}`}
                   style={{
                     display: 'flex',
-                    margin: 'auto',
+                    margin: '5px auto',
                     justifyContent: 'center',
+                    alignItems: 'center',
                     border: '1px solid black',
+                    width: '90%',
                   }}
                 >
-                  <div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      width: '30%',
+                      padding: '2%',
+                    }}
+                  >
                     <img
                       src={
                         p.product.filename
@@ -153,7 +180,13 @@ const CheckOut = () => {
                       style={{width: '90px'}}
                     />
                   </div>
-                  <div style={{textAlign: 'left', marginLeft: '20px'}}>
+                  <div
+                    style={{
+                      textAlign: 'left',
+                      marginLeft: '20px',
+                      width: '70%',
+                    }}
+                  >
                     <p>
                       <b>{p.product.name}</b> - {p.quantity} pcs
                     </p>
@@ -168,12 +201,21 @@ const CheckOut = () => {
                   key={`choM-${m.meal.id}`}
                   style={{
                     display: 'flex',
-                    margin: 'auto',
+                    margin: '5px auto',
                     justifyContent: 'center',
+                    alignItems: 'center',
                     border: '1px solid black',
+                    width: '90%',
                   }}
                 >
-                  <div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      width: '30%',
+                      padding: '2%',
+                    }}
+                  >
                     <img
                       src={
                         m.meal.filename
@@ -184,7 +226,13 @@ const CheckOut = () => {
                       style={{width: '90px'}}
                     />
                   </div>
-                  <div style={{textAlign: 'left', marginLeft: '20px'}}>
+                  <div
+                    style={{
+                      textAlign: 'left',
+                      marginLeft: '20px',
+                      width: '70%',
+                    }}
+                  >
                     <p>
                       <b>{m.meal.name}</b> - {m.quantity} pcs
                     </p>
@@ -203,29 +251,51 @@ const CheckOut = () => {
             </p>
           </div>
           <div>
-            <form
-              onSubmit={doCheckout}
-              style={{display: 'flex', flexDirection: 'column', margin: 'auto'}}
-            >
-              <label htmlFor="coupon-input">DISCOUNT COUPON: </label>
-              <input
-                type="text"
-                name="coupon"
-                id="coupon-input"
-                placeholder="Give discount coupon"
-                style={{margin: 'auto'}}
-              />
-              <label htmlFor="payment-type">SELECT PAYMENT METHOD: </label>
-              <select
-                name="payment-type"
-                id="payment-type"
-                style={{margin: 'auto'}}
+            <form onSubmit={doCheckout}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  margin: 'auto',
+                  backgroundColor: '#0c2720ff',
+                  color: '#F5EEE6',
+                  padding: '10px',
+                }}
               >
-                <option value="bill">Klarna</option>
-                <option value="creditcard">Card</option>
-                <option value="at-pickup">At pickup</option>
-                <option value="bank">Online bank</option>
-              </select>
+                <label htmlFor="coupon-input">DISCOUNT COUPON: </label>
+                <input
+                  type="text"
+                  name="coupon"
+                  id="coupon-input"
+                  placeholder="Give discount coupon"
+                  style={{
+                    padding: '10px',
+                    fontSize: '16px',
+                    border: '1px solid #710009',
+                    borderRadius: '4px',
+                    margin: '5px auto 10px auto',
+                    width: '80%',
+                  }}
+                />
+                <label htmlFor="payment-type">SELECT PAYMENT METHOD: </label>
+                <select
+                  name="payment-type"
+                  id="payment-type"
+                  style={{
+                    padding: '10px',
+                    fontSize: '16px',
+                    border: '1px solid #710009',
+                    borderRadius: '4px',
+                    margin: '5px auto 10px auto',
+                    width: '50%',
+                  }}
+                >
+                  <option value="bill">Klarna</option>
+                  <option value="creditcard">Card</option>
+                  <option value="at-pickup">At pickup</option>
+                  <option value="bank">Online bank</option>
+                </select>
+              </div>
               <div
                 style={{
                   display: 'flex',
@@ -233,19 +303,44 @@ const CheckOut = () => {
                   margin: 'auto',
                 }}
               >
-                <button type="submit" style={{margin: 'auto'}}>
+                <button
+                  type="submit"
+                  style={{
+                    margin: '5px auto',
+                    width: '50%',
+                    padding: '12px',
+                    backgroundColor: '#710009',
+                    color: '#F5EEE6',
+                    fontWeight: 'bold',
+                    fontSize: '18px',
+                    border: '1px solid #710009',
+                    borderRadius: '5px',
+                  }}
+                >
                   ORDER
                 </button>
               </div>
             </form>
-            <button onClick={() => navigate('/order')} style={{margin: 'auto'}}>
+            <button
+              onClick={() => navigate('/order')}
+              style={{
+                margin: '5px auto',
+                padding: '10px',
+                backgroundColor: '#ecb640ff',
+                color: '#0c2720ff',
+                fontWeight: 'bold',
+                fontSize: '14px',
+                border: '1px solid #ecb640ff',
+                borderRadius: '5px',
+              }}
+            >
               EDIT ORDER
             </button>
           </div>
         </div>
       )}
       {orderId && (
-        <div>
+        <div style={{width: '90%', margin: '10px auto', height: '62vh'}}>
           <h1>ORDER PLACED</h1>
           <p>
             Your order number: <b>{orderId}</b>
@@ -253,10 +348,24 @@ const CheckOut = () => {
           <p>
             Logged in users can check their order's progress through profile
             page. <br />
-            All customers will be send a notice through email and phone when
-            order is ready.
+            All customers will be send a notice through email and phone <br />
+            when order is ready.
           </p>
-          <button onClick={() => navigate('/')}>Return to main page</button>
+          <button
+            onClick={() => navigate('/')}
+            style={{
+              margin: '5px auto',
+              padding: '10px',
+              backgroundColor: '#ecb640ff',
+              color: '#0c2720ff',
+              fontWeight: 'bold',
+              fontSize: '14px',
+              border: '1px solid #ecb640ff',
+              borderRadius: '5px',
+            }}
+          >
+            Return to main page
+          </button>
         </div>
       )}
     </>

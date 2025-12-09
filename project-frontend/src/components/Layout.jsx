@@ -3,6 +3,11 @@ import {useOrderContext} from '../hooks/contextHooks';
 import {useEffect, useState} from 'react';
 import {useUserContext} from '../hooks/contextHooks';
 
+import {AiOutlineShopping} from 'react-icons/ai';
+import {AiOutlineInfoCircle} from 'react-icons/ai';
+import {AiOutlineUser} from 'react-icons/ai';
+import {AiOutlineLogin} from 'react-icons/ai';
+
 const Layout = () => {
   const [itemCount, setItemCount] = useState();
   const {orderProducts, orderMeals} = useOrderContext();
@@ -26,30 +31,60 @@ const Layout = () => {
       <header
         style={{
           display: 'flex',
-          backgroundColor: 'lightgray',
+          backgroundColor: '#0c2720ff',
           position: 'sticky',
           top: '0',
         }}
       >
-        <div style={{width: '30%'}}>
-          <img
-            src="https://placehold.co/100x100/orange/white?text=LOGO"
-            alt="Pizzeria Logo goes here"
-          />
+        <div id="header-logo-container">
+          <Link
+            to="/"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 'auto',
+            }}
+          >
+            <img
+              src="https://placehold.co/80x80/white/green?text=LOGO"
+              alt="Pizzeria Logo goes here"
+            />
+          </Link>
         </div>
-        <nav>
-          <ul style={{display: 'flex', margin: '0', padding: '0'}}>
+        <nav
+          style={{
+            display: 'flex',
+            margin: '0',
+            padding: '0',
+            alignItems: 'center',
+            justifyContent: 'right',
+          }}
+        >
+          <ul
+            id="nav-menu"
+            style={{
+              display: 'flex',
+              justifyContent: 'right',
+              margin: '0',
+              padding: '0',
+              width: '100%',
+            }}
+          >
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/profile">
+                {user ? (
+                  <AiOutlineUser className="nav-icon" />
+                ) : (
+                  <AiOutlineLogin className="nav-icon" />
+                )}
+              </Link>
             </li>
             <li>
-              <Link to="/profile">{user ? 'Profile' : 'Login'}</Link>
-            </li>
-            <li>
-              <Link to="/order">
-                Order
+              <Link to="/order" style={{position: 'relative'}}>
+                <AiOutlineShopping className="nav-icon" />
                 {itemCount > 0 ? (
-                  <div style={{backgroundColor: 'limegreen'}}>
+                  <div className="order-items-counter">
                     <p>{itemCount}</p>
                   </div>
                 ) : (
@@ -58,7 +93,9 @@ const Layout = () => {
               </Link>
             </li>
             <li>
-              <Link to="/about">About Us</Link>
+              <Link to="/about">
+                <AiOutlineInfoCircle className="nav-icon" />
+              </Link>
             </li>
           </ul>
         </nav>
@@ -66,9 +103,16 @@ const Layout = () => {
       <main>
         <Outlet />
       </main>
-      <footer style={{backgroundColor: 'bisque'}}>
-        <h3 style={{margin: '5px auto'}}>PIZZERIA TBA</h3>
-        <ul style={{margin: '0', padding: '0'}}>
+      <footer
+        style={{
+          backgroundColor: '#710009',
+          margin: '0',
+          padding: '10px 0',
+          color: '#F5EEE6',
+        }}
+      >
+        <h3 style={{margin: '5px auto', color: '#ecb640ff'}}>PIZZERIA TBA</h3>
+        <ul style={{margin: '0 0 10px 0', padding: '0'}}>
           <li>
             <Link to="/">Home</Link>
           </li>
@@ -82,10 +126,10 @@ const Layout = () => {
             <Link to="/about">About Us</Link>
           </li>
         </ul>
-        <p style={{margin: '5px auto'}}>xxxxxxxxxxxxxxxxx</p>
-        <p style={{margin: '5px auto'}}>xxxxxxxxx</p>
-        <p style={{margin: '5px auto'}}></p>
-        <p>Copyright & Stuff</p>
+        <p style={{margin: '1px auto', fontSize: '10px'}}>xxxxxxxxxxxxxxxxx</p>
+        <p style={{margin: '1px auto', fontSize: '10px'}}>xxxxxxxxx</p>
+        <p style={{margin: '1px auto', fontSize: '10px'}}></p>
+        <p style={{margin: '1px auto', fontSize: '10px'}}>Copyright & Stuff</p>
       </footer>
     </div>
   );

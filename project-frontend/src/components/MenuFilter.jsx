@@ -73,14 +73,17 @@ const MenuFilter = ({products, meals, tags, categories, updateMenu}) => {
 
   return (
     <>
-      <div id="menu-filter-bar">
-        <div id="menu-categories">
+      <div
+        id="menu-filter-bar"
+        style={{padding: '5px 0', borderTop: '3px solid #f5eee6'}}
+      >
+        <div id="menu-categories" style={{width: '100%'}}>
           {categories.map((category) => (
             <button
               key={category.id}
               id={`categ-${category.id}`}
               onClick={() => toggleCategory(category.id)}
-              className={activeCategory === category.id ? 'active' : ''}
+              className={`filter-btn ${activeCategory === category.id ? 'active' : ''}`}
             >
               {category.name}
             </button>
@@ -89,7 +92,7 @@ const MenuFilter = ({products, meals, tags, categories, updateMenu}) => {
             key="ateriat-category"
             id="ateriat-category"
             onClick={() => toggleCategory('meals')}
-            className={activeCategory === 'meals' ? 'active' : ''}
+            className={`filter-btn ${activeCategory === 'meals' ? 'active' : ''}`}
           >
             Meals
           </button>
@@ -100,7 +103,7 @@ const MenuFilter = ({products, meals, tags, categories, updateMenu}) => {
               key={tag.title}
               id={`tag-${tag.id}`}
               onClick={() => toggleTag(tag.title)}
-              className={activeTags.includes(tag.title) ? 'active' : ''}
+              className={`tag-btn ${activeTags.includes(tag.title) ? 'active' : ''}`}
             >
               {tag.title}
             </button>
@@ -115,6 +118,13 @@ const MenuFilter = ({products, meals, tags, categories, updateMenu}) => {
             autoComplete="item-name"
             placeholder="Search by name"
             value={input}
+            style={{
+              width: '80%',
+              backgroundColor: '#f5eee6',
+              padding: '5px',
+              border: '1px solid #f5eee6',
+              marginTop: '5px',
+            }}
           ></input>
         </div>
       </div>

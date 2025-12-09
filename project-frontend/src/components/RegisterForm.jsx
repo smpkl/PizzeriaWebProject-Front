@@ -40,10 +40,16 @@ const RegisterForm = ({goBack}) => {
     <>
       <h2>REGISTER</h2>
       {error && <p style={{color: 'darkred'}}>Could not register: {error}</p>}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="login-and-register-form">
         <div>
-          <label htmlFor="registerfirstname">Firstname:</label>
+          <label
+            htmlFor="registerfirstname"
+            className="login-and-register-label"
+          >
+            Firstname:
+          </label>
           <input
+            className="login-and-register-input"
             name="firstname"
             type="text"
             id="registerfirstname"
@@ -54,8 +60,14 @@ const RegisterForm = ({goBack}) => {
           />
         </div>
         <div>
-          <label htmlFor="registerlastname">Lastname:</label>
+          <label
+            htmlFor="registerlastname"
+            className="login-and-register-label"
+          >
+            Lastname:
+          </label>
           <input
+            className="login-and-register-input"
             name="lastname"
             type="text"
             id="registerlastname"
@@ -66,10 +78,11 @@ const RegisterForm = ({goBack}) => {
           />
         </div>
         <div>
-          <label htmlFor="registeraddress">
+          <label htmlFor="registeraddress" className="login-and-register-label">
             Address (street name and number, postal code, city):
           </label>
           <input
+            className="login-and-register-input"
             name="address"
             type="text"
             id="registeraddress"
@@ -80,8 +93,14 @@ const RegisterForm = ({goBack}) => {
           />
         </div>
         <div>
-          <label htmlFor="registerphonenumber">Phonenumber:</label>
+          <label
+            htmlFor="registerphonenumber"
+            className="login-and-register-label"
+          >
+            Phonenumber:
+          </label>
           <input
+            className="login-and-register-input"
             name="phonenumber"
             type="number"
             id="registerphonenumber"
@@ -92,8 +111,11 @@ const RegisterForm = ({goBack}) => {
           />
         </div>
         <div>
-          <label htmlFor="registeremail">Email:</label>
+          <label htmlFor="registeremail" className="login-and-register-label">
+            Email:
+          </label>
           <input
+            className="login-and-register-input"
             name="email"
             type="text"
             id="registernemail"
@@ -104,8 +126,14 @@ const RegisterForm = ({goBack}) => {
           />
         </div>
         <div>
-          <label htmlFor="registerpassword">Password:</label>
+          <label
+            htmlFor="registerpassword"
+            className="login-and-register-label"
+          >
+            Password:
+          </label>
           <input
+            className="login-and-register-input"
             name="password"
             type="password"
             id="registerpassword"
@@ -115,9 +143,13 @@ const RegisterForm = ({goBack}) => {
             required
           />
         </div>
-        <button type="submit">Register</button>
+        <button type="submit" className="login-and-register-button">
+          Register
+        </button>
       </form>
-      <button onClick={goBack}>Go Back</button>
+      <button onClick={goBack} className="go-back-btn">
+        Go Back
+      </button>
     </>
   );
 };

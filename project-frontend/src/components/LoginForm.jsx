@@ -26,10 +26,13 @@ const LoginForm = ({goBack}) => {
     <>
       <h2>LOGIN</h2>
       {error && <p style={{color: 'darkred'}}>Could not login: {error}</p>}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="login-and-register-form">
         <div>
-          <label htmlFor="loginemail">Email:</label>
+          <label htmlFor="loginemail" className="login-and-register-label">
+            Email:
+          </label>
           <input
+            className="login-and-register-input"
             name="email"
             type="text"
             id="loginemail"
@@ -39,8 +42,11 @@ const LoginForm = ({goBack}) => {
           />
         </div>
         <div>
-          <label htmlFor="loginpassword">Password:</label>
+          <label htmlFor="loginpassword" className="login-and-register-label">
+            Password:
+          </label>
           <input
+            className="login-and-register-input"
             name="password"
             type="password"
             id="loginpassword"
@@ -49,9 +55,13 @@ const LoginForm = ({goBack}) => {
             placeholder="Type your password"
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" className="login-and-register-button">
+          Login
+        </button>
       </form>
-      <button onClick={goBack}>Go Back</button>
+      <button onClick={goBack} className="go-back-btn">
+        Go Back
+      </button>
     </>
   );
 };
