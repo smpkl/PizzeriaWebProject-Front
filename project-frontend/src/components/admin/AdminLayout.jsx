@@ -1,7 +1,7 @@
 import {Outlet, Link, useNavigate} from 'react-router';
 import {useAdminContext} from '../../hooks/contextHooks';
 import {useEffect} from 'react';
-import '../../admincss/admin.css'
+import '../../admincss/admin.css';
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -64,9 +64,14 @@ const Layout = () => {
                 </li>
                 <li className="admin-nav__item">
                   <Link to="/admin/profile">Profile</Link>
-                  <p className="admin-nav__logout" onClick={handleAdminLogout}>
+                </li>
+                <li className="admin-nav__item">
+                  <span
+                    className="admin-nav__logout"
+                    onClick={handleAdminLogout}
+                  >
                     Logout
-                  </p>
+                  </span>
                 </li>
               </>
             )}
