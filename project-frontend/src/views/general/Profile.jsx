@@ -44,8 +44,10 @@ const Profile = () => {
   return (
     <>
       {user && (
-        <div style={{textAlign: 'right', width: '90%'}}>
-          <button onClick={handleLogout}>LOGOUT</button>
+        <div style={{textAlign: 'right', width: '90%', margin: 'auto'}}>
+          <button onClick={handleLogout} className="logout-btn">
+            LOGOUT
+          </button>
         </div>
       )}
       <h1>PROFILE</h1>
@@ -53,9 +55,9 @@ const Profile = () => {
         <>
           <h2
             style={{
-              backgroundColor: 'grey',
+              backgroundColor: '#0c2720ff',
               padding: '15px 0',
-              borderTop: '2px solid black',
+              color: '#f5eee6',
             }}
           >
             MY INFORMATION
@@ -89,7 +91,12 @@ const Profile = () => {
                   marginLeft: 'auto',
                 }}
               >
-                <button onClick={() => openEditDialog('name')}>Change</button>
+                <button
+                  onClick={() => openEditDialog('name')}
+                  className="change-btn"
+                >
+                  Change
+                </button>
               </div>
             </div>
             <div
@@ -118,7 +125,10 @@ const Profile = () => {
                   marginLeft: 'auto',
                 }}
               >
-                <button onClick={() => openEditDialog('address')}>
+                <button
+                  onClick={() => openEditDialog('address')}
+                  className="change-btn"
+                >
                   Change
                 </button>
               </div>
@@ -149,7 +159,10 @@ const Profile = () => {
                   marginLeft: 'auto',
                 }}
               >
-                <button onClick={() => openEditDialog('phonenumber')}>
+                <button
+                  onClick={() => openEditDialog('phonenumber')}
+                  className="change-btn"
+                >
                   Change
                 </button>
               </div>
@@ -160,7 +173,7 @@ const Profile = () => {
                 display: 'flex',
                 justifyContent: 'left',
                 width: '80%',
-                margin: 'auto',
+                margin: '10px auto',
                 padding: '10px',
                 border: '1px solid lightgray',
               }}
@@ -180,20 +193,28 @@ const Profile = () => {
                   marginLeft: 'auto',
                 }}
               >
-                <button onClick={() => openEditDialog('email')}>Change</button>
+                <button
+                  onClick={() => openEditDialog('email')}
+                  className="change-btn"
+                >
+                  Change
+                </button>
               </div>
             </div>
             <div style={{margin: 'auto', width: '100%', textAlign: 'center'}}>
-              <button onClick={() => openEditDialog('password')}>
+              <button
+                onClick={() => openEditDialog('password')}
+                className="change-btn"
+              >
                 Change password
               </button>
             </div>
           </div>
           <h2
             style={{
-              backgroundColor: 'grey',
+              backgroundColor: '#710009',
               padding: '15px 0',
-              borderTop: '2px solid black',
+              color: '#f5eee6',
             }}
           >
             MY ORDERS
@@ -209,20 +230,22 @@ const Profile = () => {
                     <div
                       key={`user-order-${o.id}`}
                       style={{
-                        border: '1px solid lightgray',
+                        border: '1px solid #710009',
+                        borderRadius: '5px',
                         width: '95%',
                         margin: '10px auto',
-                        padding: '10px 0',
-                        backgroundColor: 'ivory',
+                        padding: '0 0 10px 0',
                       }}
                     >
                       <h3
                         style={{
-                          width: '80%',
+                          width: '96%',
                           textAlign: 'left',
-                          margin: 'auto',
-                          padding: '10px',
-                          backgroundColor: 'lightgray',
+                          margin: '0 auto',
+                          backgroundColor: '#710009',
+                          borderRadius: '5px 5px 0 0',
+                          padding: '10px auto 10px 4%',
+                          color: '#f5eee6',
                         }}
                       >
                         ORDER ID: {o.id}
@@ -328,7 +351,7 @@ const Profile = () => {
         </>
       )}
       {!user && !isForm && (
-        <div>
+        <div style={{height: '62vh'}}>
           <h2>NOT LOGGED IN</h2>
           <div>
             <p>Have an account?</p>
@@ -336,6 +359,16 @@ const Profile = () => {
               onClick={() => {
                 setIsForm(true);
                 setIsLogin(true);
+              }}
+              style={{
+                margin: '5px auto',
+                padding: '10px',
+                backgroundColor: '#0c2720ff',
+                color: '#F5EEE6',
+                fontWeight: 'bold',
+                fontSize: '16px',
+                border: '1px solid #0c2720ff',
+                borderRadius: '5px',
               }}
             >
               LOGIN
@@ -347,6 +380,16 @@ const Profile = () => {
               onClick={() => {
                 setIsForm(true);
                 setIsLogin(false);
+              }}
+              style={{
+                margin: '5px auto',
+                padding: '10px',
+                backgroundColor: '#0c2720ff',
+                color: '#F5EEE6',
+                fontWeight: 'bold',
+                fontSize: '16px',
+                border: '1px solid #0c2720ff',
+                borderRadius: '5px',
               }}
             >
               REGISTER
