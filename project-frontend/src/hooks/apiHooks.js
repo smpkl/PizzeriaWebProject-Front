@@ -9,6 +9,9 @@ const useProducts = () => {
     try {
       const productData = await fetchData(productUrl);
       //console.log('API products: ', productData);
+      productData.products.forEach((p) => {
+        p.price = Number(p.price).toFixed(2);
+      });
       return productData.products;
     } catch (error) {
       console.log('ERROR', error);
@@ -270,35 +273,42 @@ const useCategories = () => {
 const useMeals = () => {
   const mealsUrl = baseUrl + 'meals';
   const getMeals = async () => {
+    let dailymealFound;
+    const weekday = [
+      'sunday',
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+      'saturday',
+    ];
+
+    const d = new Date();
+    let day = weekday[d.getDay()];
+
     try {
-      const weekday = [
-        'sunday',
-        'monday',
-        'tuesday',
-        'wednesday',
-        'thursday',
-        'friday',
-        'saturday',
-      ];
+      const dailymealResponse = await fetchData(`${baseUrl}dailymeals/${day}`);
+      dailymealFound = dailymealResponse.dailymeal;
+    } catch (error) {
+      console.log(error);
+      dailymealFound = null;
+    }
 
-      const d = new Date();
-      let day = weekday[d.getDay()];
-
+    try {
       const response = await fetchData(mealsUrl);
       const meals = response.meals;
 
-      const dailymealResponse = await fetchData(`${baseUrl}dailymeals/${day}`);
-      const dailymeal = dailymealResponse.dailymeal;
-
       meals.forEach((m) => {
-        if (m.id === dailymeal.id) {
-          m.oldPrice = m.price;
+        if (dailymealFound && m.id === dailymealFound?.id) {
+          m.oldPrice = Number(m.price).toFixed(2);
           m.price = (Number(m.price) * 0.85).toFixed(2);
 
           m.dailyDay = day;
           m.isDaily = true;
         } else {
           m.isDaily = false;
+          m.price = Number(m.price).toFixed(2);
         }
       });
 
@@ -473,7 +483,7 @@ const useDailyMeal = () => {
           `${baseUrl}meals/${dailymeal.id}/products`,
         );
         //console.log(productsResponse);
-        dailymeal.oldPrice = dailymeal.price;
+        dailymeal.oldPrice = Number(dailymeal.price).toFixed(2);
         dailymeal.price = (Number(dailymeal.price) * 0.85).toFixed(2);
         dailymeal.products = productsResponse.products;
         setDailyMeal(response.dailymeal);
