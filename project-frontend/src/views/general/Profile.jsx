@@ -62,7 +62,7 @@ const Profile = () => {
           >
             MY INFORMATION
           </h2>
-          <div style={{width: '90%', textAlign: 'left', margin: 'auto'}}>
+          <div id="user-info-container">
             <div
               id="name-info"
               style={{
@@ -70,7 +70,7 @@ const Profile = () => {
                 justifyContent: 'left',
                 width: '80%',
                 margin: 'auto',
-                padding: '10px',
+                padding: '15px',
                 border: '1px solid lightgray',
               }}
             >
@@ -106,7 +106,7 @@ const Profile = () => {
                 justifyContent: 'left',
                 width: '80%',
                 margin: 'auto',
-                padding: '10px',
+                padding: '15px',
                 border: '1px solid lightgray',
               }}
             >
@@ -140,7 +140,7 @@ const Profile = () => {
                 justifyContent: 'left',
                 width: '80%',
                 margin: 'auto',
-                padding: '10px',
+                padding: '15px',
                 border: '1px solid lightgray',
               }}
             >
@@ -174,7 +174,7 @@ const Profile = () => {
                 justifyContent: 'left',
                 width: '80%',
                 margin: '10px auto',
-                padding: '10px',
+                padding: '15px',
                 border: '1px solid lightgray',
               }}
             >
@@ -219,7 +219,7 @@ const Profile = () => {
           >
             MY ORDERS
           </h2>
-          <div>
+          <div id="user-orders-container">
             {!orders && <p>No orders yet</p>}
             {orders && (
               <div>
@@ -239,12 +239,12 @@ const Profile = () => {
                     >
                       <h3
                         style={{
-                          width: '96%',
+                          width: '95%',
                           textAlign: 'left',
-                          margin: '0 auto',
+                          margin: '0',
                           backgroundColor: '#710009',
                           borderRadius: '5px 5px 0 0',
-                          padding: '10px auto 10px 4%',
+                          padding: '10px 0 10px 5%',
                           color: '#f5eee6',
                         }}
                       >
@@ -351,7 +351,7 @@ const Profile = () => {
         </>
       )}
       {!user && !isForm && (
-        <div style={{height: '62vh'}}>
+        <div id="logged-out-container">
           <h2>NOT LOGGED IN</h2>
           <div>
             <p>Have an account?</p>
@@ -360,16 +360,7 @@ const Profile = () => {
                 setIsForm(true);
                 setIsLogin(true);
               }}
-              style={{
-                margin: '5px auto',
-                padding: '10px',
-                backgroundColor: '#0c2720ff',
-                color: '#F5EEE6',
-                fontWeight: 'bold',
-                fontSize: '16px',
-                border: '1px solid #0c2720ff',
-                borderRadius: '5px',
-              }}
+              className="dark-btn"
             >
               LOGIN
             </button>
@@ -381,16 +372,7 @@ const Profile = () => {
                 setIsForm(true);
                 setIsLogin(false);
               }}
-              style={{
-                margin: '5px auto',
-                padding: '10px',
-                backgroundColor: '#0c2720ff',
-                color: '#F5EEE6',
-                fontWeight: 'bold',
-                fontSize: '16px',
-                border: '1px solid #0c2720ff',
-                borderRadius: '5px',
-              }}
+              className="dark-btn"
             >
               REGISTER
             </button>

@@ -13,27 +13,6 @@ const Order = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const addRemoveBtnStyle = {
-    width: '30px',
-    height: '30px',
-    textAlign: 'center',
-    borderRadius: '20%',
-    border: '1px solid #710009 ',
-    color: '#710009',
-    fontWeight: 'bold',
-  };
-
-  const deleteBtnStyle = {
-    width: '32px',
-    height: '32px',
-    textAlign: 'center',
-    borderRadius: '50%',
-    border: '2px solid #710009 ',
-    backgroundColor: '#710009',
-    color: '#F5EEE6 ',
-    fontWeight: 'bold',
-  };
-
   const {
     orderProducts,
     orderMeals,
@@ -125,7 +104,7 @@ const Order = () => {
                     >
                       <button
                         onClick={() => handleProductRemove(item.product)}
-                        style={addRemoveBtnStyle}
+                        className="addRemoveBtn"
                       >
                         -
                       </button>
@@ -134,13 +113,13 @@ const Order = () => {
                       </p>
                       <button
                         onClick={() => handleProductAdd(item.product)}
-                        style={addRemoveBtnStyle}
+                        className="addRemoveBtn"
                       >
                         +
                       </button>
                       <button
                         onClick={() => handleProductDelete(item.product)}
-                        style={deleteBtnStyle}
+                        className="deleteBtn"
                       >
                         X
                       </button>
@@ -164,7 +143,7 @@ const Order = () => {
                     >
                       <button
                         onClick={() => handleMealRemove(item.meal)}
-                        style={addRemoveBtnStyle}
+                        className="addRemoveBtn"
                       >
                         -
                       </button>
@@ -173,13 +152,13 @@ const Order = () => {
                       </p>
                       <button
                         onClick={() => handleMealAdd(item.meal)}
-                        style={addRemoveBtnStyle}
+                        className="addRemoveBtn"
                       >
                         +
                       </button>
                       <button
                         onClick={() => handleMealDelete(item.meal)}
-                        style={deleteBtnStyle}
+                        className="deleteBtn"
                       >
                         X
                       </button>
@@ -191,33 +170,12 @@ const Order = () => {
                   TOTAL: {orderPrice.toFixed(2)}€
                 </p>
                 <div style={{display: 'flex', flexDirection: 'column'}}>
-                  <button
-                    onClick={() => handleClear()}
-                    style={{
-                      margin: '5px auto',
-                      padding: '8px',
-                      backgroundColor: '#ecb640ff',
-                      color: '#0c2720ff',
-                      fontWeight: 'bold',
-                      fontSize: '14px',
-                      border: '1px solid #ecb640ff',
-                      borderRadius: '5px',
-                    }}
-                  >
+                  <button onClick={() => handleClear()} className="change-btn">
                     Clear cart
                   </button>
                   <button
                     onClick={() => navigate('/', {state: {scrollToMenu: true}})}
-                    style={{
-                      margin: '5px auto',
-                      padding: '10px',
-                      backgroundColor: '#0c2720ff',
-                      color: '#F5EEE6',
-                      fontWeight: 'bold',
-                      fontSize: '16px',
-                      border: '1px solid #0c2720ff',
-                      borderRadius: '5px',
-                    }}
+                    className="dark-btn"
                   >
                     Back to shopping
                   </button>
@@ -247,16 +205,7 @@ const Order = () => {
         }
         <button
           onClick={() => navigate('/', {state: {scrollToMenu: true}})}
-          style={{
-            margin: '5px auto',
-            padding: '10px',
-            backgroundColor: '#0c2720ff',
-            color: '#F5EEE6',
-            fontWeight: 'bold',
-            fontSize: '16px',
-            border: '1px solid #0c2720ff',
-            borderRadius: '5px',
-          }}
+          className="dark-btn"
         >
           Back to shopping
         </button>

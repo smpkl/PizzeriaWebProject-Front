@@ -25,119 +25,108 @@ const AboutUs = () => {
 
   return (
     <>
-      <h1 style={{width: '90%', margin: 'auto'}}>ABOUT US</h1>
-      <div style={{width: '90%', margin: 'auto'}}>
-        <p>
-          At Pizzeria TBA, we’re here to redefine fast pizza without cutting
-          corners. Our mission is simple: bold flavors, high-quality
-          ingredients, and fresh-made dough — served fast, without the fast-food
-          compromise.
-        </p>
-        <div>
-          <img
-            src={`${import.meta.env.VITE_PUBLIC_URL}pizzeria_about_us_img.jpg`}
-            alt="Pizzeria TBA, About us page image of a pizza"
-            style={{width: '100%'}}
-          />
+      <div id="aboutUs-container">
+        <h1 style={{width: '90%', margin: 'auto'}}>ABOUT US</h1>
+        <div style={{width: '90%', margin: 'auto'}}>
+          <p>
+            At Pizzeria TBA, we’re here to redefine fast pizza without cutting
+            corners. Our mission is simple: bold flavors, high-quality
+            ingredients, and fresh-made dough — served fast, without the
+            fast-food compromise.
+          </p>
+          <div id="aboutUs-img-container">
+            <img
+              src={`${import.meta.env.VITE_PUBLIC_URL}pizzeria_about_us_img.jpg`}
+              alt="Pizzeria TBA, About us page image of a pizza"
+              style={{width: '100%'}}
+            />
+          </div>
+          <p>
+            Every pizza starts with our signature light and crispy crust,
+            house-made sauces, and toppings sourced from local producers
+            whenever possible. From classics to fully loaded creations, we’ve
+            got something for everyone — including vegan, vegetarian, and
+            gluten-friendly options so every guest can enjoy their perfect
+            slice.
+          </p>
+          <p>
+            Our space blends a modern street-food vibe with a relaxed hangout
+            atmosphere. Order at the counter, watch your pizza fire up in our
+            open oven, and grab a seat — or take it to go. Prefer to stay home?
+            No problem — we offer fast and reliable delivery straight to your
+            door.
+          </p>
+          <p>
+            At Pizzeria TBA, we keep it fresh, we keep it fast, and we keep it
+            real. Your new favorite slice starts here.
+          </p>
         </div>
-        <p>
-          Every pizza starts with our signature light and crispy crust,
-          house-made sauces, and toppings sourced from local producers whenever
-          possible. From classics to fully loaded creations, we’ve got something
-          for everyone — including vegan, vegetarian, and gluten-friendly
-          options so every guest can enjoy their perfect slice.
-        </p>
-        <p>
-          Our space blends a modern street-food vibe with a relaxed hangout
-          atmosphere. Order at the counter, watch your pizza fire up in our open
-          oven, and grab a seat — or take it to go. Prefer to stay home? No
-          problem — we offer fast and reliable delivery straight to your door.
-        </p>
-        <p>
-          At Pizzeria TBA, we keep it fresh, we keep it fast, and we keep it
-          real. Your new favorite slice starts here.
-        </p>
-      </div>
-      <div
-        style={{
-          width: '100%',
-          backgroundColor: '#710009',
-          margin: 'auto',
-          padding: '20px 0',
-          color: '#f5eee6',
-        }}
-      >
-        <h2 style={{width: '90%', margin: '10px auto'}}>OUR PIZZERIAS</h2>
+        <div id="aboutUs-our-pizzerias">
+          <h2 style={{width: '90%', margin: '10px auto'}}>OUR PIZZERIAS</h2>
+          <div id="aboutUs-map-container">
+            <MapContainer
+              center={[60.197979, 24.927743]}
+              zoom={14}
+              scrollWheelZoom={true}
+              style={{height: '100%', width: '100%', zIndex: '1'}}
+            >
+              <TileLayer
+                attribution='<a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+
+              {pizzerias.map((p) => {
+                return (
+                  <Marker
+                    icon={locationIcon}
+                    key={`pizzeria-${p.id}-marker`}
+                    position={[p.latitude, p.longitude]}
+                    ref={(element) => {
+                      if (element) markerRefs.current[p.id] = element;
+                    }}
+                  >
+                    <Popup>
+                      <b>{p.name}</b> <br /> {p.address}
+                    </Popup>
+                  </Marker>
+                );
+              })}
+              {mapLocation && (
+                <MapController
+                  lat={mapLocation.lat}
+                  long={mapLocation.long}
+                  markers={markerRefs}
+                  selectedId={selectedPizzeriaId}
+                />
+              )}
+            </MapContainer>
+          </div>
+          <div>
+            {pizzerias.map((p) => (
+              <p
+                key={`pizzeria-${p.id}`}
+                id={`pizzeria-${p.id}`}
+                onClick={() => {
+                  setMapLocation({lat: p.latitude, long: p.longitude});
+                  setSelectedPizzeriaId(p.id);
+                }}
+                style={{fontWeight: 'bold'}}
+              >
+                {p.name}
+              </p>
+            ))}
+          </div>
+        </div>
         <div
           style={{
-            height: '400px',
-            width: '95%',
-            margin: 'auto',
-            border: '5px outset #8d0202ff',
+            backgroundColor: '#ecb640ff',
+            height: '10vh',
+            margin: '10px 0',
+            padding: '10px 0',
           }}
         >
-          <MapContainer
-            center={[60.197979, 24.927743]}
-            zoom={14}
-            scrollWheelZoom={true}
-            style={{height: '100%', width: '100%'}}
-          >
-            <TileLayer
-              attribution='<a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-
-            {pizzerias.map((p) => {
-              return (
-                <Marker
-                  icon={locationIcon}
-                  key={`pizzeria-${p.id}-marker`}
-                  position={[p.latitude, p.longitude]}
-                  ref={(element) => {
-                    if (element) markerRefs.current[p.id] = element;
-                  }}
-                >
-                  <Popup>
-                    <b>{p.name}</b> <br /> {p.address}
-                  </Popup>
-                </Marker>
-              );
-            })}
-            {mapLocation && (
-              <MapController
-                lat={mapLocation.lat}
-                long={mapLocation.long}
-                markers={markerRefs}
-                selectedId={selectedPizzeriaId}
-              />
-            )}
-          </MapContainer>
+          FEEDBACK KOMPONENTTI TÄHÄN
         </div>
-        <div>
-          {pizzerias.map((p) => (
-            <p
-              key={`pizzeria-${p.id}`}
-              id={`pizzeria-${p.id}`}
-              onClick={() => {
-                setMapLocation({lat: p.latitude, long: p.longitude});
-                setSelectedPizzeriaId(p.id);
-              }}
-              style={{color: 'white', fontWeight: 'bold'}}
-            >
-              {p.name}
-            </p>
-          ))}
-        </div>
-      </div>
-      <div
-        style={{
-          backgroundColor: '#ecb640ff',
-          height: '10vh',
-          margin: '10px 0',
-          padding: '10px 0',
-        }}
-      >
-        FEEDBACK KOMPONENTTI TÄHÄN
       </div>
     </>
   );

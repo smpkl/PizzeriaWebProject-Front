@@ -27,7 +27,7 @@ const Layout = () => {
   }, [orderProducts, orderMeals]);
 
   return (
-    <div>
+    <div className="layout-container">
       <header
         style={{
           display: 'flex',

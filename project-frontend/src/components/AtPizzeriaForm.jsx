@@ -86,7 +86,7 @@ const AtPizzeriaForm = () => {
             ></input>
             <div
               style={{
-                height: '160px',
+                height: '200px',
                 overflow: 'scroll',
                 border: '2px solid black',
               }}
@@ -99,12 +99,20 @@ const AtPizzeriaForm = () => {
                     display: 'block',
                     border: '1px solid lightgray',
                     margin: '10px auto',
+                    padding: '5px 0',
                     width: 'auto',
                   }}
                 >
                   <label
                     htmlFor={'atPizzeria-pizzeria-' + l.name}
                     className="orderform-label"
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      lineHeight: '1.1',
+                    }}
                   >
                     <b>{l.name}</b>
                     <br />

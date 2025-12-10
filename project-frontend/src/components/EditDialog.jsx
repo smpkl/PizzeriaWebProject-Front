@@ -60,14 +60,7 @@ const EditDialog = ({close, type, userType}) => {
           backdropFilter: 'blur(4px)',
         }}
       >
-        <div
-          style={{
-            backgroundColor: '#f5eee6',
-            width: '90%',
-            margin: 'auto',
-            padding: '20px 10px',
-          }}
-        >
+        <div className="editDialog-container">
           <h2>USER UPDATE</h2>
           {message && <p style={{color: 'darkgreen'}}>{message}</p>}
           {error && (
@@ -100,7 +93,7 @@ const EditDialog = ({close, type, userType}) => {
                 </div>
                 <div>
                   <label
-                    htmlFor="adminregister-lastname"
+                    htmlFor="useredit-lastname"
                     className="edit-dialog-label"
                   >
                     Lastname:
@@ -164,7 +157,7 @@ const EditDialog = ({close, type, userType}) => {
                   className="edit-dialog-input"
                   name="email"
                   type="text"
-                  id="useredit-registernemail"
+                  id="useredit-email"
                   onChange={handleInputChange}
                   autoComplete="email"
                   value={inputs.email}
@@ -195,7 +188,7 @@ const EditDialog = ({close, type, userType}) => {
             <button
               type="submit"
               style={{marginBottom: '20px'}}
-              className="login-and-register-button"
+              className="checkout-btn"
             >
               Update
             </button>
