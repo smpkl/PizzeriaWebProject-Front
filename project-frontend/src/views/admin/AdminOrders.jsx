@@ -17,39 +17,52 @@ const AdminOrders = () => {
     fetchOrders();
   }, [updateList]);
 
+  const newOrders = orders.filter((order) =>
+    ['new', 'received'].includes(order.status),
+  );
+
+  const activeOrders = orders.filter((order) => order.status === 'in_progress');
+
+  if (!orders || orders.length === 0) {
+    return (
+      <>
+        <h2>ALL ORDERS</h2>
+        <p>No orders yet.</p>
+      </>
+    );
+  }
+
   return (
     <>
       <h2>ALL ORDERS</h2>
-      {orders && (
-        <div className="admin-orders__container">
+      <div className="admin-orders__container">
+        {newOrders.length > 0 && (
           <div className="admin-orders__column">
             <h2>New orders</h2>
-            {orders
-              .filter((order) => ['new', 'received'].includes(order.status))
-              .map((order) => (
-                <OrderCard
-                  key={order.id}
-                  order={order}
-                  setUpdateList={setUpdateList}
-                  updateList={updateList}
-                />
-              ))}
+            {newOrders.map((order) => (
+              <OrderCard
+                key={order.id}
+                order={order}
+                setUpdateList={setUpdateList}
+                updateList={updateList}
+              />
+            ))}
           </div>
+        )}
+        {activeOrders.length > 0 && (
           <div className="admin-orders__column">
             <h2>Active orders</h2>
-            {orders
-              .filter((order) => order.status === 'in_progress')
-              .map((order) => (
-                <OrderCard
-                  key={order.id}
-                  order={order}
-                  setUpdateList={setUpdateList}
-                  updateList={updateList}
-                />
-              ))}
+            {activeOrders.map((order) => (
+              <OrderCard
+                key={order.id}
+                order={order}
+                setUpdateList={setUpdateList}
+                updateList={updateList}
+              />
+            ))}
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 };
