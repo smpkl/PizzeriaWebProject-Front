@@ -34,6 +34,7 @@ const Layout = () => {
           backgroundColor: '#0c2720ff',
           position: 'sticky',
           top: '0',
+          height: '9vh',
         }}
       >
         <div id="header-logo-container">
