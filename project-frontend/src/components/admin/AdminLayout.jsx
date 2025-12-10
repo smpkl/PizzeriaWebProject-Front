@@ -54,8 +54,10 @@ const Layout = () => {
                       Admin pages
                     </option>
                     <option value="/admin/products">Products</option>
+                    {/* aktivoi, eli poista nämä kun announcements ja coupons valmis
                     <option value="/admin/announcements">Announcements</option>
                     <option value="/admin/coupons">Coupons</option>
+                    */}
                     <option value="/admin/meals">Meals</option>
                   </select>
                 </li>
