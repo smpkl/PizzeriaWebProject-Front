@@ -235,16 +235,15 @@
   cursor: pointer;
 }
 
-/* checked = tumma, unchecked = vaalea pinta */
 .tag-label--checked {
-  background-color: var(--admin-header-bg-end);
+  background-color: #125b11;
   border-color: var(--admin-header-bg-end);
   font-weight: bolder;
   color: #fff;
 }
 
 .tag-label--unchecked {
-  background-color: var(--admin-surface-bg);
+  background-color: #ef0d09;
   border-color: var(--admin-surface-bg);
   font-weight: bold;
   color: #fff;
