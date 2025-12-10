@@ -231,12 +231,14 @@ const NewMealCard = ({addMeal, setAddMeal, modifyMeal, setShowModified}) => {
                       className="new-meal-card__product-row"
                     >
                       <div className="new-meal-card__product-info">
+                        <label htmlFor={`product-${product.id}`}>
                         <span>
-                          {product.name} – {product.price} €
+                          {product.name} - {product.price} €
                         </span>
                         <span className="new-meal-card__product-description">
                           {product.description}
                         </span>
+                        </label>
                       </div>
                       <input
                         type="checkbox"
