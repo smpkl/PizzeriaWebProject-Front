@@ -14,6 +14,7 @@ import {
   useTags,
   useCategories,
 } from '../../hooks/apiHooks';
+import AnnouncementsCarousel from '../../components/AnnouncementsCarousel';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -104,9 +105,7 @@ const Home = () => {
         <OrderTypeButtons />
       </div>
       <div id="announcements">
-        {announcements?.map((item) => (
-          <Announcement key={item.id} announcement={item} />
-        ))}
+        {<AnnouncementsCarousel announcements={announcements} />}
       </div>
       <div id="meal-of-the-day">
         <h2 style={{margin: '5px', fontWeight: 'bold'}}>Meal of the Day</h2>
