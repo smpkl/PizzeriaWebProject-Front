@@ -1,18 +1,18 @@
 /* common/general settings */
 
 :root {
-  /* color settings */
+  /* main color palette*/
   --admin-header-bg-start: #0c2720ff;
-  --color-green: #ecb640ff;
-  --admin-surface-bg: #f5eee6;
   --admin-header-bg-end: #710009;
+  --admin-surface-bg: #f5eee6;
   --admin-nav-link-text-color: #f5eee6;
   --admin-nav-link-active-bg: #ecb640ff;
-  --admin-border-color: #000;
-  --admin-bg-light: #e0e0e0;
 
+  /* general settings */
+  --admin-border-color: #000;
   --admin-border-radius: 14px;
   --admin-font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --admin-bg-light: #e0e0e0;
   --admin-card-max-width: 1000px;
 }
 
@@ -24,15 +24,21 @@
 
 .admin-header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  background: linear-gradient(90deg, var(--admin-header-bg-start), var(--admin-header-bg-end));
-  background-color: lightgray;
+  background: linear-gradient(
+    90deg,
+    var(--admin-header-bg-start),
+    var(--admin-header-bg-end)
+  );
   padding: 0.5rem 1rem;
   color: var(--admin-nav-link-text-color);
 }
 
 .admin-header__logo {
-  width: 30%;
+  flex: 0 0 auto;
+  max-width: 140px;
+  margin-right: 1rem;
 }
 
 .admin-header__logo img {
@@ -42,7 +48,8 @@
 }
 
 .admin-nav {
-  flex: 1;
+  flex: 1 1 200px;
+  min-width: 0;
 }
 
 .admin-nav__list {
@@ -50,9 +57,15 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  gap: 1rem;
+  gap: 0.5rem 0.75rem;
   align-items: center;
+  flex-wrap: wrap;
 }
+
+.admin-nav__item {
+  flex: 0 0 auto;
+}
+
 
 .admin-nav__item a,
 .admin-nav__logout {
@@ -64,7 +77,6 @@
   display: inline-block;
   transition: background-color 0.15s ease, color 0.15s ease;
   cursor: pointer;
-  margin-left: 0.5rem; /* jos haluat sen irti edellisestä itemistä */
 }
 
 .admin-nav__item a:hover,
@@ -72,6 +84,7 @@
   background-color: var(--admin-nav-link-active-bg);
   color: var(--admin-header-bg-start);
 }
+
 
 .admin-nav__select {
   padding: 0.25rem 0.75rem;
@@ -82,7 +95,8 @@
   font-weight: 600;
   font-family: var(--admin-font-family);
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .admin-nav__select:hover {
@@ -116,7 +130,6 @@
   border: 1px solid var(--admin-border-color);
 }
 
-/* Yleinen korttipohja */
 
 .admin-card {
   border: 2px solid var(--admin-border-color);
@@ -159,6 +172,7 @@
 }
 
 /* form general settings */
+
 .admin-field {
   margin-bottom: 0.5rem;
 }
@@ -221,6 +235,7 @@
   cursor: pointer;
 }
 
+/* checked = tumma, unchecked = vaalea pinta */
 .tag-label--checked {
   background-color: var(--admin-header-bg-end);
   border-color: var(--admin-header-bg-end);
@@ -561,7 +576,7 @@
   margin: 0.1rem;
 }
 
-/* misc stuff such as text and margings */
+/* misc stuff such as text and margins */
 
 .text-right {
   text-align: right;
@@ -610,88 +625,10 @@
   }
 }
 
-@media (max-width: 768px) {
-  .admin-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-
-  .admin-header__logo {
-    width: 60%;
-  }
-
-  .admin-nav__list {
-    flex-wrap: wrap;
-    row-gap: 0.25rem;
-  }
-
-  .admin-card {
-    padding: 16px 18px;
-    margin: 0.5rem 0.75rem;
-  }
-
-  .admin-grid-3,
-  .admin-grid-3-wide-gap,
-  .admin-grid-2 {
-    grid-template-columns: 1fr;
-  }
-
-  .admin-products__toolbar,
-  .admin-meals__toolbar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .admin-products__toolbar input[type='text'] {
-    width: 100%;
-  }
-
-  .meal-item-card {
-    flex-direction: column;
-  }
-
-  .meal-item-img-container {
-    margin-right: 0;
-    margin-bottom: 0.5rem;
-  }
-
-  .meal-item-price-row,
-  .meal-item-buttons-row {
-    justify-content: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .admin-orders__container {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .admin-orders__column {
-    margin: 0.5rem 0.75rem;
-    min-width: auto;
-    max-width: 100%;
-  }
-
-  .order-card__content-row {
-    flex-direction: column;
-  }
-
-  .order-card__products,
-  .order-card__customer {
-    width: 100%;
-  }
-
-  .admin-image-wrapper,
-  .admin-product-view-card__image-wrapper {
-    max-width: 180px;
-    max-height: 180px;
-  }
-}
 
 @media (max-width: 480px) {
   .admin-header__logo {
-    width: 80%;
+    max-width: 140px;
   }
 
   .admin-button,
