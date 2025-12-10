@@ -44,11 +44,15 @@ const Layout = () => {
               alignItems: 'center',
               justifyContent: 'center',
               width: 'auto',
+              height: '100%',
             }}
           >
             <img
-              src="https://placehold.co/80x80/white/green?text=LOGO"
+              src={`/tba-logo.png`}
               alt="Pizzeria Logo goes here"
+              style={{
+                height: '100%',
+              }}
             />
           </Link>
         </div>
