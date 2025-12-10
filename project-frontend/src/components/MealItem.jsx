@@ -39,7 +39,6 @@ const MealItem = ({item}) => {
                 key={`meal-product-${product.id}`}
                 className="products-in-meal"
                 onClick={() => handleShowItemDetails(product)}
-                style={{margin: '5px 0', color: '#28532E', fontWeight: 'bold'}}
               >
                 {product.name}
               </li>

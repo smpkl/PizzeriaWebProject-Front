@@ -19,6 +19,15 @@ ul > li {
   margin: 0 5%;
 }
 
+header {
+  z-index: 1000;
+}
+
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 500 !important;
+}
+
 footer li a {
   color: #f5eee6;
   text-decoration: none;
@@ -36,8 +45,10 @@ footer li a {
   color: #f5eee6;
 }
 
-.products-in-meal:hover {
-  color: green;
+.products-in-meal {
+  color: #0c2720ff;
+  font-weight: bold;
+  text-decoration: none;
 }
 
 .ordertype-btn-container {
@@ -91,6 +102,27 @@ footer li a {
   border-radius: 4px;
 }
 
+.addRemoveBtn {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  border-radius: 20%;
+  border: 1px solid #710009;
+  color: #710009;
+  font-weight: bold;
+}
+
+.deleteBtn {
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  border-radius: 50%;
+  border: 2px solid #710009;
+  background-color: #710009;
+  color: #f5eee6;
+  font-weight: bold;
+}
+
 .orderform-container .text-input {
   padding: 10px;
   font-size: 16px;
@@ -106,7 +138,7 @@ footer li a {
 }
 
 .pizzeria-option:hover {
-  background-color: rgb(202, 141, 28);
+  background-color: rgb(202, 108, 0);
 }
 
 .selected-pizzeria {
@@ -156,6 +188,18 @@ footer li a {
   font-weight: bold;
   font-size: 14px;
   border: 1px solid #710009;
+  border-radius: 5px;
+  width: 30%;
+}
+
+.dark-btn {
+  margin: 5px auto;
+  padding: 11px;
+  background-color: #0c2720ff;
+  color: #f5eee6;
+  font-weight: bold;
+  font-size: 16px;
+  border: 1px solid #0c2720ff;
   border-radius: 5px;
 }
 
@@ -365,11 +409,61 @@ header nav {
   font-size: 18px;
 }
 
+#checkout-total {
+  font-size: 18px;
+}
+
+#user-info-container {
+  width: 90%;
+  text-align: left;
+  margin: auto;
+}
+
+.editDialog-container {
+  background-color: #f5eee6;
+  width: 90%;
+  margin: auto;
+  padding: 20px 10px;
+}
+
+#aboutUs-our-pizzerias {
+  width: 100%;
+  background-color: #710009;
+  margin: auto;
+  padding: 20px 0;
+  color: #f5eee6;
+}
+
+#aboutUs-map-container {
+  height: 400px;
+  width: 95%;
+  margin: auto;
+  border: 5px outset #8d0202ff;
+}
+
+/*--------------------------------------------------------------------------------------------------------------*/
+
 @media screen and (min-width: 556px) {
   #root {
     max-width: 100%;
     margin: 0;
     text-align: center;
+  }
+
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+  }
+
+  .layout-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1;
   }
 
   header {
@@ -383,6 +477,10 @@ header nav {
 
   .nav-icon {
     font-size: 45px;
+  }
+
+  .nav-icon:hover {
+    color: #ecb640ff;
   }
 
   .order-items-counter {
@@ -614,5 +712,194 @@ header nav {
     flex-direction: column;
     color: #f5eee6;
     padding: 10px 0;
+  }
+
+  .dark-btn:hover {
+    background-color: #f5eee6;
+    color: #0c2720ff;
+    border: 1px solid #0c2720ff;
+  }
+
+  .change-btn:hover {
+    background-color: rgb(202, 108, 0);
+  }
+
+  .change-btn {
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  .addRemoveBtn:hover {
+    background-color: #c5c5c5;
+  }
+
+  .deleteBtn:hover {
+    border: 2px solid #710009;
+    background-color: #f5eee6;
+    color: #710009;
+  }
+
+  .checkout-btn:hover {
+    background-color: #f5eee6;
+    color: #710009;
+  }
+
+  .ordertype-btn:hover {
+    background-color: #f5eee6;
+    color: #710009;
+  }
+
+  #checkout-container {
+    width: 60%;
+    margin: 20px auto;
+    padding: 10px;
+    border: 3px solid #0c2720ff;
+    font-size: 20px;
+  }
+
+  #addressAndTime-box {
+    border-radius: 5px;
+  }
+
+  #checkout-items-h2 {
+    border-radius: 5px;
+  }
+
+  #checkout-items {
+    width: 50%;
+    margin: auto;
+  }
+
+  #checkout-total {
+    font-size: 24px;
+  }
+
+  #payment-form {
+    width: 70%;
+    margin: 20px 0;
+    padding: 10px 15%;
+  }
+
+  .checkout-btn {
+    padding: 12px;
+    font-size: 20px;
+    width: 40%;
+  }
+
+  #after-checkout {
+    font-size: 20px;
+  }
+
+  #after-checkout-btn {
+    margin: 5px auto 185px auto;
+    padding: 12px;
+    background-color: #ecb640ff;
+    color: #0c2720ff;
+    font-weight: bold;
+    font-size: 18px;
+    border: 1px solid #ecb640ff;
+    border-radius: 5px;
+  }
+
+  #after-checkout-btn:hover {
+    background-color: rgb(202, 108, 0);
+  }
+
+  .logout-btn {
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  #user-info-container {
+    width: 60%;
+    font-size: 22px;
+  }
+
+  #user-orders-container {
+    width: 60%;
+    margin: auto;
+    font-size: 20px;
+    padding: 20px 0;
+  }
+
+  .editDialog-container {
+    background-color: #f5eee6;
+    width: 35%;
+    padding: 20px 8%;
+  }
+
+  #logged-out-container {
+    width: 30%;
+    padding: 50px 10px;
+    font-size: 18px;
+    margin: 30px auto;
+    border: 3px solid #0c2720ff;
+  }
+
+  .login-and-register-form {
+    width: 40%;
+    margin: auto;
+  }
+
+  .login-and-register-button {
+    font-size: 20px;
+  }
+
+  .login-and-register-button:hover {
+    background-color: #f5eee6;
+    color: #710009;
+  }
+
+  .go-back-btn {
+    font-size: 18px;
+  }
+
+  .go-back-btn:hover {
+    background-color: rgb(202, 108, 0);
+  }
+
+  #aboutUs-container {
+    width: 80%;
+    margin: 30px auto;
+  }
+
+  #aboutUs-container p {
+    width: 60%;
+    margin: 60px auto;
+    font-size: 20px;
+  }
+
+  #aboutUs-img-container {
+    height: 600px;
+    overflow: hidden;
+  }
+
+  #aboutUs-map-container {
+    height: 600px;
+    width: 95%;
+    margin: auto;
+    border: 5px outset #8d0202ff;
+  }
+
+  #aboutUs-our-pizzerias {
+    width: 90%;
+    background-color: #710009;
+    margin: auto;
+    padding: 20px 0;
+    color: #f5eee6;
+    border-radius: 5px;
+  }
+
+  #aboutUs-our-pizzerias p {
+    margin: 5px auto;
+  }
+
+  #aboutUs-our-pizzerias p:hover {
+    color: #ecb640ff;
+  }
+
+  .products-in-meal:hover {
+    color: #710009;
+    text-decoration: none;
   }
 }

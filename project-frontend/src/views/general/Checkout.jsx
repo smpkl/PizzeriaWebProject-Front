@@ -46,7 +46,7 @@ const CheckOut = () => {
   return (
     <>
       {!orderId && isActiveOrder && (
-        <div>
+        <div id="checkout-container">
           <h1>CHECKOUT</h1>
           <p>
             Check Your order details down below <br />
@@ -55,6 +55,7 @@ const CheckOut = () => {
           <div style={{textAlign: 'center'}}>
             <h2>ORDER TYPE: {orderType}</h2>
             <div
+              id="addressAndTime-box"
               style={{
                 display: 'flex',
                 margin: 'auto',
@@ -140,6 +141,7 @@ const CheckOut = () => {
           )}
           <div>
             <h2
+              id="checkout-items-h2"
               style={{
                 backgroundColor: '#710009',
                 margin: '10px 0',
@@ -149,7 +151,7 @@ const CheckOut = () => {
             >
               ITEMS:
             </h2>
-            <div>
+            <div id="checkout-items">
               {orderProducts.map((p) => (
                 <div
                   key={`choP-${p.product.id}`}
@@ -245,13 +247,13 @@ const CheckOut = () => {
             </div>
             <p>ITEMS: {orderPrice.toFixed(2)}€</p>
             <p>DELIVERY: {Number(orderInfo.deliveryFee).toFixed(2)}€</p>
-            <p style={{fontSize: '18px'}}>
+            <p id="checkout-total">
               <b>TOTAL: </b>
               {(orderPrice + Number(orderInfo.deliveryFee)).toFixed(2)}€
             </p>
           </div>
           <div>
-            <form onSubmit={doCheckout}>
+            <form onSubmit={doCheckout} id="payment-form">
               <div
                 style={{
                   display: 'flex',
@@ -259,7 +261,7 @@ const CheckOut = () => {
                   margin: 'auto',
                   backgroundColor: '#0c2720ff',
                   color: '#F5EEE6',
-                  padding: '10px',
+                  padding: '20px 10px',
                 }}
               >
                 <label htmlFor="coupon-input">DISCOUNT COUPON: </label>
@@ -303,44 +305,19 @@ const CheckOut = () => {
                   margin: 'auto',
                 }}
               >
-                <button
-                  type="submit"
-                  style={{
-                    margin: '5px auto',
-                    width: '50%',
-                    padding: '12px',
-                    backgroundColor: '#710009',
-                    color: '#F5EEE6',
-                    fontWeight: 'bold',
-                    fontSize: '18px',
-                    border: '1px solid #710009',
-                    borderRadius: '5px',
-                  }}
-                >
+                <button type="submit" className="checkout-btn">
                   ORDER
                 </button>
               </div>
             </form>
-            <button
-              onClick={() => navigate('/order')}
-              style={{
-                margin: '5px auto',
-                padding: '10px',
-                backgroundColor: '#ecb640ff',
-                color: '#0c2720ff',
-                fontWeight: 'bold',
-                fontSize: '14px',
-                border: '1px solid #ecb640ff',
-                borderRadius: '5px',
-              }}
-            >
+            <button onClick={() => navigate('/order')} className="change-btn">
               EDIT ORDER
             </button>
           </div>
         </div>
       )}
       {orderId && (
-        <div style={{width: '90%', margin: '10px auto', height: '62vh'}}>
+        <div style={{width: '90%', margin: '10px auto'}} id="after-checkout">
           <h1>ORDER PLACED</h1>
           <p>
             Your order number: <b>{orderId}</b>
@@ -351,19 +328,7 @@ const CheckOut = () => {
             All customers will be send a notice through email and phone <br />
             when order is ready.
           </p>
-          <button
-            onClick={() => navigate('/')}
-            style={{
-              margin: '5px auto',
-              padding: '10px',
-              backgroundColor: '#ecb640ff',
-              color: '#0c2720ff',
-              fontWeight: 'bold',
-              fontSize: '14px',
-              border: '1px solid #ecb640ff',
-              borderRadius: '5px',
-            }}
-          >
+          <button onClick={() => navigate('/')} id="after-checkout-btn">
             Return to main page
           </button>
         </div>
