@@ -1,10 +1,18 @@
 /* common/general settings */
 
 :root {
+  /* color settings */
+  --admin-header-bg-start: #0c2720ff;
+  --color-green: #ecb640ff;
+  --admin-surface-bg: #f5eee6;
+  --admin-header-bg-end: #710009;
+  --admin-nav-link-text-color: #f5eee6;
+  --admin-nav-link-active-bg: #ecb640ff;
   --admin-border-color: #000;
+  --admin-bg-light: #e0e0e0;
+
   --admin-border-radius: 14px;
   --admin-font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --admin-bg-light: #e0e0e0;
   --admin-card-max-width: 1000px;
 }
 
@@ -17,8 +25,10 @@
 .admin-header {
   display: flex;
   align-items: center;
+  background: linear-gradient(90deg, var(--admin-header-bg-start), var(--admin-header-bg-end));
   background-color: lightgray;
   padding: 0.5rem 1rem;
+  color: var(--admin-nav-link-text-color);
 }
 
 .admin-header__logo {
@@ -44,22 +54,41 @@
   align-items: center;
 }
 
-.admin-nav__item a {
+.admin-nav__item a,
+.admin-nav__logout {
   text-decoration: none;
-  color: inherit;
+  font-weight: bolder;
+  color: var(--admin-nav-link-text-color);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  display: inline-block;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  cursor: pointer;
+  margin-left: 0.5rem; /* jos haluat sen irti edellisestä itemistä */
+}
+
+.admin-nav__item a:hover,
+.admin-nav__logout:hover {
+  background-color: var(--admin-nav-link-active-bg);
+  color: var(--admin-header-bg-start);
 }
 
 .admin-nav__select {
-  padding: 0.2rem 0.4rem;
-  border-radius: 4px;
-  border: 1px solid var(--admin-border-color);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--admin-nav-link-text-color);
+  background-color: transparent;
+  color: var(--admin-nav-link-text-color);
+  font-weight: 600;
+  font-family: var(--admin-font-family);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
-
-.admin-nav__logout {
-  cursor: pointer;
-  margin-left: 0.5rem;
-  text-decoration: underline;
+.admin-nav__select:hover {
+  background-color: var(--admin-nav-link-active-bg);
+  color: var(--admin-header-bg-start);
+  border-color: var(--admin-nav-link-active-bg);
 }
 
 /* AdminProducts */
@@ -80,7 +109,7 @@
   cursor: pointer;
 }
 
-.admin-products__toolbar input[type="text"] {
+.admin-products__toolbar input[type='text'] {
   flex: 1;
   padding: 4px 6px;
   border-radius: 4px;
@@ -150,7 +179,7 @@
   font-family: inherit;
 }
 
-.admin-input[type="number"] {
+.admin-input[type='number'] {
   max-width: 180px;
 }
 
@@ -193,13 +222,15 @@
 }
 
 .tag-label--checked {
-  background-color: green;
+  background-color: var(--admin-header-bg-end);
+  border-color: var(--admin-header-bg-end);
   font-weight: bolder;
   color: #fff;
 }
 
 .tag-label--unchecked {
-  background-color: red;
+  background-color: var(--admin-surface-bg);
+  border-color: var(--admin-surface-bg);
   font-weight: bold;
   color: #fff;
 }
@@ -580,7 +611,6 @@
 }
 
 @media (max-width: 768px) {
-
   .admin-header {
     flex-direction: column;
     align-items: flex-start;
@@ -613,7 +643,7 @@
     align-items: stretch;
   }
 
-  .admin-products__toolbar input[type="text"] {
+  .admin-products__toolbar input[type='text'] {
     width: 100%;
   }
 
