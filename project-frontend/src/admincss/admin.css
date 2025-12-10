@@ -625,6 +625,70 @@
   }
 }
 
+@media (max-width: 900px) {
+
+  .admin-card {
+    padding: 16px 18px;
+    margin: 0.5rem 0.75rem;
+  }
+
+  .admin-grid-3,
+  .admin-grid-3-wide-gap,
+  .admin-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-products__toolbar,
+  .admin-meals__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-products__toolbar input[type='text'] {
+    width: 100%;
+  }
+
+  .meal-item-card {
+    flex-direction: column;
+  }
+
+  .meal-item-img-container {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .meal-item-price-row,
+  .meal-item-buttons-row {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .admin-orders__container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-orders__column {
+    margin: 0.5rem 0.75rem;
+    min-width: auto;
+    max-width: 100%;
+  }
+
+  .order-card__content-row {
+    flex-direction: column;
+  }
+
+  .order-card__products,
+  .order-card__customer {
+    width: 100%;
+  }
+
+  .admin-image-wrapper,
+  .admin-product-view-card__image-wrapper {
+    max-width: 180px;
+    max-height: 180px;
+  }
+}
 
 @media (max-width: 480px) {
   .admin-header__logo {
