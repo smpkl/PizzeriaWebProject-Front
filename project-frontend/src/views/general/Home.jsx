@@ -115,13 +115,8 @@ const Home = () => {
         <h2 style={{margin: '5px', fontWeight: 'bold'}}>Meal of the Day</h2>
         {dailyMeal && <MealItem key={dailyMeal?.id} item={dailyMeal} />}
       </div>
-      <div
-        id="menu-container"
-        style={{backgroundColor: '#710009', padding: '7px 0 0 0'}}
-      >
-        <h2 style={{color: '#F5EEE6', fontSize: '26px', margin: '5px'}}>
-          MENU
-        </h2>
+      <div id="menu-container">
+        <h2 style={{color: '#F5EEE6', fontSize: '26px'}}>MENU</h2>
         <MenuFilter
           products={originalProducts}
           meals={originalMeals}

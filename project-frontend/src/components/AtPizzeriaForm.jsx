@@ -244,7 +244,7 @@ const AtPizzeriaForm = () => {
               name="details"
               id="atPizzeria-details"
               placeholder="Type details for the pizzeria here"
-              style={{margin: 'auto', width: '90%'}}
+              style={{margin: 'auto', width: '90%', fontSize: '16px'}}
               onChange={handleInputChange}
               value={orderInfo.details}
             ></textarea>

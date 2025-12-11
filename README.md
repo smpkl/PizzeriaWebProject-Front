@@ -1,6 +1,5 @@
-﻿# PizzeriaWebProject-Front
-
-This is the front-end of the Pizzeria Web Project. [Backend can be found here.](https://github.com/smpkl/PizzeriaWebProject-Backend)
+# PizzeriaWebProject - Backend
+[Front-end repository](https://github.com/smpKlaa/PizzeriaWebProject-Front)
 
 # Projektin esittely ja dokumentaatio (To Be Announced)
 
@@ -61,7 +60,7 @@ Omistajat/admin:
     - kuponkeja
         - lisätä, poistaa ja muokata
     - ilmoituksia
-        - lisätä, poistaa ja muokata
+        - lukea (hallinnointi tulee myöhemmässä 1.1 patchissa)
 - Voi hallinnoida omia tietoja
 
 ### Mahdolliset lisäominaisuudet
@@ -178,18 +177,18 @@ npm run dev
 ***Toiminnalisuuksien testaaminen***
 
 1. Linkit sivuille
-   - [Admin]()
+   - [Admin](https://smapo.swedencentral.cloudapp.azure.com/admin/)
        - käyttäjä tunnuksia:
-           - 
-           -  
-   - [User]()
+           - kirjautumistunnus: example@email.com
+           -  salasana: AdminPassword
+   - [User](https://smapo.swedencentral.cloudapp.azure.com)
        - sivuilla voi luoda halutessan tunnukset tai tilata ilman
     
 - Testaamiseen admin sivuille tarvitset admin käyttäjän, mutta pizzerian puolella pääset ilman.
   Testaillessa voit kirjautua tai olla kirjautumatta. Kokeile molempia!
 - Admin sivuilla tarvitset käyttäjätunnukset, mutta voit kokeilla että pystyykö ilman.
 
-### Testien ajaminen
+***Valmiiden testien ajaminen***
 
 1. Varmista, että projektin riippuvuudet on asennettu:
 
@@ -237,9 +236,14 @@ node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand
 ---
 
 ## 6. Demo/esitys diat ja muut linkit
-- [wireframe / mockup](https://www.figma.com/design/6friFu5guACEfN9zNmMO1j/Untitled?node-id=0-1&m=dev&t=XIEMncLJKdyQ6v4o-1
+- [wireframe/mockup](https://www.figma.com/design/6friFu5guACEfN9zNmMO1j/Untitled?node-id=0-1&m=dev&t=XIEMncLJKdyQ6v4o-1)
+   
     - Projektin avaamiseen tarvittava salasana: webdev-tba-ryhmäprojekti-pizzeria
+
 - [Powerpoint/esitys](https://metropoliafi-my.sharepoint.com/:p:/g/personal/eliasrin_metropolia_fi/IQB4kUf-SV1uTp0JnSMgwoP7AY93E3zeEq6DxMG2jnwv3eQ?e=Oqr2UY)
+
+- [APIDoc dokumentaatio](https://smapo.swedencentral.cloudapp.azure.com/docs)
+    - Toimii jos serveri on päällä. Muuten dokumentaatio täytyy avata backend koodin kautta localhostissa.
 ---
 
 ## 7. Ongelmat ja ongelmatilanteet
@@ -253,6 +257,9 @@ node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand
     - Elias Rinne [MustBeViable](https://github.com/MustBeViable) 
     - Sampo Klaavo [smpkl](https://github.com/smpkl)
     - Jere Pyörökivi [Jere-4](https://github.com/Jere-4)
+
+
+
 
 
 
