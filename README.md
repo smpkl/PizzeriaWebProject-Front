@@ -177,11 +177,11 @@ npm run dev
 ***Toiminnalisuuksien testaaminen***
 
 1. Linkit sivuille
-   - [Admin]()
+   - [Admin](https://smapo.swedencentral.cloudapp.azure.com/admin/)
        - käyttäjä tunnuksia:
            - kirjautumistunnus: example@email.com
-           -  salasana: 
-   - [User]()
+           -  salasana: AdminPassword
+   - [User](https://smapo.swedencentral.cloudapp.azure.com)
        - sivuilla voi luoda halutessan tunnukset tai tilata ilman
     
 - Testaamiseen admin sivuille tarvitset admin käyttäjän, mutta pizzerian puolella pääset ilman.
@@ -254,4 +254,5 @@ node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand
     - Elias Rinne [MustBeViable](https://github.com/MustBeViable) 
     - Sampo Klaavo [smpkl](https://github.com/smpkl)
     - Jere Pyörökivi [Jere-4](https://github.com/Jere-4)
+
 
