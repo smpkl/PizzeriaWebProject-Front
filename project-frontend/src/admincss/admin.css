@@ -7,6 +7,7 @@
   --admin-surface-bg: #f5eee6;
   --admin-nav-link-text-color: #f5eee6;
   --admin-nav-link-active-bg: #ecb640ff;
+  --admin-card-bg-color: #fefae0;
 
   /* general settings */
   --admin-border-color: #000;
@@ -18,6 +19,12 @@
 
 .admin-root {
   font-family: var(--admin-font-family);
+}
+
+/* Admin main */
+
+.admin-main {
+  background-color: var(--admin-bg-light);
 }
 
 /* Admin Layout */
@@ -66,7 +73,6 @@
   flex: 0 0 auto;
 }
 
-
 .admin-nav__item a,
 .admin-nav__logout {
   text-decoration: none;
@@ -75,7 +81,9 @@
   padding: 0.25rem 0.75rem;
   border-radius: 999px;
   display: inline-block;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
   cursor: pointer;
 }
 
@@ -84,7 +92,6 @@
   background-color: var(--admin-nav-link-active-bg);
   color: var(--admin-header-bg-start);
 }
-
 
 .admin-nav__select {
   padding: 0.25rem 0.75rem;
@@ -95,7 +102,9 @@
   font-weight: 600;
   font-family: var(--admin-font-family);
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease,
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
     border-color 0.15s ease;
 }
 
@@ -130,7 +139,6 @@
   border: 1px solid var(--admin-border-color);
 }
 
-
 .admin-card {
   border: 2px solid var(--admin-border-color);
   border-radius: var(--admin-border-radius);
@@ -138,7 +146,7 @@
   max-width: var(--admin-card-max-width);
   margin: 0.5rem auto;
   font-family: var(--admin-font-family);
-  background-color: #fff;
+  background-color: var(--admin-card-bg-color);
 }
 
 .admin-card--compact {
@@ -205,6 +213,7 @@
 /* NewProductCard */
 
 .new-product-card {
+  background-color: var(--admin-card-bg-color);
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
@@ -350,6 +359,7 @@
 /* NewMealCard */
 
 .new-meal-card {
+  background-color: var(--admin-card-bg-color);
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
@@ -415,7 +425,7 @@
   width: 90%;
   margin: 5px auto;
   padding: 2%;
-  background-color: lightgray;
+  background-color: var(--admin-card-bg-color);
   border-radius: 12px;
   box-sizing: border-box;
 }
@@ -497,6 +507,7 @@
 
 .admin-orders__column {
   border: 5px solid var(--admin-border-color);
+  border-radius: 15px;
   margin: 1rem;
   padding: 0.5rem;
   min-width: 280px;
@@ -506,6 +517,7 @@
 /* OrderCard */
 .order-card {
   border: 1px solid grey;
+  background-color: var(--admin-card-bg-color);
   border-radius: 10px;
   margin: 0;
   padding: 0.2rem;
@@ -601,6 +613,52 @@
   margin-bottom: 0.5rem;
 }
 
+/* AdminProfile */
+
+.admin-profile {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.admin-profile__card {
+  border: 2px solid var(--admin-border-color);
+  border-radius: var(--admin-border-radius);
+  background-color: var(--admin-card-bg-color);
+  padding: 10px;
+  width: 60%;
+  margin: 0.5rem auto;
+  font-family: var(--admin-font-family);
+}
+
+.admin-profile__row {
+  display: flex;
+  justify-content: center;
+  width: 80%;
+  margin: 0 auto;
+  border-bottom: 2px solid lightgray;
+  padding: 0.5rem 0;
+}
+
+.admin-profile__left {
+  width: 50%;
+  text-align: left;
+}
+
+.admin-profile__right {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.admin-profile__section {
+  padding: 20px 0;
+}
+
+.admin-profile__section h3 {
+  margin-bottom: 0.5rem;
+}
+
 /* Responsivity settings */
 
 @media (max-width: 1024px) {
@@ -625,7 +683,6 @@
 }
 
 @media (max-width: 900px) {
-
   .admin-card {
     padding: 16px 18px;
     margin: 0.5rem 0.75rem;

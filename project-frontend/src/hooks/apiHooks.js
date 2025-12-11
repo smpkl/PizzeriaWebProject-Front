@@ -270,6 +270,42 @@ const useCategories = () => {
   return {categories};
 };
 
+const useCoupons = () => {
+  const couponsUrl = baseUrl + 'coupons';
+
+  const getCouponByCode = async (userCoupon) => {
+    if (!userCoupon) return null;
+
+    try {
+      const response = await fetchData(couponsUrl);
+      const coupons = response.coupons || [];
+
+      //if we want to not be casesensitive
+
+      /* 
+      const normalized = userCoupon.trim().toLowerCase();
+
+      const found = coupons.find(
+        (c) => c.coupon && c.coupon.trim().toLowerCase() === normalized,
+      );
+      */
+      
+      //now it is casesensitive
+      const foundCoupon = coupons.find(
+        (c) => c.coupon.trim()  === userCoupon.trim(),
+      );
+
+      return foundCoupon || null;
+    } catch (error) {
+      console.log('ERROR fetching coupons', error);
+      return null;
+    }
+  };
+
+  return {getCouponByCode};
+};
+
+
 const useMeals = () => {
   const mealsUrl = baseUrl + 'meals';
   const getMeals = async () => {
@@ -902,6 +938,7 @@ export {
   usePizzerias,
   useTags,
   useCategories,
+  useCoupons,
   useDailyMeal,
   useMeals,
   useAuthentication,
