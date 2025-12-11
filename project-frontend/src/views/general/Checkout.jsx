@@ -1,11 +1,15 @@
 import {useNavigate, Navigate} from 'react-router';
 import {useOrderContext} from '../../hooks/contextHooks';
-import {useOrder} from '../../hooks/apiHooks';
+import {useCoupons, useOrder} from '../../hooks/apiHooks';
 import {useEffect, useState} from 'react';
 
 const CheckOut = () => {
   const navigate = useNavigate();
   const [orderId, setOrderId] = useState(null);
+  const [coupon, setCoupon] = useState('');
+  const [discountPercent, setDiscountPercent] = useState(0);
+
+  const {getCouponByCode} = useCoupons();
 
   const {postOrder} = useOrder();
   const {
@@ -24,6 +28,33 @@ const CheckOut = () => {
     if (!isActiveOrder) navigate('/');
   }, []);
 
+  useEffect(() => {
+    if (!coupon) {
+      setDiscountPercent(0);
+      return;
+    }
+
+    //debounce time for coupon search
+    const timeoutId = setTimeout(() => {
+      validateCoupon(coupon);
+    }, 500);
+
+    const validateCoupon = async (userCoupon) => {
+      const couponFound = await getCouponByCode(userCoupon);
+
+      if (!couponFound) {
+        setDiscountPercent(0);
+        return;
+      }
+
+      const discountPercentMultiplier =
+        Number(couponFound.discount_percentage) / 100 || 0;
+      setDiscountPercent(discountPercentMultiplier);
+    };
+
+    return () => clearTimeout(timeoutId);
+  }, [coupon]);
+
   const doCheckout = async (event) => {
     try {
       event.preventDefault();
@@ -33,7 +64,7 @@ const CheckOut = () => {
         orderUserId ?? null,
         orderProducts,
         orderMeals,
-        orderPrice,
+        total,
       );
       setOrderId(response);
       resetOrderContext();
@@ -42,6 +73,11 @@ const CheckOut = () => {
       navigate('/order', {state: {error}});
     }
   };
+
+  const discountMultiplier = discountPercent || 0;
+  const discountedItemsPrice = orderPrice * (1 - discountMultiplier);
+  const deliveryFee = Number(orderInfo.deliveryFee) || 0;
+  const total = discountedItemsPrice + deliveryFee;
 
   return (
     <>
@@ -245,11 +281,15 @@ const CheckOut = () => {
                 </div>
               ))}
             </div>
-            <p>ITEMS: {orderPrice.toFixed(2)}€</p>
-            <p>DELIVERY: {Number(orderInfo.deliveryFee).toFixed(2)}€</p>
+            <p>
+              ITEMS:{' '}
+              {discountedItemsPrice.toFixed(2)}€
+            </p>
+            <p>DELIVERY: {deliveryFee.toFixed(2)}€</p>
             <p id="checkout-total">
               <b>TOTAL: </b>
-              {(orderPrice + Number(orderInfo.deliveryFee)).toFixed(2)}€
+              {total.toFixed(2)}
+              €
             </p>
           </div>
           <div>
@@ -270,6 +310,8 @@ const CheckOut = () => {
                   name="coupon"
                   id="coupon-input"
                   placeholder="Give discount coupon"
+                  value={coupon}
+                  onChange={(e) => setCoupon(e.target.value)}
                   style={{
                     padding: '10px',
                     fontSize: '16px',
