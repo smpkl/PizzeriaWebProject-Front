@@ -156,7 +156,11 @@ const CheckOut = () => {
           </div>
           {orderInfo.details && (
             <div
-              style={{backgroundColor: 'lightgray', border: '1px solid black'}}
+              style={{
+                backgroundColor: '#0c2720ff',
+                color: '#f5eee6',
+                padding: '10px 0 25px 0',
+              }}
             >
               <h2>
                 ORDER DETAILS
@@ -167,8 +171,10 @@ const CheckOut = () => {
                 style={{
                   backgroundColor: 'white',
                   width: '90%',
-                  minHeight: '20px',
+                  minHeight: '50px',
                   margin: 'auto',
+                  color: 'black',
+                  textWrap: 'pretty',
                 }}
               >
                 {orderInfo.details}
@@ -281,15 +287,11 @@ const CheckOut = () => {
                 </div>
               ))}
             </div>
-            <p>
-              ITEMS:{' '}
-              {discountedItemsPrice.toFixed(2)}€
-            </p>
+            <p>ITEMS: {discountedItemsPrice.toFixed(2)}€</p>
             <p>DELIVERY: {deliveryFee.toFixed(2)}€</p>
             <p id="checkout-total">
               <b>TOTAL: </b>
-              {total.toFixed(2)}
-              €
+              {total.toFixed(2)}€
             </p>
           </div>
           <div>
