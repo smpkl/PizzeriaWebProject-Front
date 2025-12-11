@@ -95,11 +95,7 @@ const Home = () => {
       <h1>PIZZERIA TBA</h1>
       <div id="main-page-img-container">
         <img
-          src={
-            import.meta.env.VITE_PUBLIC_URL == undefined
-              ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/2560px-Pizza-3007395.jpg'
-              : `${import.meta.env.VITE_PUBLIC_URL}tba_pizzeria_main.jpg`
-          }
+          src={`/tba_pizzeria_main.jpg`}
           alt="A very delicious pizza"
           style={{width: '100%', height: 'auto'}}
         />

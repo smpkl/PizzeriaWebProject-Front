@@ -40,9 +40,7 @@ const AboutUs = () => {
           </p>
           <div id="aboutUs-img-container">
             <img
-              src={
-                'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/2560px-Pizza-3007395.jpg'
-              }
+              src={'/pizzeria_about_us_img.jpg'}
               alt="Pizzeria TBA, About us page image of a pizza"
               style={{width: '100%'}}
             />
