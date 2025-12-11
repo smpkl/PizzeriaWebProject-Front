@@ -6,16 +6,15 @@ import L from 'leaflet';
 import MapController from '../../components/MapController';
 import {useRef, useState} from 'react';
 
-
 const AboutUs = () => {
   const [mapLocation, setMapLocation] = useState({});
   const [selectedPizzeriaId, setSelectedPizzeriaId] = useState(null);
   const markerRefs = useRef({});
   const {pizzerias} = usePizzerias();
-  
-  const [email, setEmail] = useState("");
-  const [feedback, setFeedback] = useState("");
-  const [status, setStatus] = useState({ type: null, message: null });
+
+  const [email, setEmail] = useState('');
+  const [feedback, setFeedback] = useState('');
+  const [status, setStatus] = useState({type: null, message: null});
 
   const locationIcon = new L.Icon({
     iconUrl:
@@ -122,153 +121,64 @@ const AboutUs = () => {
             ))}
           </div>
         </div>
-        <div
-          style={{
-            backgroundColor: '#ecb640ff',
-            height: '10vh',
-            margin: '10px 0',
-            padding: '10px 0',
-          }}
-        >
-          FEEDBACK KOMPONENTTI TÄHÄN
-          
-{/* --- PALAUTELOHKO --- */}
-<section className="feedback-block" aria-labelledby="anna-palautetta-heading">
-  <h2 id="anna-palautetta-heading" className="feedback-title">
-    ANNA PALAUTETTA
-  </h2>
+        <div id="aboutUs-feedback-container">
+          <div
+            className="feedback-block"
+            aria-labelledby="anna-palautetta-heading"
+          >
+            <h2 id="feedback-heading" className="feedback-title">
+              GIVE US FEEDBACK{' '}
+            </h2>
 
-  <form
-    className="feedback-form"
-    onSubmit={(e) => {
-      e.preventDefault();
-      setStatus({ type: "success", message: "Kiitos palautteesta!" });
-      setFeedback("");
-    }}
-  >
-    {/* Tekstialueen otsikko */}
-    <label htmlFor="feedback-text" className="feedback-label">
-      KIRJOITA PALAUTE TÄHÄN.
-    </label>
-
-    {/* Iso tekstialue katkoviivoilla */}
-    <textarea
-      id="feedback-text"
-      className="feedback-textarea"
-      value={feedback}
-      onChange={(e) => setFeedback(e.target.value)}
-      placeholder={
-        `------------------------------------\n` +
-        `------------------------------------\n` +
-        `------------------------------------`
-      }
-      rows={6}
-    />
-
-    {/* Sähköposti */}
-    <input
-      id="feedback-email"
-      type="email"
-      className="feedback-email"
-      value={email}
-      onChange={(e) => setEmail(e.target.value)}
-      placeholder="sähköposti.tähän"
-    />
-
-    {/* Soikea lähetysnappi */}
-    <button type="submit" className="feedback-submit">
-      LÄHETÄ
-    </button>
-
-    {/* Tila/virheviesti */}
-    {status.message && (
-      <p
-        className={`feedback-status ${status.type}`}
-        role={status.type === "error" ? "alert" : "status"}
-      >
-        {status.message}
-      </p>
-    )}
-  </form>
-
-  {/* Tähän sisäänrakennettu tyyli */}
-  <style jsx>{`
-    .feedback-block {
-      margin-top: 2rem;
-      display: grid;
-      place-items: center;
-    }
-
-    .feedback-title {
-      font-size: 1.75rem; /* iso otsikko */
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      margin-bottom: 1rem;
-      text-transform: uppercase;
-      text-align: center;
-    }
-
-    .feedback-form {
-      width: 100%;
-      max-width: 520px;        /* kuvan mittakaavaan */
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .feedback-label {
-      font-weight: 700;
-      margin-left: 0.35rem;
-    }
-
-    .feedback-textarea {
-      width: 100%;
-      border: 2px solid #000;  /* musta kehys kuten mallissa */
-      border-radius: 4px;
-      padding: 0.75rem;
-      font-size: 1rem;
-      line-height: 1.4;
-      resize: vertical;
-      background:
-        /* ohut vaalea tausta */
-        #fff;
-    }
-
-    .feedback-email {
-      width: 100%;
-      border: 2px solid #000;
-      border-radius: 2px;
-      padding: 0.5rem 0.75rem;
-      font-size: 1rem;
-    }
-
-    .feedback-submit {
-      align-self: center;
-      background: transparent;
-      border: 2px solid #000;  /* musta soikea kehys */
-      border-radius: 999px;    /* soikea */
-      padding: 0.5rem 2.25rem; /* mittakaava */
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      cursor: pointer;
-      transition: transform 0.06s ease;
-    }
-
-    .feedback-submit:hover {
-      transform: scale(1.02);
-    }
-
-    .feedback-status {
-      margin-top: 0.5rem;
-      text-align: center;
-      font-weight: 600;
-    }
-    .feedback-status.success { color: #0a7d3b; }
-    .feedback-status.error   { color: #b00020; }
-  `}</style>
-</section>
-{/* --- /PALAUTELOHKO --- */}
-
+            <form
+              className="feedback-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                setStatus({
+                  type: 'success',
+                  message: 'Thank you for the feedback!',
+                });
+                setFeedback('');
+              }}
+            >
+              <label htmlFor="feedback-text" className="orderform-label">
+                Type your feedback here:
+              </label>
+              <textarea
+                id="feedback-text"
+                className="feedback-textarea"
+                value={feedback}
+                onChange={(e) => setFeedback(e.target.value)}
+                placeholder={
+                  `------------------------------------\n` +
+                  `------------------------------------\n` +
+                  `------------------------------------`
+                }
+                rows={6}
+                style={{margin: '10px 0', height: '300px'}}
+              />
+              <input
+                id="feedback-email"
+                type="email"
+                className="edit-dialog-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Type email"
+              />
+              <button type="submit" className="dark-btn">
+                SEND
+              </button>
+              {status.message && (
+                <p
+                  className={`feedback-status ${status.type}`}
+                  role={status.type === 'error' ? 'alert' : 'status'}
+                  style={{margin: '0 auto 10px auto', color: '#0c2720ff'}}
+                >
+                  {status.message}
+                </p>
+              )}
+            </form>
+          </div>
         </div>
       </div>
     </>

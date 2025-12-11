@@ -32,25 +32,25 @@ const DeliveryForm = () => {
     setUserLocation({lat: latitude, long: longitude});
   }
 
-useEffect(() => {
-  if (user) {
-    handleOrderInfoChange({
-      userAddress: user.address || '',
-      userAddress2: '',
-      name: `${user.first_name ?? ''} ${user.last_name ?? ''}`.trim(),
-      phonenumber: user.phonenumber || '',
-      email: user.email || '',
-    });
-  } else {
-    handleOrderInfoChange({
-      userAddress: '',
-      userAddress2: '',
-      name: '',
-      phonenumber: '',
-      email: '',
-    });
-  }
-}, [user]);
+  useEffect(() => {
+    if (user) {
+      handleOrderInfoChange({
+        userAddress: user.address || '',
+        userAddress2: '',
+        name: `${user.first_name ?? ''} ${user.last_name ?? ''}`.trim(),
+        phonenumber: user.phonenumber || '',
+        email: user.email || '',
+      });
+    } else {
+      handleOrderInfoChange({
+        userAddress: '',
+        userAddress2: '',
+        name: '',
+        phonenumber: '',
+        email: '',
+      });
+    }
+  }, [user]);
 
   // Try to add distances to pizzerias and sort them if userLocation is found:
   useEffect(() => {
@@ -393,7 +393,7 @@ useEffect(() => {
               placeholder="Type details for the pizzeria here"
               onChange={handleInputChange}
               value={orderInfo.details}
-              style={{width: '90%', margin: 'auto'}}
+              style={{width: '90%', margin: 'auto', fontSize: '16px'}}
             ></textarea>
           </div>
           <button type="submit" className="checkout-btn">
