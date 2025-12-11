@@ -2,6 +2,7 @@ import {useAdminContext} from '../../hooks/contextHooks';
 import {useState} from 'react';
 import AdminRegisterForm from '../../components/admin/AdminRegisterForm';
 import EditDialog from '../../components/EditDialog';
+import '../../admincss/admin.css'
 
 const AdminProfile = () => {
   const {admin} = useAdminContext();
@@ -24,99 +25,104 @@ const AdminProfile = () => {
     setIsEdit(type);
   };
 
-  const profileContentBox = {
-    display: 'flex',
-    justifyContent: 'center',
-    width: '80%',
-    margin: 'auto',
-    borderBottom: '2px solid lightgray',
-  };
-  const contentBoxLeftColumn = {width: '50%', textAlign: 'left'};
-  const contentBoxRightColumn = {
-    display: 'flex',
-    alignItems: 'center',
-    width: '50%',
-    justifyContent: 'right',
-  };
-
   return (
     <>
-      <div>
+      <div className="admin-profile">
         <h2>ADMIN PROFILE</h2>
         {admin && (
-          <div
-            style={{
-              border: '2px solid black',
-              borderRadius: '5px',
-              width: '60%',
-              margin: 'auto',
-              padding: '10px',
-            }}
-          >
-            <div style={profileContentBox}>
-              <div style={contentBoxLeftColumn}>
+          <div className="admin-profile__card">
+            <div className="admin-profile__row">
+              <div className="admin-profile__left">
                 <p>
-                  <b>FIRSTNAME & LASTNAME</b>
+                  <b>FIRSTNAME &amp; LASTNAME</b>
                 </p>
                 <p>
                   {admin.first_name} {admin.last_name}
                 </p>
               </div>
-              <div style={contentBoxRightColumn}>
-                <button onClick={() => openEditDialog('name')}>Change</button>
+              <div className="admin-profile__right">
+                <button
+                  className="admin-button"
+                  onClick={() => openEditDialog('name')}
+                >
+                  Change
+                </button>
               </div>
             </div>
-            <div style={profileContentBox}>
-              <div style={contentBoxLeftColumn}>
+
+            <div className="admin-profile__row">
+              <div className="admin-profile__left">
                 <p>
                   <b>EMAIL:</b>
                 </p>
                 <p>{admin.email}</p>
               </div>
-              <div style={contentBoxRightColumn}>
-                <button onClick={() => openEditDialog('email')}>Change</button>
+              <div className="admin-profile__right">
+                <button
+                  className="admin-button"
+                  onClick={() => openEditDialog('email')}
+                >
+                  Change
+                </button>
               </div>
             </div>
-            <div style={profileContentBox}>
-              <div style={contentBoxLeftColumn}>
+
+            <div className="admin-profile__row">
+              <div className="admin-profile__left">
                 <p>
                   <b>PHONENUMBER:</b>
                 </p>
                 <p>{admin.phonenumber}</p>
               </div>
-              <div style={contentBoxRightColumn}>
-                <button onClick={() => openEditDialog('phonenumber')}>
+              <div className="admin-profile__right">
+                <button
+                  className="admin-button"
+                  onClick={() => openEditDialog('phonenumber')}
+                >
                   Change
                 </button>
               </div>
             </div>
-            <div style={profileContentBox}>
-              <div style={contentBoxLeftColumn}>
+
+            <div className="admin-profile__row">
+              <div className="admin-profile__left">
                 <p>
                   <b>ADDRESS:</b>
                 </p>
                 <p>{admin.address}</p>
               </div>
-              <div style={contentBoxRightColumn}>
-                <button onClick={() => openEditDialog('address')}>
+              <div className="admin-profile__right">
+                <button
+                  className="admin-button"
+                  onClick={() => openEditDialog('address')}
+                >
                   Change
                 </button>
               </div>
             </div>
-            <div style={{padding: '20px 0'}}>
-              <button onClick={() => openEditDialog('password')}>
+
+            <div className="admin-profile__section">
+              <button
+                className="admin-button"
+                onClick={() => openEditDialog('password')}
+              >
                 Change password
               </button>
             </div>
-            <div style={{padding: '20px 0'}}>
+
+            <div className="admin-profile__section">
               <h3>CREATE A NEW ADMIN ACCOUNT</h3>
-              <button onClick={showAdminRegisterForm}>
+              <button
+                className="admin-button"
+                onClick={showAdminRegisterForm}
+              >
                 Create new account
               </button>
             </div>
           </div>
         )}
       </div>
+
       {isAdminRegister && (
         <AdminRegisterForm closeDialog={closeAdminRegister} />
       )}

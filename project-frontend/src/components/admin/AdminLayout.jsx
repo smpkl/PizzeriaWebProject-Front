@@ -80,7 +80,7 @@ const Layout = () => {
           </ul>
         </nav>
       </header>
-      <main>
+      <main className="admin-main">
         <Outlet />
       </main>
     </div>
