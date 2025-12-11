@@ -35,6 +35,9 @@ const Layout = () => {
           position: 'sticky',
           top: '0',
           height: '9vh',
+          'max-width': '100vw',
+          paddingLeft: '0px',
+          paddingRight: '0px',
         }}
       >
         <div id="header-logo-container">

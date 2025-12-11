@@ -20,11 +20,34 @@ const Layout = () => {
   };
   return (
     <div className="admin-root">
-      <header className="admin-header">
-        <div className="admin-header__logo">
+      <header
+        className="admin-header"
+        style={{
+          display: 'flex',
+          position: 'sticky',
+          top: '0',
+          height: '9vh',
+          'max-width': '100vw',
+          paddingLeft: '0px',
+          paddingRight: '0px',
+        }}
+      >
+        <div
+          className="admin-header__logo"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 'auto',
+            height: '100%',
+          }}
+        >
           <img
-            src="https://placehold.co/100x100/orange/white?text=LOGO"
+            src={`/tba-logo.png`}
             alt="Pizzeria Logo goes here"
+            style={{
+              height: '100%',
+            }}
           />
         </div>
         <nav className="admin-nav">

@@ -23,7 +23,7 @@ import {AdminProvider} from './contexts/AdminContext';
 const App = () => {
   return (
     <>
-      <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <BrowserRouter>
         <AdminProvider>
           <UserProvider>
             <OrderProvider>

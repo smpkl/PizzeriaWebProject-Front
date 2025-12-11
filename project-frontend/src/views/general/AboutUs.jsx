@@ -40,7 +40,9 @@ const AboutUs = () => {
           </p>
           <div id="aboutUs-img-container">
             <img
-              src={`${import.meta.env.VITE_PUBLIC_URL}pizzeria_about_us_img.jpg`}
+              src={
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pizza-3007395.jpg/2560px-Pizza-3007395.jpg'
+              }
               alt="Pizzeria TBA, About us page image of a pizza"
               style={{width: '100%'}}
             />
@@ -149,11 +151,7 @@ const AboutUs = () => {
                 className="feedback-textarea"
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
-                placeholder={
-                  `------------------------------------\n` +
-                  `------------------------------------\n` +
-                  `------------------------------------`
-                }
+                placeholder={'Your feedback'}
                 rows={6}
                 style={{margin: '10px 0', height: '300px'}}
               />
