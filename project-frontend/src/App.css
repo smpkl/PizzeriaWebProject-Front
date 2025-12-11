@@ -122,6 +122,17 @@ footer li a {
   border-radius: 50%;
 }
 
+#menu-container {
+  width: 100%;
+  margin: auto 0;
+  background-color: #710009;
+  padding: 0;
+}
+
+#menu-filter-bar {
+  width: 100%;
+}
+
 .filter-btn.active {
   color: #710009;
   font-weight: bold;
@@ -142,15 +153,16 @@ footer li a {
 .tag-btn.active {
   color: #710009;
   font-weight: bold;
-  padding: 11px;
+  padding: 9px;
   background-color: #f5eee6;
 }
 
 .tag-btn {
   color: #f5eee6;
   margin: 5px 0.7%;
-  padding: 10px;
-  width: 12%;
+  padding: 8px;
+  width: 20%;
+  font-size: 12px;
   background-color: #710009;
   border: 2px solid #f5eee6;
   border-radius: 4px;
@@ -388,10 +400,6 @@ header nav {
   font-size: 16px;
 }
 
-#menu-container {
-  margin: 10px;
-}
-
 #menu {
   background-color: white;
   padding: 10px 0;
@@ -427,7 +435,7 @@ header nav {
   border: 2px solid #710009;
   background-color: #710009;
   color: #f5eee6;
-  width: 35%;
+  width: 50%;
 }
 
 .details-button {
@@ -602,14 +610,20 @@ header nav {
     color: #710009;
   }
 
-  #menu-tags button {
+  .tag-btn {
+    padding: 10px;
+    width: 12%;
     font-size: 20px;
   }
 
-  #menu-tags button:hover {
+  .tag-btn:hover {
     font-size: 20px;
     background-color: #f5eee6;
     color: #710009;
+  }
+
+  .tag-btn.active {
+    padding: 11px;
   }
 
   #search-by-name {
