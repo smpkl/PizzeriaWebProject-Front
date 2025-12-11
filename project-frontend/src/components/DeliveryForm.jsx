@@ -3,11 +3,13 @@ import {useOrderContext} from '../hooks/contextHooks';
 import {useNavigate} from 'react-router';
 import {useEffect, useState} from 'react';
 import {usePizzerias} from '../hooks/apiHooks';
+import {useUserContext} from '../hooks/contextHooks';
 
 const DeliveryForm = () => {
   const [userLocation, setUserLocation] = useState({});
   const [sortedPizzerias, setSortedPizzerias] = useState();
   const [topThreePizzerias, setTopThreePizzerias] = useState();
+  const {user} = useUserContext();
   const {pizzerias} = usePizzerias();
   const navigate = useNavigate();
   const {orderInfo, handleDeliveryFee, handleOrderInfoChange} =
@@ -30,9 +32,25 @@ const DeliveryForm = () => {
     setUserLocation({lat: latitude, long: longitude});
   }
 
-  useEffect(() => {
-    handleOrderInfoChange({userAddress: '', userAddress2: ''});
-  }, []);
+useEffect(() => {
+  if (user) {
+    handleOrderInfoChange({
+      userAddress: user.address || '',
+      userAddress2: '',
+      name: `${user.first_name ?? ''} ${user.last_name ?? ''}`.trim(),
+      phonenumber: user.phonenumber || '',
+      email: user.email || '',
+    });
+  } else {
+    handleOrderInfoChange({
+      userAddress: '',
+      userAddress2: '',
+      name: '',
+      phonenumber: '',
+      email: '',
+    });
+  }
+}, [user]);
 
   // Try to add distances to pizzerias and sort them if userLocation is found:
   useEffect(() => {
