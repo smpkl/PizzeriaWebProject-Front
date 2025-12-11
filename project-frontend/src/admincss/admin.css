@@ -13,18 +13,78 @@
   --admin-border-color: #000;
   --admin-border-radius: 14px;
   --admin-font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --admin-font-size-base: 19px;
+  --admin-font-size-heading: 1.6rem;
+  --admin-font-size-button: 0.95rem;
   --admin-bg-light: #e0e0e0;
   --admin-card-max-width: 1000px;
 }
 
 .admin-root {
   font-family: var(--admin-font-family);
+  font-size: var(--admin-font-size-base);
 }
 
 /* Admin main */
 
 .admin-main {
+  min-height: calc(100vh - 80px);
   background-color: var(--admin-bg-light);
+  padding: 1.5rem 1rem;
+}
+
+.admin-main__hero {
+  max-width: var(--admin-card-max-width);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.admin-main__title {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.admin-main__text {
+  margin: 0.25rem 0 1rem;
+}
+
+.admin-main__button {
+  margin-top: 0.5rem;
+}
+
+/* Admin login */
+
+.admin-login-page {
+  min-height: calc(100vh - 80px);
+  padding: 1.5rem 1rem;
+  background-color: var(--admin-bg-light);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.admin-login-card {
+  width: 100%;
+  max-width: 420px;
+}
+
+.admin-login-form__title {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.admin-login-form__error {
+  color: darkred;
+  background-color: #ffe5e5;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+}
+
+.admin-login-form__button {
+  margin-top: 0.5rem;
+  width: 100%;
 }
 
 /* Admin Layout */
@@ -125,11 +185,13 @@
 }
 
 .admin-products__toolbar button {
-  padding: 4px 10px;
-  border-radius: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
   border: 2px solid var(--admin-border-color);
   background-color: var(--admin-bg-light);
   cursor: pointer;
+  font-size: var(--admin-font-size-button);
+  font-weight: 600;
 }
 
 .admin-products__toolbar input[type='text'] {
@@ -285,11 +347,13 @@
 
 .admin-button {
   margin: 0.1rem;
-  padding: 4px 10px;
-  border-radius: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
   border: 2px solid var(--admin-border-color);
   background-color: var(--admin-bg-light);
   cursor: pointer;
+  font-size: var(--admin-font-size-button);
+  font-weight: 600;
 }
 
 /* AdminProductViewCard */
@@ -413,11 +477,13 @@
 }
 
 .admin-meals__toolbar button {
-  padding: 4px 10px;
-  border-radius: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
   border: 2px solid var(--admin-border-color);
   background-color: var(--admin-bg-light);
   cursor: pointer;
+  font-size: var(--admin-font-size-button);
+  font-weight: 600;
 }
 
 .meal-item-card {
@@ -489,11 +555,13 @@
 }
 
 .meal-item-buttons-row button {
-  padding: 4px 10px;
-  border-radius: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
   border: 2px solid var(--admin-border-color);
   background-color: var(--admin-bg-light);
   cursor: pointer;
+  font-size: var(--admin-font-size-button);
+  font-weight: 600;
 }
 
 /* AdminOrders & OrderCard */
@@ -511,7 +579,9 @@
   margin: 1rem;
   padding: 0.5rem;
   min-width: 280px;
-  max-width: 480px;
+  max-width: 640px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* OrderCard */
@@ -522,12 +592,15 @@
   margin: 0;
   padding: 0.2rem;
   font-family: var(--admin-font-family);
+  overflow-x: auto;
+  box-sizing: border-box;
 }
 
 .order-card__content-row {
   display: flex;
-  gap: 0.3rem;
+  gap: 0.5rem;
   align-items: flex-start;
+  flex-wrap: wrap;
 }
 
 .order-card__products,
@@ -536,44 +609,44 @@
   margin: 0.1rem;
   padding: 0.2rem;
   text-align: left;
-}
-
-.order-card__products {
-  flex: 1 1 40%;
-}
-
-.order-card__customer {
-  flex: 1 1 60%;
+  box-sizing: border-box;
+  flex: 1 1 260px;
 }
 
 .order-card__table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .order-card__td {
   padding: 2px 4px;
   border: 1px solid #000;
+  word-break: break-word;
 }
 
 .order-card__p {
   padding: 0;
   margin: 0.1rem;
+  white-space: normal;
 }
 
 .order-card__buttons-row {
   margin-top: 0.5rem;
   display: flex;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .order-card__button {
   margin: 0.1rem;
-  padding: 4px 10px;
-  border-radius: 6px;
-  border: 1px solid #000;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 2px solid var(--admin-border-color);
   background-color: var(--admin-bg-light);
   cursor: pointer;
+  font-size: var(--admin-font-size-button);
+  font-weight: 600;
 }
 
 /* OrderProductCard */
