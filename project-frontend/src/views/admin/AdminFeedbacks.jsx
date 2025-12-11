@@ -1,9 +1,10 @@
 // Adminsivun palautteidenhallinta
 
 import React, { useEffect, useState } from 'react';
-import FeedbackForm from './FeedbackForm';
 
 const AdminFeedbacks = () => {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+  const adminToken = localStorage.getItem('adminToken');
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
@@ -15,10 +16,11 @@ const AdminFeedbacks = () => {
       setErrorMsg('');
 
       try {
-        const res = await fetch('/api/feedback', {
+        const res = await fetch(`${baseUrl}feedbacks`, {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
+            Authorization: 'Bearer ' + adminToken,
           },
         });
 
@@ -27,7 +29,7 @@ const AdminFeedbacks = () => {
         }
 
         const data = await res.json();
-        setFeedbacks(Array.isArray(data) ? data : []);
+        setFeedbacks(Array.isArray(data.feedbacks) ? data.feedbacks : []);
       } catch (err) {
         console.error('Error fetching feedbacks:', err);
         setErrorMsg('Failed to load feedbacks. Please try again.');
@@ -44,11 +46,12 @@ const AdminFeedbacks = () => {
     setErrorMsg('');
 
     try {
-      const res = await fetch('/api/feedback', {
+      const res = await fetch(`${baseUrl}feedbacks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          Authorization: 'Bearer ' + adminToken,
         },
         body: JSON.stringify(newFeedback),
       });
@@ -61,6 +64,7 @@ const AdminFeedbacks = () => {
 
       // Append the newly created feedback to the list
       setFeedbacks((prev) => [...prev, created]);
+      
     } catch (err) {
       console.error('Error submitting feedback:', err);
       setErrorMsg('Failed to submit feedback. Please check your input and try again.');
@@ -89,17 +93,14 @@ const AdminFeedbacks = () => {
         </div>
       )}
 
-      {/* Feedback form for adding new feedback */}
-      <FeedbackForm onSubmit={handleSubmit} />
-
       {/* Display list of feedbacks */}
       <div className="feedback-list" style={{ marginTop: 16 }}>
         {feedbacks.length === 0 ? (
           <p>No feedback available.</p>
         ) : (
           feedbacks.map((fb) => (
-            <div
-              key={fb.id ?? fb._id ?? `${fb.user}-${fb.createdAt ?? Math.random()}`}
+<div
+              key={fb.id}
               className="feedback-item"
               style={{
                 border: '1px solid #ddd',
@@ -109,11 +110,14 @@ const AdminFeedbacks = () => {
               }}
             >
               <p style={{ margin: 0 }}>
-                <strong>{fb.user ?? 'Anonymous'}</strong>: {fb.comment}
+                <strong>{fb.email}</strong>
               </p>
-              {typeof fb.rating !== 'undefined' && (
-                <p style={{ margin: '6px 0 0' }}>Rating: {fb.rating}</p>
-              )}
+              <p style={{ margin: '4px 0' }}>{fb.feedback}</p>
+              <p style={{ margin: '2px 0' }}>Status: {fb.status}</p>
+              <p style={{ margin: '2px 0' }}>Received: {fb.received}</p>
+              <p style={{ margin: '2px 0' }}>
+                Handled: {fb.handled ?? '—'}
+              </p>
             </div>
           ))
         )}
