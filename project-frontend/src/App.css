@@ -503,6 +503,22 @@ header nav {
   border: 5px outset #8d0202ff;
 }
 
+#aboutUs-feedback-container {
+  background-color: #ecb640ff;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px 0 25px 0;
+}
+
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin: auto;
+}
+
 /*--------------------------------------------------------------------------------------------------------------*/
 
 @media screen and (min-width: 556px) {
@@ -978,5 +994,21 @@ header nav {
     align-items: center;
     object-fit: cover;
     overflow: hidden;
+  }
+
+  #aboutUs-feedback-container {
+    background-color: #ecb640ff;
+    margin: 10px auto;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+  }
+
+  .feedback-form {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    margin: auto;
   }
 }
