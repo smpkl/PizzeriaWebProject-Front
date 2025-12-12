@@ -242,7 +242,7 @@ node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand
 
 - [Powerpoint/esitys](https://metropoliafi-my.sharepoint.com/:p:/g/personal/eliasrin_metropolia_fi/IQB4kUf-SV1uTp0JnSMgwoP7AY93E3zeEq6DxMG2jnwv3eQ?e=Oqr2UY)
 
-- [APIDoc dokumentaatio](https://smapo.swedencentral.cloudapp.azure.com/docs)
+- [APIDoc dokumentaatio](https://smapo.swedencentral.cloudapp.azure.com/api/docs)
     - Toimii jos serveri on päällä. Muuten dokumentaatio täytyy avata backend koodin kautta localhostissa.
 - [Trellotaulu](https://trello.com/b/NImxPprN/to-be-announced-prokkis)
 ---
@@ -258,6 +258,7 @@ node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand
     - Elias Rinne [MustBeViable](https://github.com/MustBeViable) 
     - Sampo Klaavo [smpkl](https://github.com/smpkl)
     - Jere Pyörökivi [Jere-4](https://github.com/Jere-4)
+
 
 
 
