@@ -58,7 +58,7 @@ Omistajat/admin:
         - lisätä, poistaa ja muokata
         - myös päivittäisiä aterioita
     - kuponkeja
-        - lisätä, poistaa ja muokata
+        - (lisätä, poistaa ja muokata) tarvitsee vain front end integraation
     - ilmoituksia
         - lukea (hallinnointi tulee myöhemmässä 1.1 patchissa)
 - Voi hallinnoida omia tietoja
@@ -244,6 +244,7 @@ node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand
 
 - [APIDoc dokumentaatio](https://smapo.swedencentral.cloudapp.azure.com/docs)
     - Toimii jos serveri on päällä. Muuten dokumentaatio täytyy avata backend koodin kautta localhostissa.
+- [Trellotaulu](https://trello.com/b/NImxPprN/to-be-announced-prokkis)
 ---
 
 ## 7. Ongelmat ja ongelmatilanteet
@@ -257,6 +258,7 @@ node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand
     - Elias Rinne [MustBeViable](https://github.com/MustBeViable) 
     - Sampo Klaavo [smpkl](https://github.com/smpkl)
     - Jere Pyörökivi [Jere-4](https://github.com/Jere-4)
+
 
 
 
